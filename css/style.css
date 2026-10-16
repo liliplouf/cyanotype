@@ -340,8 +340,8 @@ input[type="range"] { width: 100%; accent-color: var(--prussian-800); min-height
 .result-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 .8rem; }
 .card-result h2 { color: var(--cyan-300); font-family: var(--font-sans); font-size: .78rem; text-transform: uppercase; letter-spacing: .12em; margin: 0; }
 .res-context { color: var(--result-muted); font-size: .86rem; margin: 0; overflow-wrap: anywhere; }
-.res-calib { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .5rem; font-size: .9rem; color: #eaf4fb; margin-bottom: .5rem; }
-.res-calib .chip { display: inline-flex; align-items: center; min-height: 36px; padding: .2rem .75rem; border-radius: 999px; background: rgba(255, 255, 255, .14); border: 1px solid rgba(255, 255, 255, .35); text-decoration: none; font-size: .88rem; }
+.res-calib { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .4rem; font-size: .86rem; color: #eaf4fb; margin-bottom: .5rem; }
+.res-calib .chip { display: inline-flex; align-items: center; min-height: 36px; padding: .2rem .6rem; border-radius: 999px; background: rgba(255, 255, 255, .14); border: 1px solid rgba(255, 255, 255, .35); text-decoration: none; font-size: .84rem; }
 .res-calib .chip:hover { background: rgba(255, 255, 255, .24); }
 .res-calib a, .card-result a { color: #fff; font-weight: 600; }
 .advice-box { border-top: 1px solid rgba(255, 255, 255, .18); padding-top: .2rem; }
