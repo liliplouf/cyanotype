@@ -1,0 +1,92 @@
+{
+  "results": [
+    {
+      "id": 3037456,
+      "name": "Arles",
+      "latitude": 43.67681,
+      "longitude": 4.63031,
+      "elevation": 13,
+      "feature_code": "PPLA3",
+      "country_code": "FR",
+      "admin1_id": 2985244,
+      "admin2_id": 3031359,
+      "admin3_id": 3037455,
+      "admin4_id": 6455388,
+      "timezone": "Europe/Paris",
+      "population": 53431,
+      "postcodes": [
+        "13200",
+        "13104",
+        "13123",
+        "13280"
+      ],
+      "country_id": 3017382,
+      "country": "France",
+      "admin1": "Provence-Alpes-Côte d'Azur",
+      "admin2": "Bouches-du-Rhône",
+      "admin3": "Arles",
+      "admin4": "Arles"
+    },
+    {
+      "id": 3037444,
+      "name": "Arles-sur-Tech",
+      "latitude": 42.45567,
+      "longitude": 2.63464,
+      "elevation": 280,
+      "feature_code": "PPL",
+      "country_code": "FR",
+      "admin1_id": 11071623,
+      "admin2_id": 2987967,
+      "admin3_id": 2987966,
+      "admin4_id": 6619846,
+      "timezone": "Europe/Paris",
+      "population": 2830,
+      "postcodes": [
+        "66150"
+      ],
+      "country_id": 3017382,
+      "country": "France",
+      "admin1": "Occitanie",
+      "admin2": "Pyrénées-Orientales",
+      "admin3": "Céret",
+      "admin4": "Arles-sur-Tech"
+    },
+    {
+      "id": 2661881,
+      "name": "Arlesheim",
+      "latitude": 47.49419,
+      "longitude": 7.62002,
+      "elevation": 330,
+      "feature_code": "PPLA2",
+      "country_code": "CH",
+      "admin1_id": 2661602,
+      "admin2_id": 2661880,
+      "admin3_id": 7286271,
+      "timezone": "Europe/Zurich",
+      "population": 9022,
+      "postcodes": [
+        "4144"
+      ],
+      "country_id": 2658434,
+      "country": "Suisse",
+      "admin1": "Bâle-Campagne",
+      "admin2": "Bezirk Arlesheim",
+      "admin3": "Arlesheim"
+    },
+    {
+      "id": 4100670,
+      "name": "Arles",
+      "latitude": 33.68343,
+      "longitude": -91.94735,
+      "elevation": 53,
+      "feature_code": "PPL",
+      "country_code": "US",
+      "admin1_id": 4099753,
+      "timezone": "America/Chicago",
+      "country_id": 6252001,
+      "country": "États-Unis",
+      "admin1": "Arkansas"
+    }
+  ],
+  "generationtime_ms": 0.680089
+}

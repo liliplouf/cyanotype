@@ -1,0 +1,8 @@
+[
+  {"theme": "Chimie", "question": "Quelle chimie utilises-tu ?", "reponse": "Kit du commerce", "consequence": "Formule inconnue : la calibration personnelle devient centrale ; ajouter des préréglages de kits."},
+  {"theme": "Lumière", "question": "Quelle source de lumière ?", "reponse": "Soleil uniquement", "consequence": "Le calcul météo et position est le cœur ; le mode lampe peut passer au second plan."},
+  {"theme": "Supports", "question": "Quels supports et négatifs ?", "reponse": "Papier, négatif numérique", "consequence": "Réglages par défaut : papier coton + négatif sur transparent ; aide aux négatifs numériques."},
+  {"theme": "Usage", "question": "Où utiliseras-tu l'application ?", "reponse": "Téléphone, dehors", "consequence": "Application installable et hors ligne, gros boutons, fort contraste, minuteur qui sonne."},
+  {"theme": "Châssis", "question": "Comment presses-tu le négatif ?", "reponse": "En attente", "consequence": "Détermine le facteur de verre par défaut."},
+  {"theme": "Calibration", "question": "Comment vérifies-tu le temps de pose ?", "reponse": "En attente", "consequence": "Guide pas à pas ou charte de gris."}
+]

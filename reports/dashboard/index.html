@@ -1,0 +1,399 @@
+<style>
+  .cy { display: grid; gap: var(--cds-gap-xl); font-family: var(--font-anthropic-sans); }
+  .cy-head h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; text-wrap: balance; }
+  .cy-take { color: var(--color-fg-muted); margin: var(--cds-gap-xs) 0 0; max-width: 70ch; }
+  .cy-take b { color: var(--color-fg); font-weight: 600; }
+  .cy-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); gap: var(--cds-gap-md); }
+  .cy-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; position: relative; }
+  .cy-kpi-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .cy-kpi-value { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: 2.25rem; line-height: 1.15; font-variant-numeric: tabular-nums; margin-top: var(--cds-gap-xs); }
+  .cy-kpi-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-top: var(--cds-gap-xs); }
+  .cy-section { display: grid; gap: var(--cds-gap-md); }
+  .cy-section > h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+  .cy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: var(--cds-gap-md); }
+  .cy-card h3 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+  .cy-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: var(--cds-gap-xs) 0 var(--cds-gap-md); }
+  .cy-wrap { overflow-x: auto; }
+  .cy-t { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-body); }
+  .cy-t th { text-align: left; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+  .cy-t td { padding: var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); vertical-align: top; }
+  .cy-t tr:last-child td { border-bottom: 0; }
+  .cy-t td.num { font-variant-numeric: tabular-nums; color: var(--color-fg-muted); width: 2rem; }
+  .cy-t td.muted { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .cy-pill { display: inline-block; padding: 0 var(--cds-pad-sm); border-radius: 999px; font-size: var(--cds-font-size-caption); white-space: nowrap; border: 1px solid currentColor; }
+  .cy-pill.ok { color: var(--color-ok); }
+  .cy-pill.cours { color: var(--color-warn); }
+  .cy-pill.todo { color: var(--color-fg-muted); }
+  .cy-phase { display: grid; grid-template-columns: minmax(7rem, 11rem) 1fr 3rem; gap: var(--cds-gap-sm); align-items: center; padding: var(--cds-pad-xs) 0; font-size: var(--cds-font-size-body); }
+  .cy-track { height: 12px; border-radius: 6px; background: var(--cds-chart-grid); overflow: hidden; display: flex; }
+  .cy-track span { display: block; height: 100%; }
+  .cy-phase .cnt { text-align: right; font-variant-numeric: tabular-nums; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .cy-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-top: var(--cds-gap-sm); }
+  .cy-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .cy-chart { min-height: 180px; position: relative; }
+  .cy-tip { position: absolute; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); pointer-events: none; white-space: nowrap; z-index: 2; }
+  .cy-tip .k { color: var(--cds-text-secondary); }
+  .cy-failed { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: inherit; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .cy-failed::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+  [data-dash-source-state=empty] { color: transparent; }
+  [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+  @media (max-width: 640px) { .cy-hide-narrow { display: none; } }
+</style>
+
+<div class="cy">
+  <header class="cy-head" id="resume">
+    <h1>Projet Cyanotype — avancement</h1>
+    <p class="cy-take">
+      <b data-source="avancement" data-field="terminees" data-row="0">—</b> tâches terminées sur
+      <b data-source="avancement" data-field="total" data-row="0">—</b>.
+      Dernière batterie de tests : <b data-source="dernier_test" data-field="reussis" data-row="0">—</b> réussis,
+      <b data-source="dernier_test" data-field="echecs" data-row="0">—</b> échec(s).
+      Prochaine étape : <b data-source="avancement" data-field="prochaine" data-row="0">—</b>.
+    </p>
+  </header>
+
+  <div class="cy-kpis">
+    <div class="cy-card">
+      <div class="cy-kpi-label">Avancement</div>
+      <div class="cy-kpi-value dash-skeleton" id="k-part" data-source="avancement" data-field="part" data-row="0">—</div>
+      <div class="cy-kpi-note">Part des tâches terminées</div>
+    </div>
+    <div class="cy-card">
+      <div class="cy-kpi-label">En cours</div>
+      <div class="cy-kpi-value dash-skeleton" id="k-cours" data-source="avancement" data-field="en_cours" data-row="0">—</div>
+      <div class="cy-kpi-note">Tâches confiées à un agent</div>
+    </div>
+    <div class="cy-card">
+      <div class="cy-kpi-label">Tests réussis</div>
+      <div class="cy-kpi-value dash-skeleton" id="k-tests" data-source="dernier_test" data-field="reussis" data-row="0">—</div>
+      <div class="cy-kpi-note">Au dernier passage de la batterie</div>
+    </div>
+    <div class="cy-card">
+      <div class="cy-kpi-label">Échecs</div>
+      <div class="cy-kpi-value dash-skeleton" id="k-fail" data-source="dernier_test" data-field="echecs" data-row="0">—</div>
+      <div class="cy-kpi-note">Un échec bloque la livraison</div>
+    </div>
+  </div>
+
+  <section class="cy-section" id="feuille-de-route">
+    <h2>Feuille de route</h2>
+    <div class="cy-card">
+      <h3>Progression par phase</h3>
+      <p class="cy-note">Chaque barre compte les tâches de la phase : terminées, en cours, à faire.</p>
+      <div id="phases" class="cy-chart" style="min-height: 0" data-source="phases"></div>
+      <div class="cy-legend">
+        <span><i style="background: var(--color-ok)"></i>Terminé</span>
+        <span><i style="background: var(--color-warn)"></i>En cours</span>
+        <span><i style="background: var(--cds-chart-grid); border: 1px solid var(--color-border-line)"></i>À faire</span>
+      </div>
+    </div>
+    <div class="cy-card">
+      <h3>Tâches</h3>
+      <p class="cy-note">Qui fait quoi, dans l'ordre du projet. Les agents travaillent en parallèle pendant la phase 2.</p>
+      <div class="cy-wrap">
+        <table class="cy-t" id="t-taches" data-source="taches" data-row-key="ordre">
+          <thead><tr>
+            <th data-field="ordre">N°</th>
+            <th data-field="tache">Tâche</th>
+            <th data-field="agent">Agent</th>
+            <th data-field="statut">Statut</th>
+            <th data-field="detail" class="cy-hide-narrow">Détail</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="cy-section" id="tests">
+    <h2>Batterie de tests</h2>
+    <div class="cy-grid">
+      <div class="cy-card">
+        <h3>Tests par module</h3>
+        <p class="cy-note">Nombre de tests réussis par suite au dernier passage de <code>npm test</code>.</p>
+        <div id="c-suites" class="cy-chart" data-source="suites"></div>
+      </div>
+      <div class="cy-card">
+        <h3>Historique des passages</h3>
+        <p class="cy-note">Un passage à chaque étape du projet. Rouge : tests en échec.</p>
+        <div id="c-hist" class="cy-chart" data-source="historique"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cy-section" id="besoins">
+    <h2>Tes réponses et leurs conséquences</h2>
+    <div class="cy-card">
+      <p class="cy-note" style="margin-top: 0">Ce que tu as répondu oriente les prochaines versions.</p>
+      <div class="cy-wrap">
+        <table class="cy-t" id="t-besoins" data-source="besoins" data-row-key="theme">
+          <thead><tr>
+            <th data-field="theme">Thème</th>
+            <th data-field="reponse">Ta réponse</th>
+            <th data-field="consequence">Conséquence pour l'application</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="cy-section" id="decisions">
+    <h2>Décisions techniques</h2>
+    <div class="cy-card">
+      <p class="cy-note" style="margin-top: 0">Choix faits par les agents en cours de route, avec leur origine.</p>
+      <div class="cy-wrap">
+        <table class="cy-t" id="t-decisions" data-source="decisions" data-row-key="sujet">
+          <thead><tr>
+            <th data-field="sujet">Sujet</th>
+            <th data-field="decision">Décision</th>
+            <th data-field="origine" class="cy-hide-narrow">Origine</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  dash.calc('avancement', {
+    title: 'Avancement des tâches',
+    description: 'Compte les tâches terminées et en cours, et nomme la première tâche non terminée.',
+    inputs: ['taches'],
+    fn: (taches) => {
+      const done = taches.filter((t) => t.statut === 'terminé').length;
+      const next = taches.filter((t) => t.statut !== 'terminé').sort((a, b) => a.ordre - b.ordre)[0];
+      return [{
+        terminees: done,
+        total: taches.length,
+        part: taches.length ? done / taches.length : 0,
+        en_cours: taches.filter((t) => t.statut === 'en cours').length,
+        prochaine: next ? next.tache : 'aucune',
+      }];
+    },
+  });
+
+  dash.calc('phases', {
+    title: 'Tâches par phase',
+    description: 'Regroupe les tâches par phase et compte celles terminées, en cours et à faire.',
+    inputs: ['taches'],
+    fn: (taches) => {
+      const by = new Map();
+      for (const t of taches) {
+        const p = by.get(t.phase) || { phase: t.phase, termine: 0, en_cours: 0, a_faire: 0, total: 0 };
+        if (t.statut === 'terminé') p.termine++;
+        else if (t.statut === 'en cours') p.en_cours++;
+        else p.a_faire++;
+        p.total++;
+        by.set(t.phase, p);
+      }
+      return [...by.values()].sort((a, b) => a.phase.localeCompare(b.phase));
+    },
+  });
+
+  dash.calc('dernier_test', {
+    title: 'Dernier passage des tests',
+    description: 'Prend la dernière ligne de l’historique des passages de la batterie de tests.',
+    inputs: ['historique'],
+    fn: (historique) => {
+      const r = historique[historique.length - 1];
+      return r ? [{ reussis: r.reussis, echecs: r.echecs, etape: r.etape, at: r.at }] : [];
+    },
+  });
+
+  const pct = new Intl.NumberFormat('fr-FR', { style: 'percent', maximumFractionDigits: 0 });
+  const nf = new Intl.NumberFormat('fr-FR');
+  const dateFmt = (iso) => new Date(iso).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+  const root = document.getElementById('dash-root');
+
+  function fillField(src, field, fmt) {
+    const d = dash.data(src);
+    root.querySelectorAll(`[data-source="${src}"][data-field="${field}"]`).forEach((el) => {
+      if (d.status === 'ok' && d.data[0]) {
+        el.textContent = fmt ? fmt(d.data[0][field]) : String(d.data[0][field]);
+        el.classList.remove('dash-skeleton');
+      } else {
+        el.textContent = '—';
+        if (d.status === 'error' || d.status === 'connect') el.classList.remove('dash-skeleton');
+      }
+    });
+  }
+
+  function failed(el, d) {
+    el.textContent = '';
+    if (d.status === 'error' || d.status === 'connect') {
+      const f = document.createElement('div');
+      f.className = 'cy-failed';
+      f.textContent = 'Failed to load';
+      el.appendChild(f);
+    }
+  }
+
+  function tip(box) {
+    let t = box.querySelector('.cy-tip');
+    if (!t) { t = document.createElement('div'); t.className = 'cy-tip'; t.hidden = true; box.appendChild(t); }
+    return {
+      show(ev, lines) {
+        t.textContent = '';
+        lines.forEach(([k, v], i) => {
+          const line = document.createElement('div');
+          if (i === 0) { line.className = 'k'; line.textContent = k; }
+          else line.textContent = `${k} : ${v}`;
+          t.appendChild(line);
+        });
+        t.hidden = false;
+        const r = box.getBoundingClientRect();
+        let x = ev.clientX - r.left + 12, y = ev.clientY - r.top + 12;
+        x = Math.min(x, r.width - t.offsetWidth - 4);
+        t.style.left = Math.max(0, x) + 'px';
+        t.style.top = y + 'px';
+      },
+      hide() { t.hidden = true; },
+    };
+  }
+
+  function statutClass(s) { return s === 'terminé' ? 'ok' : s === 'en cours' ? 'cours' : 'todo'; }
+
+  function drawTable(id, src, cols) {
+    const table = document.getElementById(id);
+    const body = table.querySelector('tbody');
+    const d = dash.data(src);
+    body.textContent = '';
+    if (d.status !== 'ok') return;
+    let rows = d.data.slice();
+    if (src === 'taches') rows.sort((a, b) => a.ordre - b.ordre);
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      for (const c of cols) {
+        const td = document.createElement('td');
+        if (c.cls) td.className = c.cls;
+        if (c.pill) {
+          const s = document.createElement('span');
+          s.className = 'cy-pill ' + statutClass(r[c.f]);
+          s.textContent = r[c.f];
+          td.appendChild(s);
+        } else td.textContent = String(r[c.f]);
+        tr.appendChild(td);
+      }
+      body.appendChild(tr);
+    }
+  }
+
+  function drawPhases() {
+    const el = document.getElementById('phases');
+    const d = dash.data('phases');
+    el.textContent = '';
+    if (d.status !== 'ok') { failed(el, d); return; }
+    for (const p of d.data) {
+      const row = document.createElement('div');
+      row.className = 'cy-phase';
+      const name = document.createElement('div');
+      name.textContent = p.phase;
+      const track = document.createElement('div');
+      track.className = 'cy-track';
+      [['termine', 'var(--color-ok)'], ['en_cours', 'var(--color-warn)']].forEach(([k, col]) => {
+        if (!p[k]) return;
+        const s = document.createElement('span');
+        s.style.width = (100 * p[k] / p.total) + '%';
+        s.style.background = col;
+        track.appendChild(s);
+      });
+      const cnt = document.createElement('div');
+      cnt.className = 'cnt';
+      cnt.textContent = `${p.termine}/${p.total}`;
+      row.append(name, track, cnt);
+      el.appendChild(row);
+    }
+  }
+
+  function drawSuites() {
+    const el = document.getElementById('c-suites');
+    const d = dash.data('suites');
+    el.querySelectorAll('svg, .cy-failed').forEach((n) => n.remove());
+    if (d.status !== 'ok') { failed(el, d); return; }
+    const rows = d.data.map((r) => ({ ...r, reussis: Number(r.reussis), echecs: Number(r.echecs), duree_ms: Number(r.duree_ms) }));
+    const W = Math.max(280, el.clientWidth), rowH = 34, H = rows.length * rowH + 8;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    const probe = svg.append('text').attr('font-size', 12).text(rows.reduce((a, r) => r.suite.length > a.length ? r.suite : a, ''));
+    const left = probe.node().getComputedTextLength() + 12;
+    probe.remove();
+    const maxVal = d3.max(rows, (r) => r.reussis + r.echecs) || 1;
+    const x = d3.scaleLinear([0, maxVal], [left, W - 40]);
+    const y = d3.scaleBand(rows.map((r) => r.suite), [4, H - 4]).padding(0.35);
+    const tt = tip(el);
+    const g = svg.selectAll('g.r').data(rows).join('g').attr('class', 'r');
+    g.append('text').attr('x', 0).attr('y', (r) => y(r.suite) + y.bandwidth() / 2).attr('dy', '0.35em')
+      .attr('font-size', 12).attr('fill', 'var(--color-fg)').text((r) => r.suite);
+    g.append('rect').attr('x', left).attr('y', (r) => y(r.suite)).attr('height', y.bandwidth())
+      .attr('width', (r) => Math.max(2, x(r.reussis) - left)).attr('rx', 4).attr('fill', dash.colors[0]);
+    g.filter((r) => r.echecs > 0).append('rect').attr('x', (r) => x(r.reussis)).attr('y', (r) => y(r.suite))
+      .attr('height', y.bandwidth()).attr('width', (r) => x(r.reussis + r.echecs) - x(r.reussis)).attr('rx', 4)
+      .attr('fill', 'var(--cds-chart-status-critical)');
+    g.append('text').attr('x', (r) => x(r.reussis + r.echecs) + 6).attr('y', (r) => y(r.suite) + y.bandwidth() / 2)
+      .attr('dy', '0.35em').attr('font-size', 12).attr('fill', 'var(--color-fg-muted)')
+      .style('font-variant-numeric', 'tabular-nums').text((r) => nf.format(r.reussis + r.echecs));
+    g.append('rect').attr('x', 0).attr('y', (r) => y(r.suite) - 4).attr('width', W).attr('height', y.bandwidth() + 8)
+      .attr('fill', 'transparent')
+      .on('pointermove', (ev, r) => tt.show(ev, [[r.fichier], ['Réussis', nf.format(r.reussis)], ['Échecs', nf.format(r.echecs)], ['Durée', `${nf.format(r.duree_ms)} ms`]]))
+      .on('pointerleave', () => tt.hide());
+  }
+
+  function drawHistory() {
+    const el = document.getElementById('c-hist');
+    const d = dash.data('historique');
+    el.querySelectorAll('svg, .cy-failed').forEach((n) => n.remove());
+    if (d.status !== 'ok') { failed(el, d); return; }
+    const rows = d.data.map((r, i) => ({ ...r, i, reussis: Number(r.reussis), echecs: Number(r.echecs) }));
+    const W = Math.max(280, el.clientWidth), H = 180, m = { t: 12, r: 8, b: 28, l: 36 };
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    const maxVal = d3.max(rows, (r) => r.reussis + r.echecs) || 1;
+    const y = d3.scaleLinear([0, maxVal], [H - m.b, m.t]).nice();
+    const bandW = Math.min(W - m.l - m.r, rows.length * 72);
+    const x = d3.scaleBand(rows.map((r) => r.i), [m.l, m.l + bandW]).padding(0.3);
+    const ax = svg.append('g').attr('transform', `translate(${m.l},0)`)
+      .call(d3.axisLeft(y).ticks(4).tickSize(-(W - m.l - m.r)).tickFormat(d3.format('d')))
+      .attr('font-size', null).attr('font-family', null);
+    ax.select('.domain').remove();
+    ax.selectAll('line').attr('stroke', 'var(--cds-chart-grid)');
+    ax.selectAll('text').attr('fill', 'var(--color-fg-muted)').attr('font-size', 11);
+    const tt = tip(el);
+    const g = svg.selectAll('g.b').data(rows).join('g').attr('class', 'b');
+    g.append('rect').attr('x', (r) => x(r.i)).attr('width', x.bandwidth()).attr('rx', 4)
+      .attr('y', (r) => y(r.reussis)).attr('height', (r) => y(0) - y(r.reussis)).attr('fill', dash.colors[0]);
+    g.filter((r) => r.echecs > 0).append('rect').attr('x', (r) => x(r.i)).attr('width', x.bandwidth()).attr('rx', 4)
+      .attr('y', (r) => y(r.reussis + r.echecs)).attr('height', (r) => y(r.reussis) - y(r.reussis + r.echecs))
+      .attr('fill', 'var(--cds-chart-status-critical)');
+    g.append('text').attr('x', (r) => x(r.i) + x.bandwidth() / 2).attr('y', H - 10).attr('text-anchor', 'middle')
+      .attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text((r) => dateFmt(r.at));
+    g.append('rect').attr('x', (r) => x(r.i)).attr('width', x.bandwidth()).attr('y', m.t).attr('height', H - m.t - m.b)
+      .attr('fill', 'transparent')
+      .on('pointermove', (ev, r) => tt.show(ev, [[r.etape], ['Réussis', nf.format(r.reussis)], ['Échecs', nf.format(r.echecs)], ['Date', dateFmt(r.at)]]))
+      .on('pointerleave', () => tt.hide());
+  }
+
+  dash.onData(() => {
+    fillField('avancement', 'terminees', nf.format);
+    fillField('avancement', 'total', nf.format);
+    fillField('avancement', 'part', pct.format);
+    fillField('avancement', 'en_cours', nf.format);
+    fillField('avancement', 'prochaine');
+    fillField('dernier_test', 'reussis', nf.format);
+    fillField('dernier_test', 'echecs', nf.format);
+    const fail = dash.data('dernier_test');
+    document.getElementById('k-fail').style.color =
+      fail.status === 'ok' && fail.data[0] && fail.data[0].echecs > 0 ? 'var(--color-bad)' : '';
+    drawPhases();
+    drawTable('t-taches', 'taches', [
+      { f: 'ordre', cls: 'num' }, { f: 'tache' }, { f: 'agent', cls: 'muted' }, { f: 'statut', pill: true },
+      { f: 'detail', cls: 'muted cy-hide-narrow' },
+    ]);
+    drawSuites();
+    drawHistory();
+    drawTable('t-besoins', 'besoins', [{ f: 'theme' }, { f: 'reponse' }, { f: 'consequence', cls: 'muted' }]);
+    drawTable('t-decisions', 'decisions', [{ f: 'sujet' }, { f: 'decision' }, { f: 'origine', cls: 'muted cy-hide-narrow' }]);
+  });
+
+  const named = document.getElementById(location.hash.slice(1));
+  if (named) { named.scrollIntoView(); dash.setLink(named.id); }
+</script>

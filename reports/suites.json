@@ -1,0 +1,34 @@
+[
+  {
+    "suite": "exposure",
+    "fichier": "tests/exposure.test.mjs",
+    "reussis": 16,
+    "echecs": 0,
+    "ignores": 0,
+    "duree_ms": 68.6
+  },
+  {
+    "suite": "solar",
+    "fichier": "tests/solar.test.mjs",
+    "reussis": 8,
+    "echecs": 0,
+    "ignores": 0,
+    "duree_ms": 10.4
+  },
+  {
+    "suite": "storage",
+    "fichier": "tests/storage.test.mjs",
+    "reussis": 12,
+    "echecs": 0,
+    "ignores": 0,
+    "duree_ms": 52
+  },
+  {
+    "suite": "weather",
+    "fichier": "tests/weather.test.mjs",
+    "reussis": 17,
+    "echecs": 0,
+    "ignores": 0,
+    "duree_ms": 37.7
+  }
+]

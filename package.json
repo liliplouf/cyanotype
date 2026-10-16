@@ -1,0 +1,11 @@
+{
+  "name": "cyanotype-calc",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Calculateur de temps d'exposition pour le cyanotype selon la météo, la position et le procédé",
+  "type": "module",
+  "scripts": {
+    "start": "sh start.sh",
+    "test": "node scripts/run-tests.mjs"
+  }
+}

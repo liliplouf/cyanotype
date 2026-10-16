@@ -1,0 +1,8 @@
+[
+  {"date": "2026-10-16", "sujet": "Grandeur physique", "decision": "Le calcul repose sur les UV-A (320–400 nm) et non sur l'indice UV, qui varie bien plus vite avec la hauteur du soleil.", "origine": "Moteur"},
+  {"date": "2026-10-16", "sujet": "Indice UV d'Open-Meteo", "decision": "Seul le rapport UV mesuré / UV ciel clair sert, pour estimer l'effet des nuages.", "origine": "Moteur"},
+  {"date": "2026-10-16", "sujet": "Lampe et distance", "decision": "Formule de la SPEC corrigée : distance doublée = temps × 4.", "origine": "Moteur"},
+  {"date": "2026-10-16", "sujet": "Commande de test", "decision": "« node --test tests/ » ne marche pas sous Node 22 ; remplacée par npm test.", "origine": "Moteur, Données"},
+  {"date": "2026-10-16", "sujet": "Saisie manuelle des nuages", "decision": "Quand l'utilisateur force les nuages, l'indice UV de la météo est ignoré.", "origine": "Moteur"},
+  {"date": "2026-10-16", "sujet": "Valeur de référence", "decision": "8 min pour cyanotype classique, papier coton, sans verre, soleil au zénith.", "origine": "Coordinateur"}
+]
