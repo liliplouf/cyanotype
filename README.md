@@ -1,4 +1,8 @@
-# Cyanotype — calculateur de temps de pose
+# Cyanoplouf
+
+*Tu insoles, tu ploufes, c'est bleu.*
+
+En ligne : https://liliplouf.github.io/cyanotype/
 
 Application web (statique, sans build, sans dépendance) qui estime le **temps d'exposition d'un
 cyanotype** (tirage au bleu de Prusse) selon la **position du soleil**, la **météo prévue**, le
