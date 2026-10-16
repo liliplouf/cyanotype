@@ -1,14 +1,106 @@
 [
-  {"ordre": 1, "tache": "Spécification et contrat d'interface", "agent": "Coordinateur", "phase": "1. Conception", "statut": "terminé", "detail": "SPEC.md : signatures des 7 modules, sections de l'interface."},
-  {"ordre": 2, "tache": "Position solaire (NOAA)", "agent": "Moteur", "phase": "2. Développement", "statut": "terminé", "detail": "solar.js : élévation à midi le 21 juin à Paris = 64,59° (attendu 64,5°)."},
-  {"ordre": 3, "tache": "Modèle UV-A et temps de pose", "agent": "Moteur", "phase": "2. Développement", "statut": "terminé", "detail": "exposure.js : ciel clair, nuages, altitude, albédo, dose intégrée minute par minute, profil de la journée."},
-  {"ordre": 4, "tache": "Catalogue des facteurs", "agent": "Moteur", "phase": "2. Développement", "statut": "terminé", "detail": "factors.js : chimie, support, verre, négatif, rendu, sources lumineuses."},
-  {"ordre": 5, "tache": "Météo Open-Meteo et géocodage", "agent": "Données", "phase": "2. Développement", "statut": "terminé", "detail": "weather.js : prévisions 3 jours, interpolation horaire, cache 10 min, erreurs en français."},
-  {"ordre": 6, "tache": "Géolocalisation et sauvegarde", "agent": "Données", "phase": "2. Développement", "statut": "terminé", "detail": "geo.js, storage.js : réglages, calibrations, journal, export/import JSON."},
-  {"ordre": 7, "tache": "Interface web (page, graphique, minuteur)", "agent": "Interface", "phase": "2. Développement", "statut": "en cours", "detail": "index.html, style.css, app.js : 9 sections de la SPEC."},
-  {"ordre": 8, "tache": "Batterie de tests automatique", "agent": "Coordinateur", "phase": "3. Qualité", "statut": "terminé", "detail": "npm test : lance toutes les suites et écrit l'historique lu par ce tableau de bord."},
-  {"ordre": 9, "tache": "Tests de bout en bout dans un navigateur", "agent": "QA", "phase": "3. Qualité", "statut": "à faire", "detail": "Chromium headless, météo simulée, téléphone et ordinateur."},
-  {"ordre": 10, "tache": "Intégration et premier commit GitHub", "agent": "Coordinateur", "phase": "4. Livraison", "statut": "à faire", "detail": "Pousser sur liliplouf/cyanotype, branche main."},
-  {"ordre": 11, "tache": "V2 : application installable hors ligne (PWA)", "agent": "À venir", "phase": "5. Version 2", "statut": "à faire", "detail": "Usage sur téléphone en extérieur : installable, hors ligne, minuteur fiable."},
-  {"ordre": 12, "tache": "V2 : préréglages pour kits du commerce", "agent": "À venir", "phase": "5. Version 2", "statut": "à faire", "detail": "Formule inconnue : calibration guidée par bande test."}
+  {
+    "ordre": 1,
+    "tache": "Spécification et contrat d'interface",
+    "agent": "Coordinateur",
+    "phase": "1. Conception",
+    "statut": "terminé",
+    "detail": "SPEC.md : signatures des 7 modules, sections de l'interface."
+  },
+  {
+    "ordre": 2,
+    "tache": "Position solaire (NOAA)",
+    "agent": "Moteur",
+    "phase": "2. Développement",
+    "statut": "terminé",
+    "detail": "solar.js : élévation à midi le 21 juin à Paris = 64,59° (attendu 64,5°)."
+  },
+  {
+    "ordre": 3,
+    "tache": "Modèle UV-A et temps de pose",
+    "agent": "Moteur",
+    "phase": "2. Développement",
+    "statut": "terminé",
+    "detail": "exposure.js : ciel clair, nuages, altitude, albédo, dose intégrée minute par minute, profil de la journée."
+  },
+  {
+    "ordre": 4,
+    "tache": "Catalogue des facteurs",
+    "agent": "Moteur",
+    "phase": "2. Développement",
+    "statut": "terminé",
+    "detail": "factors.js : chimie, support, verre, négatif, rendu, sources lumineuses."
+  },
+  {
+    "ordre": 5,
+    "tache": "Météo Open-Meteo et géocodage",
+    "agent": "Données",
+    "phase": "2. Développement",
+    "statut": "terminé",
+    "detail": "weather.js : prévisions 3 jours, interpolation horaire, cache 10 min, erreurs en français."
+  },
+  {
+    "ordre": 6,
+    "tache": "Géolocalisation et sauvegarde",
+    "agent": "Données",
+    "phase": "2. Développement",
+    "statut": "terminé",
+    "detail": "geo.js, storage.js : réglages, calibrations, journal, export/import JSON."
+  },
+  {
+    "ordre": 7,
+    "tache": "Interface web (page, graphique, minuteur)",
+    "agent": "Interface",
+    "phase": "2. Développement",
+    "statut": "terminé",
+    "detail": "index.html, style.css, app.js : 9 sections, minuteur, graphique, bande test, journal. Testé sur téléphone et ordinateur."
+  },
+  {
+    "ordre": 8,
+    "tache": "Batterie de tests automatique",
+    "agent": "Coordinateur",
+    "phase": "3. Qualité",
+    "statut": "terminé",
+    "detail": "npm test : lance toutes les suites et écrit l'historique lu par ce tableau de bord."
+  },
+  {
+    "ordre": 9,
+    "tache": "Tests de bout en bout dans un navigateur",
+    "agent": "QA",
+    "phase": "3. Qualité",
+    "statut": "terminé",
+    "detail": "Version abrégée : Chromium, météo simulée, téléphone 390 px, ordinateur, mode sombre, hors ligne. Aucune erreur."
+  },
+  {
+    "ordre": 10,
+    "tache": "Intégration et premier commit GitHub",
+    "agent": "Coordinateur",
+    "phase": "4. Livraison",
+    "statut": "terminé",
+    "detail": "Poussé sur liliplouf/cyanotype ; tests automatiques sur GitHub à chaque envoi."
+  },
+  {
+    "ordre": 11,
+    "tache": "Mise en ligne sur GitHub Pages",
+    "agent": "Coordinateur",
+    "phase": "4. Livraison",
+    "statut": "terminé",
+    "detail": "https://liliplouf.github.io/cyanotype/"
+  },
+  {
+    "ordre": 12,
+    "tache": "V2 : application installable hors ligne (PWA)",
+    "agent": "À venir",
+    "phase": "5. Version 2",
+    "statut": "à faire",
+    "detail": "Usage sur téléphone en extérieur : installable, hors ligne, minuteur fiable."
+  },
+  {
+    "ordre": 13,
+    "tache": "V2 : préréglages pour kits du commerce",
+    "agent": "À venir",
+    "phase": "5. Version 2",
+    "statut": "à faire",
+    "detail": "Formule inconnue : calibration guidée par bande test."
+  }
 ]
