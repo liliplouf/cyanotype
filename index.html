@@ -218,7 +218,18 @@
       <!-- Procédé -->
       <section class="card" id="procede" aria-labelledby="h-procede">
         <h2 id="h-procede">Procédé</h2>
-        <p class="callout">Kit du commerce dont la formule est inconnue ? Laissez « Cyanotype classique », faites une <a href="#bande-test">bande test</a>, puis <a href="#journal">créez une calibration</a> : elle corrigera tous les calculs suivants.</p>
+        <p class="callout">Kit du commerce ? Choisissez « Kit Jacquard » ou, si la formule est inconnue, « Cyanotype classique », faites une <a href="#bande-test">bande test</a>, puis <a href="#journal">créez une calibration</a> : elle corrigera tous les calculs suivants.</p>
+        <form class="quick-cal" id="quick-cal" novalidate>
+          <p class="quick-cal-title">Calibration rapide : tu connais déjà ton temps ?</p>
+          <p class="hint">Ton temps habituel en plein soleil d'été, vers midi, ciel dégagé, avec les réglages ci-dessous (support, verre, négatif…).</p>
+          <div class="quick-cal-row">
+            <label for="qc-minutes" class="visually-hidden">Temps habituel en minutes</label>
+            <input type="number" id="qc-minutes" inputmode="decimal" min="0.5" max="120" step="0.5" placeholder="5" required>
+            <span>min</span>
+            <button type="submit" class="btn btn-primary btn-small">Calibrer</button>
+          </div>
+          <p class="status-text" id="qc-status" role="status"></p>
+        </form>
         <div class="grid-2 process-grid">
           <div class="field"><label for="p-chemistry">Chimie</label><select id="p-chemistry" data-key="chemistry"></select><p class="hint" id="p-chemistry-desc"></p></div>
           <div class="field"><label for="p-substrate">Support</label><select id="p-substrate" data-key="substrate"></select><p class="hint" id="p-substrate-desc"></p></div>

@@ -483,3 +483,10 @@ input[type="range"] { width: 100%; accent-color: var(--prussian-800); min-height
   .site-header, .dock, .btn, .banner, #minuteur, #graphique { display: none !important; }
   .card { box-shadow: none; break-inside: avoid; }
 }
+
+/* Calibration rapide (Procédé) */
+.quick-cal { border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: .8rem; margin-bottom: 1rem; display: grid; gap: .35rem; }
+.quick-cal-title { font-weight: 600; margin: 0; }
+.quick-cal .hint { margin: 0; }
+.quick-cal-row { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
+.quick-cal-row input { width: 6.5rem; }

@@ -33,5 +33,12 @@
     "reussis": 53,
     "echecs": 0,
     "duree_ms": 201
+  },
+  {
+    "at": "2026-10-16T16:53:24.463Z",
+    "etape": "manuel",
+    "reussis": 53,
+    "echecs": 0,
+    "duree_ms": 233
   }
 ]

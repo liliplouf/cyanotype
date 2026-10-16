@@ -20,6 +20,14 @@ export const CHEMISTRY = [
       'Formule A + B : citrate ferrique ammoniacal (vert) et ferricyanure de potassium. Référence du calcul.',
   },
   {
+    id: 'kit_jacquard',
+    label: 'Kit Jacquard (Cyanotype Sensitizer Set)',
+    factor: 1.0,
+    description:
+      'Kit du commerce à formule classique (deux flacons à mélanger à parts égales). Même facteur que le classique : ' +
+      'ta calibration rapide ou ta bande test ajuste ensuite le temps à ta façon de travailler.',
+  },
+  {
     id: 'classic_double',
     label: 'Classique concentré (×2)',
     factor: 1.3,

@@ -2,8 +2,10 @@
 // Règle de sécurité : aucune donnée externe (noms de lieux, notes, fichiers importés) n'est insérée
 // via innerHTML ; tout passe par textContent / createElement.
 
-import { solarPosition } from './solar.js';
+import { solarPosition, sunTimes } from './solar.js';
 import {
+  clearSkyUVA,
+  exposureMinutesConstant,
   effectiveUVA,
   settingsFactor,
   integratedExposure,
@@ -63,7 +65,7 @@ const DEFAULTS = {
   lightSource: 'sun',
   powerW: null,
   distanceCm: null,
-  chemistry: 'classic',
+  chemistry: 'kit_jacquard',
   substrate: 'cotton_paper',
   coating: 'single',
   humidityState: 'dry',
@@ -1596,6 +1598,42 @@ function bindJournal() {
       $('j-cal-name').value = '';
     } catch (err) {
       journalStatus(err.message || 'Impossible de créer la calibration.', 'error');
+    }
+  });
+
+  // Calibration rapide : l'utilisatrice connaît son temps en plein soleil d'été à midi. On le compare
+  // au temps prévu par le moteur (midi solaire du solstice d'été à la latitude du lieu, ciel clair,
+  // réglages actuels sans calibration) pour en déduire un facteur personnel.
+  $('quick-cal').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const status = $('qc-status');
+    const actual = Number(String($('qc-minutes').value).replace(',', '.'));
+    if (!isNum(actual) || actual <= 0) {
+      status.className = 'status-text is-error';
+      status.textContent = 'Indique ton temps habituel en minutes, par exemple 5.';
+      return;
+    }
+    const { lat, lon } = state.place;
+    const year = new Date().getUTCFullYear();
+    const solstice = new Date(Date.UTC(year, lat < 0 ? 11 : 5, 21, 12));
+    const noon = sunTimes(solstice, lat, lon).solarNoon;
+    const elevation = solarPosition(noon, lat, lon).elevation;
+    const predicted = exposureMinutesConstant(clearSkyUVA(elevation, altitude()), { ...engineSettings(), calibrationFactor: 1 });
+    const factor = store.computeCalibrationFactor(actual, predicted);
+    try {
+      const cal = store.saveCalibration({
+        name: `Mon temps d'été (${fmtNum(actual, actual % 1 ? 1 : 0)} min)`,
+        factor,
+        notes: `Calibration rapide : ${fmtNum(actual, actual % 1 ? 1 : 0)} min en été à midi, le modèle prévoyait ${fmtNum(predicted, 1)} min.`,
+      });
+      state.calibrationId = cal.id;
+      refreshCalibrations();
+      changed();
+      status.className = 'status-text is-ok';
+      status.textContent = `Calibré : le modèle prévoyait ${fmtNum(predicted, 1)} min, tous les temps sont maintenant multipliés par ${fmtFactor(cal.factor).replace('×', '')}.`;
+    } catch (err) {
+      status.className = 'status-text is-error';
+      status.textContent = err.message || 'Impossible de créer la calibration.';
     }
   });
 

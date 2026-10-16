@@ -7,6 +7,13 @@
     "description": "Formule A + B : citrate ferrique ammoniacal (vert) et ferricyanure de potassium. Référence du calcul."
   },
   {
+    "id": "kit_jacquard",
+    "categorie": "Chimie",
+    "reglage": "Kit Jacquard (Cyanotype Sensitizer Set)",
+    "facteur": 1,
+    "description": "Kit du commerce à formule classique (deux flacons à mélanger à parts égales). Même facteur que le classique : ta calibration rapide ou ta bande test ajuste ensuite le temps à ta façon de travailler."
+  },
+  {
     "id": "classic_double",
     "categorie": "Chimie",
     "reglage": "Classique concentré (×2)",
