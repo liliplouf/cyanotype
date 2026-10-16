@@ -523,6 +523,7 @@ function renderWeather() {
   if (state.weatherError) setText('weather-banner-msg', state.weatherError);
   $('manual-fields').hidden = !manual;
   $('weather-manual').checked = state.weatherManual;
+  $('weather-manual').closest('.check').hidden = !state.forecast;
 
   let label;
   let icon;
