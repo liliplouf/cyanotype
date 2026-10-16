@@ -453,7 +453,8 @@ input[type="range"] { width: 100%; accent-color: var(--prussian-800); min-height
 .item-list { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; gap: .5rem; }
 .item-list li { display: flex; gap: .7rem; align-items: flex-start; justify-content: space-between; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .6rem .75rem; background: var(--bg); }
 .item-list li.empty { color: var(--muted); font-style: italic; border-style: dashed; background: transparent; }
-.item-main { min-width: 0; overflow-wrap: anywhere; }
+.item-main { min-width: 0; flex: 1; overflow-wrap: anywhere; }
+.item-list li > .icon-btn { flex: none; }
 .item-title { font-weight: 700; margin: 0; }
 .item-meta { font-size: .85rem; color: var(--muted); margin: .1rem 0 0; }
 .item-notes { font-size: .9rem; margin: .3rem 0 0; white-space: pre-wrap; }
@@ -490,3 +491,8 @@ input[type="range"] { width: 100%; accent-color: var(--prussian-800); min-height
 .quick-cal .hint { margin: 0; }
 .quick-cal-row { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
 .quick-cal-row input { width: 6.5rem; }
+
+/* Journal : ancien tirage */
+.past-box { border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: .8rem; margin-bottom: 1rem; display: grid; gap: .5rem; }
+.past-box .field, .past-box .fieldset { margin-bottom: 0; }
+.past-box .segmented { margin-bottom: .4rem; }

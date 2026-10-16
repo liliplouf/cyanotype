@@ -5,7 +5,7 @@
     "reussis": 16,
     "echecs": 0,
     "ignores": 0,
-    "duree_ms": 39.1
+    "duree_ms": 39.3
   },
   {
     "suite": "solar",
@@ -13,22 +13,22 @@
     "reussis": 8,
     "echecs": 0,
     "ignores": 0,
-    "duree_ms": 6.1
+    "duree_ms": 4.4
   },
   {
     "suite": "storage",
     "fichier": "tests/storage.test.mjs",
-    "reussis": 12,
+    "reussis": 14,
     "echecs": 0,
     "ignores": 0,
-    "duree_ms": 56.6
+    "duree_ms": 35.5
   },
   {
     "suite": "weather",
     "fichier": "tests/weather.test.mjs",
-    "reussis": 17,
+    "reussis": 20,
     "echecs": 0,
     "ignores": 0,
-    "duree_ms": 45.3
+    "duree_ms": 40
   }
 ]

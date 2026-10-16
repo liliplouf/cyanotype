@@ -24,7 +24,7 @@ import {
   RESULT_GOAL,
   getById,
 } from './factors.js';
-import { fetchForecast, makeWeatherAt, searchPlace, weatherCodeLabel } from './weather.js';
+import { fetchForecast, fetchPastWeather, makeWeatherAt, searchPlace, weatherCodeLabel } from './weather.js';
 import { getBrowserPosition } from './geo.js';
 import * as store from './storage.js';
 
@@ -1499,6 +1499,7 @@ function refreshJournal() {
     const meta = [
       `Prévu ${isNum(e.predictedMinutes) ? fmtMMSS(e.predictedMinutes) : '—'}`,
       `réel ${isNum(e.actualMinutes) ? fmtMMSS(e.actualMinutes) : '—'}`,
+      isNum(s.cloudCoverPct) ? `nuages ${fmtNum(s.cloudCoverPct)} %` : null,
       chem ? chem.label : null,
       sub ? sub.label : null,
     ].filter(Boolean).join(' · ');
@@ -1540,7 +1541,134 @@ function journalStatus(msg, kind = '') {
   s.className = `status-text${kind ? ` is-${kind}` : ''}`;
 }
 
+// --- Anciens tirages (journal) -----------------------------------------------------------
+
+const isPastMode = () => $('j-past').checked;
+let pastCtx = null; // { date, cloudCoverPct, source } du dernier calcul « temps prévu ce jour-là »
+
+/** Décalage UTC (s) d'un fuseau IANA à un instant donné (gère l'heure d'été/hiver). */
+function zoneOffsetSecAt(tz, date) {
+  try {
+    const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', {
+      timeZone: tz, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit',
+    }).formatToParts(date).map((x) => [x.type, x.value]));
+    const asUtc = Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute, +p.second);
+    return Math.round((asUtc - date.getTime()) / 1000);
+  } catch {
+    return null;
+  }
+}
+
+/** Heure locale du lieu (saisie datetime-local) → instant, avec le décalage en vigueur CE jour-là. */
+function parsePastInput(str) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(str || '');
+  if (!m) return null;
+  const [y, mo, d, h, mi] = m.slice(1).map(Number);
+  const wall = Date.UTC(y, mo - 1, d, h, mi);
+  const tz = state.forecast?.timezone;
+  const base = placeOffsetSec();
+  if (tz && tz !== 'UTC' && base !== null) {
+    const off = zoneOffsetSecAt(tz, new Date(wall - base * 1000));
+    if (off !== null) return new Date(wall - off * 1000);
+  }
+  if (base !== null) return new Date(wall - base * 1000);
+  const local = new Date(y, mo - 1, d, h, mi);
+  return isNum(local.getTime()) ? local : null;
+}
+
+function pastStatus(msg, kind = '') {
+  const s = $('j-past-status');
+  s.textContent = msg;
+  s.className = `status-text${kind ? ` is-${kind}` : ''}`;
+}
+
+function syncPastMode() {
+  const past = isPastMode();
+  $('j-past-box').hidden = !past;
+  setText('j-past-place', placeText(state.place) || 'lieu choisi');
+  setText('j-predicted-label', past ? 'Temps prévu par le modèle, sans calibration (min)' : 'Temps prévu (min)');
+  const pred = $('j-predicted');
+  pred.value = '';
+  pastCtx = null;
+  pastStatus('');
+  if (past) pred.dataset.dirty = '1';
+  else { delete pred.dataset.dirty; prefillJournal(); }
+}
+
+async function predictPast() {
+  const date = parsePastInput($('j-past-date').value);
+  journalStatus('');
+  if (!date) { pastStatus('Indique la date et l’heure du début de la pose.', 'error'); $('j-past-date').focus(); return; }
+  if (date.getTime() > Date.now()) { pastStatus('Cette date est dans le futur.', 'error'); return; }
+  const { lat, lon } = state.place;
+  const manual = document.querySelector('input[name="j-past-wx"]:checked')?.value === 'manual';
+  let weatherAt, source, label;
+  if (manual) {
+    const cc = Number($('j-past-sky').value);
+    weatherAt = () => ({ cloudCoverPct: cc });
+    source = 'manuel';
+    label = $('j-past-sky').selectedOptions[0].textContent.toLowerCase();
+  } else {
+    pastStatus('Recherche de la météo de ce jour-là…');
+    $('btn-past-predict').disabled = true;
+    try {
+      const f = await fetchPastWeather(lat, lon, date);
+      weatherAt = makeWeatherAt(f);
+      const w = weatherAt(date);
+      if (!w || !isNum(w.cloudCoverPct)) throw new Error('Pas de données météo pour cette heure. Choisis « Je la saisis ».');
+      source = f.source === 'archive' ? 'archives' : 'prévisions passées';
+      label = `${fmtNum(w.cloudCoverPct)} % de nuages`;
+    } catch (err) {
+      pastStatus(`${err.message || 'Météo introuvable.'} Tu peux choisir « Je la saisis ».`, 'error');
+      return;
+    } finally {
+      $('btn-past-predict').disabled = false;
+    }
+  }
+  const res = integratedExposure({
+    start: date, lat, lon, altitudeM: altitude(), albedo: albedo(), weatherAt,
+    settings: { ...engineSettings(), calibrationFactor: 1 },
+  });
+  if (!res.reachable) {
+    pastStatus('Le modèle n’atteint pas la dose ce jour-là (soleil trop bas ou couché pendant la pose). Vérifie l’heure.', 'error');
+    return;
+  }
+  const w = weatherAt(date);
+  pastCtx = { date, cloudCoverPct: isNum(w?.cloudCoverPct) ? Math.round(w.cloudCoverPct) : null, source };
+  const pred = $('j-predicted');
+  pred.value = String(Math.round(res.minutes * 100) / 100);
+  pred.dataset.dirty = '1';
+  pastStatus(`Le modèle prévoyait ${fmtMMSS(res.minutes)} sans calibration (${label}, ${source}). Saisis maintenant ton temps réel et le résultat.`, 'ok');
+}
+
 function bindJournal() {
+  $('j-past').addEventListener('change', syncPastMode);
+  $('btn-past-predict').addEventListener('click', predictPast);
+  $('j-past-date').addEventListener('change', () => { pastCtx = null; });
+  document.querySelectorAll('input[name="j-past-wx"]').forEach((r) => r.addEventListener('change', () => {
+    $('j-past-sky-field').hidden = document.querySelector('input[name="j-past-wx"]:checked')?.value !== 'manual';
+    pastCtx = null;
+  }));
+  $('btn-cal-journal').addEventListener('click', () => {
+    const st = $('cal-journal-status');
+    const r = store.journalCalibration();
+    if (!r) {
+      st.className = 'status-text is-error';
+      st.textContent = 'Aucun tirage « Bon » avec un temps prévu dans le journal. Ajoute d’abord tes tirages (cases « ancien tirage » pour ton carnet).';
+      return;
+    }
+    const cal = store.saveCalibration({
+      name: `Journal (${r.count} tirage${r.count > 1 ? 's' : ''})`,
+      factor: r.factor,
+      notes: `Moyenne de ${r.count} tirage${r.count > 1 ? 's' : ''} « Bon » ; écarts de ${fmtFactor(r.min)} à ${fmtFactor(r.max)}.`,
+    });
+    state.calibrationId = cal.id;
+    refreshCalibrations();
+    changed();
+    st.className = 'status-text is-ok';
+    st.textContent = `Calibration créée à partir de ${r.count} tirage${r.count > 1 ? 's' : ''} : ${fmtFactor(cal.factor)} (écarts de ${fmtFactor(r.min)} à ${fmtFactor(r.max)}). Elle est sélectionnée.`;
+  });
   $('j-predicted').addEventListener('input', (e) => {
     e.target.dataset.dirty = '1';
   });
@@ -1554,7 +1682,38 @@ function bindJournal() {
       $('j-actual-min').focus();
       return;
     }
+    if (isPastMode()) {
+      const date = parsePastInput($('j-past-date').value);
+      if (!date) { journalStatus('Indique la date et l’heure de cet ancien tirage.', 'error'); $('j-past-date').focus(); return; }
+      if (!f.predicted) { journalStatus('Calcule d’abord le temps prévu ce jour-là (bouton ci-dessus).', 'error'); return; }
+      store.addJournalEntry({
+        date: date.toISOString(),
+        place: { label: state.place.label, lat: state.place.lat, lon: state.place.lon },
+        settings: {
+          ...engineSettings(),
+          calibrationFactor: 1,
+          lightSource: 'sun',
+          cloudCoverPct: pastCtx?.cloudCoverPct ?? null,
+          weatherSource: pastCtx?.source ?? null,
+        },
+        predictedMinutes: f.predicted,
+        predictedRawMinutes: f.predicted,
+        actualMinutes: Math.round(f.actual * 1000) / 1000,
+        result: f.result,
+        notes: f.notes,
+      });
+      refreshJournal();
+      $('j-actual-min').value = '';
+      $('j-actual-sec').value = '';
+      $('j-notes').value = '';
+      $('j-predicted').value = '';
+      pastCtx = null;
+      pastStatus('');
+      journalStatus('Ancien tirage ajouté. Tu peux en saisir un autre, puis « Calibrer avec tout le journal ».', 'ok');
+      return;
+    }
     const r = state.result;
+    const curCal = currentCalibration()?.factor || 1;
     store.addJournalEntry({
       date: new Date().toISOString(),
       place: { label: state.place.label, lat: state.place.lat, lon: state.place.lon },
@@ -1567,6 +1726,7 @@ function bindJournal() {
         elevationDeg: isNum(r?.elevation) ? Math.round(r.elevation * 10) / 10 : null,
       },
       predictedMinutes: f.predicted,
+      predictedRawMinutes: f.predicted ? f.predicted / curCal : null,
       actualMinutes: Math.round(f.actual * 1000) / 1000,
       result: f.result,
       notes: f.notes,
@@ -1585,7 +1745,7 @@ function bindJournal() {
       return;
     }
     // Le temps prévu inclut la calibration actuelle : on la retire pour obtenir un facteur absolu.
-    const curFactor = currentCalibration()?.factor || 1;
+    const curFactor = isPastMode() ? 1 : currentCalibration()?.factor || 1; // ancien tirage : prévu déjà sans calibration
     const factor = store.computeCalibrationFactor(f.actual, f.predicted / curFactor);
     const chem = getById(CHEMISTRY, state.chemistry);
     const name = $('j-cal-name').value.trim() || `${chem ? chem.label : 'Calibration'} — ${new Date().toLocaleDateString('fr-FR')}`;

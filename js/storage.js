@@ -268,6 +268,8 @@ function sanitizeEntry(e) {
     place,
     settings: isPlainObject(e.settings) ? cloneJson(e.settings) : null,
     predictedMinutes: finiteOrNull(e.predictedMinutes),
+    // Temps prévu par le moteur SANS calibration personnelle (sert à recalibrer depuis le journal).
+    predictedRawMinutes: finiteOrNull(e.predictedRawMinutes),
     actualMinutes: finiteOrNull(e.actualMinutes),
     result: RESULTS.includes(e.result) ? e.result : null,
     notes: str(e.notes),
@@ -298,6 +300,32 @@ export function addJournalEntry(entry) {
     .slice(0, MAX_JOURNAL);
   writeJson(KEYS.journal, next);
   return cloneJson(clean);
+}
+
+/**
+ * Facteur de calibration tiré du journal : moyenne géométrique des rapports temps réel / temps prévu
+ * sans calibration, sur les tirages jugés « bons ». Pour les entrées anciennes sans
+ * predictedRawMinutes, on retire la calibration alors active (settings.calibrationFactor).
+ * @returns {{factor: number, count: number, min: number, max: number} | null} null si aucun tirage exploitable.
+ */
+export function journalCalibration(entries = listJournal()) {
+  const ratios = [];
+  for (const e of entries) {
+    if (!e || e.result !== 'good' || !(e.actualMinutes > 0)) continue;
+    const cal = Number(e.settings?.calibrationFactor);
+    const raw = e.predictedRawMinutes > 0 ? e.predictedRawMinutes
+      : e.predictedMinutes > 0 ? e.predictedMinutes / (cal > 0 ? cal : 1) : null;
+    if (!raw) continue;
+    ratios.push(e.actualMinutes / raw);
+  }
+  if (!ratios.length) return null;
+  const mean = Math.exp(ratios.reduce((a, r) => a + Math.log(r), 0) / ratios.length);
+  return {
+    factor: computeCalibrationFactor(mean, 1),
+    count: ratios.length,
+    min: Math.round(Math.min(...ratios) * 1000) / 1000,
+    max: Math.round(Math.max(...ratios) * 1000) / 1000,
+  };
 }
 
 /** Supprime une entrée du journal. Renvoie true si elle existait. */

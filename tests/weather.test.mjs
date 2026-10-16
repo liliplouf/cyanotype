@@ -318,3 +318,54 @@ test('getBrowserPosition : succès et erreurs en français', async () => {
   // Node : pas de navigator.geolocation → message « non disponible »
   await assert.rejects(getBrowserPosition(), (e) => /géolocalisation n'est pas disponible|connexion sécurisée/.test(e.message));
 });
+
+// --- Météo passée (anciens tirages du journal) ---------------------------------------------
+import { buildPastWeatherUrl, fetchPastWeather, ARCHIVE_URL, FORECAST_URL } from '../js/weather.js';
+
+test('buildPastWeatherUrl : passé récent → API de prévision avec UV, ancien → archives', () => {
+  const now = Date.parse('2026-10-16T12:00:00Z');
+  const recent = buildPastWeatherUrl(43.68, 4.63, new Date('2026-09-20T12:00:00Z'), now);
+  assert.equal(recent.source, 'forecast');
+  assert.ok(recent.url.startsWith(FORECAST_URL));
+  const u = new URL(recent.url);
+  assert.equal(u.searchParams.get('start_date'), '2026-09-19');
+  assert.equal(u.searchParams.get('end_date'), '2026-09-21');
+  assert.match(u.searchParams.get('hourly'), /uv_index_clear_sky/);
+  const old = buildPastWeatherUrl(43.68, 4.63, new Date('2025-07-14T12:00:00Z'), now);
+  assert.equal(old.source, 'archive');
+  assert.ok(old.url.startsWith(ARCHIVE_URL));
+  assert.equal(new URL(old.url).searchParams.get('hourly'), 'cloud_cover,weather_code');
+  // La fin de période ne dépasse jamais maintenant.
+  const yesterday = buildPastWeatherUrl(43.68, 4.63, new Date('2026-10-16T08:00:00Z'), now);
+  assert.equal(new URL(yesterday.url).searchParams.get('end_date'), '2026-10-16');
+});
+
+test('fetchPastWeather : réponse d’archives (nuages seuls) exploitable par makeWeatherAt', async () => {
+  const t0 = Date.parse('2025-07-13T22:00:00Z') / 1000;
+  const raw = {
+    latitude: 43.68, longitude: 4.63, elevation: 9, utc_offset_seconds: 7200, timezone: 'Europe/Paris',
+    hourly: {
+      time: Array.from({ length: 72 }, (_, i) => t0 + i * 3600),
+      cloud_cover: Array.from({ length: 72 }, (_, i) => (i % 24 === 12 ? 40 : 10)),
+      weather_code: Array.from({ length: 72 }, () => 1),
+    },
+  };
+  const fetchImpl = mockFetch(raw);
+  const f = await fetchPastWeather(43.68, 4.63, new Date('2025-07-14T10:00:00Z'), { fetchImpl, now: Date.parse('2026-10-16T12:00:00Z') });
+  assert.equal(f.source, 'archive');
+  assert.ok(fetchImpl.calls[0].url.startsWith(ARCHIVE_URL));
+  const w = makeWeatherAt(f)(new Date('2025-07-14T10:00:00Z')); // 12 h après t0 → 40 %
+  assert.equal(w.cloudCoverPct, 40);
+  assert.equal(w.uvIndex, null);
+});
+
+test('fetchPastWeather : erreurs en français (futur, avant 1940, date invalide, HTTP)', async () => {
+  const now = Date.parse('2026-10-16T12:00:00Z');
+  await assert.rejects(fetchPastWeather(43, 4, new Date('2027-01-01T00:00:00Z'), { now }), /futur/);
+  await assert.rejects(fetchPastWeather(43, 4, new Date('1930-06-01T00:00:00Z'), { now }), /1940/);
+  await assert.rejects(fetchPastWeather(43, 4, new Date('x'), { now }), /invalide/);
+  await assert.rejects(
+    fetchPastWeather(43, 4, new Date('2025-06-01T12:00:00Z'), { now, fetchImpl: mockFetch({ error: true, reason: 'bad' }, { status: 400 }) }),
+    (e) => e.code === 'http' && /archives météo/.test(e.message),
+  );
+});

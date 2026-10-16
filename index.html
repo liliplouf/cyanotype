@@ -321,9 +321,37 @@
       <div class="journal-grid">
         <form id="journal-form" class="journal-form" novalidate>
           <h3>Après le tirage</h3>
+          <div class="check"><input type="checkbox" id="j-past"><label for="j-past">C'est un ancien tirage (de mon carnet)</label></div>
+          <div class="past-box" id="j-past-box" hidden>
+            <p class="hint">Le calcul utilise le lieu de la section « Lieu » (<strong id="j-past-place">—</strong>) et les réglages du « Procédé ». Adapte-les si tu travaillais autrement ce jour-là.</p>
+            <div class="field">
+              <label for="j-past-date">Date et heure du début de la pose</label>
+              <input type="datetime-local" id="j-past-date">
+            </div>
+            <fieldset class="fieldset">
+              <legend>Météo ce jour-là</legend>
+              <p class="hint">Automatique : couverture nuageuse heure par heure retrouvée dans les archives Open-Meteo.</p>
+              <div class="segmented">
+                <label><input type="radio" name="j-past-wx" value="auto" checked> <span>Automatique</span></label>
+                <label><input type="radio" name="j-past-wx" value="manual"> <span>Je la saisis</span></label>
+              </div>
+              <div class="field" id="j-past-sky-field" hidden>
+                <label for="j-past-sky">Ciel</label>
+                <select id="j-past-sky">
+                  <option value="0">Grand soleil, ciel dégagé</option>
+                  <option value="20">Quelques nuages</option>
+                  <option value="50">Mi-couvert ou voilé</option>
+                  <option value="80">Très nuageux</option>
+                  <option value="100">Couvert</option>
+                </select>
+              </div>
+            </fieldset>
+            <button type="button" class="btn btn-secondary" id="btn-past-predict">Calculer le temps prévu ce jour-là</button>
+            <p class="status-text" id="j-past-status" role="status"></p>
+          </div>
           <div class="grid-2">
             <div class="field">
-              <label for="j-predicted">Temps prévu (min)</label>
+              <label for="j-predicted" id="j-predicted-label">Temps prévu (min)</label>
               <input type="number" id="j-predicted" min="0" step="0.01" inputmode="decimal">
             </div>
             <fieldset class="fieldset">
@@ -362,6 +390,11 @@
         <div class="journal-lists">
           <h3>Calibrations</h3>
           <ul class="item-list" id="cal-list"></ul>
+          <div class="btn-row">
+            <button type="button" class="btn btn-primary" id="btn-cal-journal">Calibrer avec tout le journal</button>
+          </div>
+          <p class="hint">Utilise tous les tirages notés « Bon » : moyenne des écarts entre ton temps réel et le temps prévu.</p>
+          <p class="status-text" id="cal-journal-status" role="status"></p>
           <h3>Historique</h3>
           <ol class="item-list" id="journal-list" reversed></ol>
           <div class="btn-row">

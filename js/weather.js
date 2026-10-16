@@ -4,6 +4,10 @@
 
 export const FORECAST_URL = 'https://api.open-meteo.com/v1/forecast';
 export const GEOCODING_URL = 'https://geocoding-api.open-meteo.com/v1/search';
+// Archives (réanalyse ERA5, horaire, depuis 1940, ~5 jours de retard) pour les tirages anciens.
+export const ARCHIVE_URL = 'https://archive-api.open-meteo.com/v1/archive';
+// En deçà, l'API de prévision sert aussi le passé récent (jusqu'à 92 jours) avec l'indice UV.
+export const RECENT_PAST_DAYS = 85;
 
 const HOURLY_VARS = [
   'cloud_cover', 'uv_index', 'uv_index_clear_sky', 'temperature_2m',
@@ -301,6 +305,54 @@ export async function fetchForecast(lat, lon, { fetchImpl, useCache = true, time
   const forecast = parseForecast(raw); // lève si invalide → rien n'est mis en cache
   if (useCache) cacheSet(key, raw, t);
   return forecast;
+}
+
+// ---------------------------------------------------------------------------
+// Météo passée (journal : anciens tirages)
+// ---------------------------------------------------------------------------
+
+const DAY_MS = 86400000;
+const isoDay = (t) => new Date(t).toISOString().slice(0, 10);
+
+/**
+ * URL de la météo horaire autour d'une date passée (veille → lendemain, pour couvrir tout fuseau).
+ * Passé récent (< RECENT_PAST_DAYS) : API de prévision (nuages + indice UV). Plus ancien : archives
+ * ERA5 (nuages seulement, ce qui suffit au moteur).
+ * @returns {{url: string, source: 'forecast'|'archive'}}
+ */
+export function buildPastWeatherUrl(lat, lon, date, now = Date.now()) {
+  const t = date.getTime();
+  const recent = now - t < RECENT_PAST_DAYS * DAY_MS;
+  const p = new URLSearchParams({
+    latitude: Number(lat).toFixed(4),
+    longitude: Number(lon).toFixed(4),
+    start_date: isoDay(t - DAY_MS),
+    end_date: isoDay(Math.min(t + DAY_MS, now)),
+    hourly: recent ? 'cloud_cover,uv_index,uv_index_clear_sky,weather_code' : 'cloud_cover,weather_code',
+    timezone: 'auto',
+    timeformat: 'unixtime',
+  });
+  return { url: `${recent ? FORECAST_URL : ARCHIVE_URL}?${p.toString()}`, source: recent ? 'forecast' : 'archive' };
+}
+
+/**
+ * Météo horaire autour d'une date passée, au même format que fetchForecast (+ `source`).
+ * À passer à makeWeatherAt pour recalculer le temps de pose qu'aurait prévu le moteur ce jour-là.
+ */
+export async function fetchPastWeather(lat, lon, date, { fetchImpl, timeoutMs = DEFAULT_TIMEOUT_MS, now } = {}) {
+  lat = Number(lat);
+  lon = Number(lon);
+  if (!isFiniteCoord(lat, 90) || !isFiniteCoord(lon, 180)) {
+    throw weatherError('Coordonnées invalides : latitude entre -90 et 90, longitude entre -180 et 180.', 'args');
+  }
+  const t = date instanceof Date ? date.getTime() : NaN;
+  const nowMs = typeof now === 'number' ? now : Date.now();
+  if (!Number.isFinite(t)) throw weatherError('Date du tirage invalide.', 'args');
+  if (t > nowMs) throw weatherError('La date du tirage est dans le futur.', 'args');
+  if (new Date(t).getUTCFullYear() < 1940) throw weatherError('Les archives météo commencent en 1940.', 'args');
+  const { url, source } = buildPastWeatherUrl(lat, lon, new Date(t), nowMs);
+  const raw = await getJson(url, fetchImpl, timeoutMs, 'les archives météo (Open-Meteo)');
+  return { ...parseForecast(raw), source };
 }
 
 // ---------------------------------------------------------------------------

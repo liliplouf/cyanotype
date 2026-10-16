@@ -226,3 +226,30 @@ test('useStorage : injection d’un Storage et retour au mode mémoire', () => {
   assert.equal(isPersistent(), false);
   assert.equal(loadSettings(), null);
 });
+
+// --- Calibration depuis le journal -----------------------------------------------------------
+import { journalCalibration } from '../js/storage.js';
+
+test('journalCalibration : moyenne géométrique des tirages « Bon », calibration de l’époque retirée', () => {
+  const entries = [
+    { result: 'good', actualMinutes: 5, predictedRawMinutes: 13 },                          // 0,385
+    { result: 'good', actualMinutes: 6, predictedRawMinutes: 15 },                          // 0,4
+    { result: 'good', actualMinutes: 4, predictedMinutes: 4, settings: { calibrationFactor: 0.4 } }, // brut 10 → 0,4
+    { result: 'over', actualMinutes: 20, predictedRawMinutes: 10 },                         // ignoré
+    { result: 'good', actualMinutes: 5 },                                                   // sans prévision : ignoré
+  ];
+  const r = journalCalibration(entries);
+  assert.equal(r.count, 3);
+  const expected = Math.exp((Math.log(5 / 13) + Math.log(0.4) + Math.log(0.4)) / 3);
+  assert.ok(Math.abs(r.factor - expected) < 0.001);
+  assert.equal(r.min, 0.385);
+  assert.equal(r.max, 0.4);
+  assert.equal(journalCalibration([{ result: 'under', actualMinutes: 5, predictedRawMinutes: 10 }]), null);
+  assert.equal(journalCalibration([]), null);
+});
+
+test('addJournalEntry conserve predictedRawMinutes', () => {
+  const e = addJournalEntry({ date: '2025-07-14T10:00:00Z', predictedMinutes: 13, predictedRawMinutes: 13, actualMinutes: 5, result: 'good' });
+  assert.equal(e.predictedRawMinutes, 13);
+  assert.equal(listJournal().find((x) => x.id === e.id).predictedRawMinutes, 13);
+});

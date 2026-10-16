@@ -34,6 +34,12 @@ l'ouverture, gros boutons, fort contraste, mode sombre automatique.
 - **Calibration & journal** : après un tirage, notez le temps réel et le résultat
   (sous / bon / sur) ; créez une **calibration personnelle** à partir d'un bon tirage — idéal
   pour un **kit du commerce dont la formule est inconnue** ; historique, export / import JSON.
+- **Calibration rapide** : saisir son temps habituel en plein soleil d'été à midi suffit à créer
+  une calibration. Préréglage **Kit Jacquard** dans la chimie.
+- **Anciens tirages** : reporter les tirages d'un carnet avec leur date et heure ; la météo de
+  l'époque est retrouvée automatiquement (archives Open-Meteo depuis 1940) ou saisie à la main,
+  et le moteur recalcule le temps qu'il aurait prévu. **« Calibrer avec tout le journal »** fait
+  la moyenne (géométrique) des écarts de tous les tirages notés « Bon ».
 - Sources UV artificielles (LED 365 nm, tubes BL, insoleuse…) disponibles en option repliée.
 
 ## Lancement
