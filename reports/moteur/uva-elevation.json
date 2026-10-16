@@ -1,0 +1,317 @@
+[
+  {
+    "elevation": 2,
+    "uva": 0.026,
+    "direct": 0,
+    "diffus": 0.026,
+    "minutes_reference": 305.1
+  },
+  {
+    "elevation": 4,
+    "uva": 0.052,
+    "direct": 0,
+    "diffus": 0.052,
+    "minutes_reference": 152.6
+  },
+  {
+    "elevation": 6,
+    "uva": 0.079,
+    "direct": 0,
+    "diffus": 0.078,
+    "minutes_reference": 101.7
+  },
+  {
+    "elevation": 8,
+    "uva": 0.105,
+    "direct": 0.001,
+    "diffus": 0.104,
+    "minutes_reference": 76.1
+  },
+  {
+    "elevation": 10,
+    "uva": 0.132,
+    "direct": 0.004,
+    "diffus": 0.128,
+    "minutes_reference": 60.5
+  },
+  {
+    "elevation": 12,
+    "uva": 0.16,
+    "direct": 0.01,
+    "diffus": 0.15,
+    "minutes_reference": 50
+  },
+  {
+    "elevation": 14,
+    "uva": 0.189,
+    "direct": 0.018,
+    "diffus": 0.171,
+    "minutes_reference": 42.4
+  },
+  {
+    "elevation": 16,
+    "uva": 0.218,
+    "direct": 0.028,
+    "diffus": 0.19,
+    "minutes_reference": 36.6
+  },
+  {
+    "elevation": 18,
+    "uva": 0.249,
+    "direct": 0.041,
+    "diffus": 0.208,
+    "minutes_reference": 32.2
+  },
+  {
+    "elevation": 20,
+    "uva": 0.279,
+    "direct": 0.056,
+    "diffus": 0.223,
+    "minutes_reference": 28.6
+  },
+  {
+    "elevation": 22,
+    "uva": 0.311,
+    "direct": 0.073,
+    "diffus": 0.238,
+    "minutes_reference": 25.7
+  },
+  {
+    "elevation": 24,
+    "uva": 0.342,
+    "direct": 0.092,
+    "diffus": 0.25,
+    "minutes_reference": 23.4
+  },
+  {
+    "elevation": 26,
+    "uva": 0.374,
+    "direct": 0.112,
+    "diffus": 0.262,
+    "minutes_reference": 21.4
+  },
+  {
+    "elevation": 28,
+    "uva": 0.406,
+    "direct": 0.133,
+    "diffus": 0.273,
+    "minutes_reference": 19.7
+  },
+  {
+    "elevation": 30,
+    "uva": 0.438,
+    "direct": 0.155,
+    "diffus": 0.283,
+    "minutes_reference": 18.3
+  },
+  {
+    "elevation": 32,
+    "uva": 0.469,
+    "direct": 0.178,
+    "diffus": 0.292,
+    "minutes_reference": 17.1
+  },
+  {
+    "elevation": 34,
+    "uva": 0.5,
+    "direct": 0.201,
+    "diffus": 0.3,
+    "minutes_reference": 16
+  },
+  {
+    "elevation": 36,
+    "uva": 0.531,
+    "direct": 0.224,
+    "diffus": 0.307,
+    "minutes_reference": 15.1
+  },
+  {
+    "elevation": 38,
+    "uva": 0.562,
+    "direct": 0.248,
+    "diffus": 0.314,
+    "minutes_reference": 14.2
+  },
+  {
+    "elevation": 40,
+    "uva": 0.591,
+    "direct": 0.271,
+    "diffus": 0.32,
+    "minutes_reference": 13.5
+  },
+  {
+    "elevation": 42,
+    "uva": 0.621,
+    "direct": 0.295,
+    "diffus": 0.326,
+    "minutes_reference": 12.9
+  },
+  {
+    "elevation": 44,
+    "uva": 0.649,
+    "direct": 0.318,
+    "diffus": 0.331,
+    "minutes_reference": 12.3
+  },
+  {
+    "elevation": 46,
+    "uva": 0.677,
+    "direct": 0.341,
+    "diffus": 0.336,
+    "minutes_reference": 11.8
+  },
+  {
+    "elevation": 48,
+    "uva": 0.704,
+    "direct": 0.363,
+    "diffus": 0.34,
+    "minutes_reference": 11.4
+  },
+  {
+    "elevation": 50,
+    "uva": 0.729,
+    "direct": 0.385,
+    "diffus": 0.345,
+    "minutes_reference": 11
+  },
+  {
+    "elevation": 52,
+    "uva": 0.754,
+    "direct": 0.406,
+    "diffus": 0.348,
+    "minutes_reference": 10.6
+  },
+  {
+    "elevation": 54,
+    "uva": 0.778,
+    "direct": 0.427,
+    "diffus": 0.352,
+    "minutes_reference": 10.3
+  },
+  {
+    "elevation": 56,
+    "uva": 0.801,
+    "direct": 0.446,
+    "diffus": 0.355,
+    "minutes_reference": 10
+  },
+  {
+    "elevation": 58,
+    "uva": 0.823,
+    "direct": 0.465,
+    "diffus": 0.358,
+    "minutes_reference": 9.7
+  },
+  {
+    "elevation": 60,
+    "uva": 0.844,
+    "direct": 0.483,
+    "diffus": 0.361,
+    "minutes_reference": 9.5
+  },
+  {
+    "elevation": 62,
+    "uva": 0.864,
+    "direct": 0.501,
+    "diffus": 0.363,
+    "minutes_reference": 9.3
+  },
+  {
+    "elevation": 64,
+    "uva": 0.882,
+    "direct": 0.517,
+    "diffus": 0.365,
+    "minutes_reference": 9.1
+  },
+  {
+    "elevation": 66,
+    "uva": 0.899,
+    "direct": 0.532,
+    "diffus": 0.367,
+    "minutes_reference": 8.9
+  },
+  {
+    "elevation": 68,
+    "uva": 0.915,
+    "direct": 0.546,
+    "diffus": 0.369,
+    "minutes_reference": 8.7
+  },
+  {
+    "elevation": 70,
+    "uva": 0.929,
+    "direct": 0.559,
+    "diffus": 0.371,
+    "minutes_reference": 8.6
+  },
+  {
+    "elevation": 72,
+    "uva": 0.943,
+    "direct": 0.571,
+    "diffus": 0.372,
+    "minutes_reference": 8.5
+  },
+  {
+    "elevation": 74,
+    "uva": 0.955,
+    "direct": 0.581,
+    "diffus": 0.373,
+    "minutes_reference": 8.4
+  },
+  {
+    "elevation": 76,
+    "uva": 0.965,
+    "direct": 0.591,
+    "diffus": 0.375,
+    "minutes_reference": 8.3
+  },
+  {
+    "elevation": 78,
+    "uva": 0.974,
+    "direct": 0.599,
+    "diffus": 0.375,
+    "minutes_reference": 8.2
+  },
+  {
+    "elevation": 80,
+    "uva": 0.982,
+    "direct": 0.606,
+    "diffus": 0.376,
+    "minutes_reference": 8.1
+  },
+  {
+    "elevation": 82,
+    "uva": 0.989,
+    "direct": 0.612,
+    "diffus": 0.377,
+    "minutes_reference": 8.1
+  },
+  {
+    "elevation": 84,
+    "uva": 0.994,
+    "direct": 0.616,
+    "diffus": 0.377,
+    "minutes_reference": 8.1
+  },
+  {
+    "elevation": 86,
+    "uva": 0.997,
+    "direct": 0.619,
+    "diffus": 0.378,
+    "minutes_reference": 8
+  },
+  {
+    "elevation": 88,
+    "uva": 0.999,
+    "direct": 0.621,
+    "diffus": 0.378,
+    "minutes_reference": 8
+  },
+  {
+    "elevation": 90,
+    "uva": 1,
+    "direct": 0.622,
+    "diffus": 0.378,
+    "minutes_reference": 8
+  }
+]

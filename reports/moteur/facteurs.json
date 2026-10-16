@@ -1,0 +1,247 @@
+[
+  {
+    "id": "classic",
+    "categorie": "Chimie",
+    "reglage": "Cyanotype classique (Herschel)",
+    "facteur": 1,
+    "description": "Formule A + B : citrate ferrique ammoniacal (vert) et ferricyanure de potassium. Référence du calcul."
+  },
+  {
+    "id": "classic_double",
+    "categorie": "Chimie",
+    "reglage": "Classique concentré (×2)",
+    "facteur": 1.3,
+    "description": "Solutions A et B à double concentration : plus de fer à réduire, bleus plus denses mais pose ~30 % plus longue."
+  },
+  {
+    "id": "classic_oxalic",
+    "categorie": "Chimie",
+    "reglage": "Classique + acide oxalique",
+    "facteur": 0.85,
+    "description": "Quelques gouttes d’acide oxalique (ou d’oxalate) ajoutées au classique : légère accélération et blancs plus propres."
+  },
+  {
+    "id": "classic_dichromate",
+    "categorie": "Chimie",
+    "reglage": "Classique + bichromate",
+    "facteur": 1.6,
+    "description": "Quelques gouttes de bichromate de potassium (toxique) : contraste accru mais pose nettement plus longue."
+  },
+  {
+    "id": "rex",
+    "categorie": "Chimie",
+    "reglage": "Cyanotype Rex",
+    "facteur": 0.5,
+    "description": "Formule « Rex » (P. Mrhar) à base de citrate et d’oxalate ferriques : environ deux fois plus rapide que le classique."
+  },
+  {
+    "id": "new_ware",
+    "categorie": "Chimie",
+    "reglage": "New Cyanotype (Mike Ware)",
+    "facteur": 0.3,
+    "description": "Oxalate ferrique ammoniacal + ferricyanure (Ware, 1994) : 3 à 4 fois plus rapide que le classique, meilleure gamme tonale."
+  },
+  {
+    "id": "cotton_paper",
+    "categorie": "Support",
+    "reglage": "Papier 100 % coton",
+    "facteur": 1,
+    "description": "Papier aquarelle ou gravure pur coton (type Arches Platine, Bergger COT 320). Référence."
+  },
+  {
+    "id": "watercolor_cellulose",
+    "categorie": "Support",
+    "reglage": "Papier aquarelle cellulose",
+    "facteur": 1.15,
+    "description": "Papier de cellulose (bois) : encollage et charges souvent alcalines qui freinent le virage ; pose un peu plus longue."
+  },
+  {
+    "id": "japanese_paper",
+    "categorie": "Support",
+    "reglage": "Papier japonais (washi)",
+    "facteur": 0.85,
+    "description": "Papier fin et peu chargé : couche mince, pose plus courte mais bleus moins profonds."
+  },
+  {
+    "id": "fabric_cotton",
+    "categorie": "Support",
+    "reglage": "Tissu coton / lin",
+    "facteur": 1.4,
+    "description": "Les fibres textiles absorbent beaucoup de solution : pose 1,2 à 1,6 fois plus longue."
+  },
+  {
+    "id": "fabric_silk",
+    "categorie": "Support",
+    "reglage": "Soie",
+    "facteur": 1.2,
+    "description": "Tissu fin et lisse : un peu plus long que le papier, rendu très détaillé."
+  },
+  {
+    "id": "wood",
+    "categorie": "Support",
+    "reglage": "Bois",
+    "facteur": 1.6,
+    "description": "Bois brut poncé : surface irrégulière et tanins qui ralentissent ; prévoir large."
+  },
+  {
+    "id": "glass_gelatin",
+    "categorie": "Support",
+    "reglage": "Verre ou céramique gélatiné",
+    "facteur": 0.8,
+    "description": "Couche de gélatine mince sur support non absorbant : pose plus courte, densité limitée."
+  },
+  {
+    "id": "single",
+    "categorie": "Couche",
+    "reglage": "Une couche",
+    "facteur": 1,
+    "description": "Une couche au pinceau ou à la tige. Référence."
+  },
+  {
+    "id": "double",
+    "categorie": "Couche",
+    "reglage": "Deux couches",
+    "facteur": 1.35,
+    "description": "Deux couches (séchage entre les deux) : bleus plus profonds, pose environ 1/3 plus longue."
+  },
+  {
+    "id": "thin",
+    "categorie": "Couche",
+    "reglage": "Couche mince",
+    "facteur": 0.85,
+    "description": "Couche légère ou diluée : pose plus courte, image moins dense."
+  },
+  {
+    "id": "dry",
+    "categorie": "Humidité du papier",
+    "reglage": "Papier sec",
+    "facteur": 1,
+    "description": "Papier séché à l’air, à l’abri de la lumière. Référence."
+  },
+  {
+    "id": "humidified",
+    "categorie": "Humidité du papier",
+    "reglage": "Papier ré-humidifié",
+    "facteur": 0.7,
+    "description": "Papier ré-humidifié juste avant la pose (vapeur, boîte humide) : la réduction du fer est plus rapide et les bleus plus intenses."
+  },
+  {
+    "id": "very_dry",
+    "categorie": "Humidité du papier",
+    "reglage": "Papier très sec (séché à chaud)",
+    "facteur": 1.15,
+    "description": "Papier séché au sèche-cheveux ou par temps très sec : réaction un peu plus lente."
+  },
+  {
+    "id": "none",
+    "categorie": "Verre",
+    "reglage": "Sans verre",
+    "facteur": 1,
+    "description": "Contact direct (objets posés, négatif plaqué). Référence."
+  },
+  {
+    "id": "float_glass",
+    "categorie": "Verre",
+    "reglage": "Verre float ordinaire",
+    "facteur": 1.2,
+    "description": "Verre à vitre 3–4 mm : coupe sous ~320 nm et absorbe une partie des UV-A (fer) ; ~75–85 % transmis → pose +15 à +25 %."
+  },
+  {
+    "id": "low_iron",
+    "categorie": "Verre",
+    "reglage": "Verre extra-clair (pauvre en fer)",
+    "facteur": 1.08,
+    "description": "Verre « extra-blanc » : meilleure transmission UV-A (~90 %), idéal pour le châssis-presse."
+  },
+  {
+    "id": "borosilicate",
+    "categorie": "Verre",
+    "reglage": "Verre borosilicate",
+    "facteur": 1.05,
+    "description": "Borosilicate (type Borofloat) : excellente transmission des UV-A."
+  },
+  {
+    "id": "acrylic_uvt",
+    "categorie": "Verre",
+    "reglage": "Acrylique UVT (transmission UV)",
+    "facteur": 1.05,
+    "description": "Plexiglas spécial « UVT » sans absorbeur UV : quasi transparent aux UV-A."
+  },
+  {
+    "id": "acrylic_standard",
+    "categorie": "Verre",
+    "reglage": "Acrylique / plexiglas standard",
+    "facteur": 3.5,
+    "description": "Contient généralement un absorbeur UV qui bloque fortement sous ~380 nm : pose 3× plus longue ou plus. À éviter."
+  },
+  {
+    "id": "polycarbonate",
+    "categorie": "Verre",
+    "reglage": "Polycarbonate",
+    "facteur": 6,
+    "description": "Bloque presque tous les UV : pose extrêmement longue. Fortement déconseillé."
+  },
+  {
+    "id": "photogram",
+    "categorie": "Négatif",
+    "reglage": "Photogramme (objets)",
+    "facteur": 1,
+    "description": "Feuilles, fleurs, objets posés directement : rien n’absorbe dans les zones claires. Référence."
+  },
+  {
+    "id": "digital_transparency",
+    "categorie": "Négatif",
+    "reglage": "Négatif numérique sur transparent",
+    "facteur": 1.45,
+    "description": "Film transparent jet d’encre ou laser : la base polyester et la couche réceptrice absorbent des UV-A → pose 1,3 à 1,6 fois plus longue."
+  },
+  {
+    "id": "inkjet_pictorico",
+    "categorie": "Négatif",
+    "reglage": "Film jet d’encre spécialisé (Pictorico)",
+    "facteur": 1.3,
+    "description": "Film conçu pour les procédés alternatifs : base plus transparente aux UV que les transparents de bureau."
+  },
+  {
+    "id": "film_negative",
+    "categorie": "Négatif",
+    "reglage": "Négatif argentique (grand format)",
+    "facteur": 1.25,
+    "description": "Négatif film en contact : la base et le voile minimum ajoutent environ 25 %."
+  },
+  {
+    "id": "tracing_paper",
+    "categorie": "Négatif",
+    "reglage": "Papier calque",
+    "facteur": 1.8,
+    "description": "Dessin ou impression sur calque : diffuse et absorbe une bonne part des UV."
+  },
+  {
+    "id": "standard",
+    "categorie": "Rendu souhaité",
+    "reglage": "Standard",
+    "facteur": 1,
+    "description": "Bleu de Prusse franc, blancs propres. Référence."
+  },
+  {
+    "id": "deep",
+    "categorie": "Rendu souhaité",
+    "reglage": "Bleus profonds",
+    "facteur": 1.3,
+    "description": "Ombres très denses (légère perte dans les hautes lumières) ; adapté avant un virage."
+  },
+  {
+    "id": "light",
+    "categorie": "Rendu souhaité",
+    "reglage": "Léger / pastel",
+    "facteur": 0.8,
+    "description": "Image claire et délicate, ombres moins saturées."
+  },
+  {
+    "id": "toning_planned",
+    "categorie": "Rendu souhaité",
+    "reglage": "Virage prévu (thé, tanin…)",
+    "facteur": 1.5,
+    "description": "Surexposition volontaire : le blanchiment puis le virage tanique éclaircissent l’image."
+  }
+]

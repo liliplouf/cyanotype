@@ -1,0 +1,58 @@
+[
+  {
+    "ordre": 1,
+    "etape": "Hauteur du soleil",
+    "valeur": 31.6,
+    "unite": "°",
+    "calcul": "Position solaire NOAA pour Paris, 16/10 à 13:00"
+  },
+  {
+    "ordre": 2,
+    "etape": "UV-A en ciel clair",
+    "valeur": 0.465,
+    "unite": "× zénith",
+    "calcul": "Direct + diffus après traversée de l’atmosphère, +6 %/km d’altitude"
+  },
+  {
+    "ordre": 3,
+    "etape": "Transmission des nuages",
+    "valeur": 0.943,
+    "unite": "",
+    "calcul": "1 − 0,56 × (40 %)^2,5"
+  },
+  {
+    "ordre": 4,
+    "etape": "UV-A effectif",
+    "valeur": 0.438,
+    "unite": "× zénith",
+    "calcul": "UV-A ciel clair × transmission des nuages"
+  },
+  {
+    "ordre": 5,
+    "etape": "Facteur des réglages",
+    "valeur": 1.45,
+    "unite": "×",
+    "calcul": "Produit des facteurs : papier coton 1 × négatif numérique 1,45 × autres 1"
+  },
+  {
+    "ordre": 6,
+    "etape": "Dose cible",
+    "valeur": 11.6,
+    "unite": "min au zénith",
+    "calcul": "8 min de référence × facteur des réglages"
+  },
+  {
+    "ordre": 7,
+    "etape": "Temps si le soleil restait fixe",
+    "valeur": 26.5,
+    "unite": "min",
+    "calcul": "Dose cible ÷ UV-A effectif"
+  },
+  {
+    "ordre": 8,
+    "etape": "Temps intégré (affiché)",
+    "valeur": 26.2,
+    "unite": "min",
+    "calcul": "Dose cumulée minute par minute avec le soleil qui bouge"
+  }
+]

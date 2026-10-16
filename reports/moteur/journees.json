@@ -1,0 +1,1122 @@
+[
+  {
+    "jour": "21 juin",
+    "heure": "06:00",
+    "heure_decimale": 6,
+    "elevation": 1.3,
+    "uva": 0.016,
+    "minutes": 103.6
+  },
+  {
+    "jour": "21 juin",
+    "heure": "06:15",
+    "heure_decimale": 6.25,
+    "elevation": 3.1,
+    "uva": 0.041,
+    "minutes": 90.5
+  },
+  {
+    "jour": "21 juin",
+    "heure": "06:30",
+    "heure_decimale": 6.5,
+    "elevation": 5.2,
+    "uva": 0.068,
+    "minutes": 79.1
+  },
+  {
+    "jour": "21 juin",
+    "heure": "06:45",
+    "heure_decimale": 6.75,
+    "elevation": 7.3,
+    "uva": 0.096,
+    "minutes": 69.2
+  },
+  {
+    "jour": "21 juin",
+    "heure": "07:00",
+    "heure_decimale": 7,
+    "elevation": 9.5,
+    "uva": 0.125,
+    "minutes": 60.7
+  },
+  {
+    "jour": "21 juin",
+    "heure": "07:15",
+    "heure_decimale": 7.25,
+    "elevation": 11.7,
+    "uva": 0.156,
+    "minutes": 53.5
+  },
+  {
+    "jour": "21 juin",
+    "heure": "07:30",
+    "heure_decimale": 7.5,
+    "elevation": 14,
+    "uva": 0.189,
+    "minutes": 47.4
+  },
+  {
+    "jour": "21 juin",
+    "heure": "07:45",
+    "heure_decimale": 7.75,
+    "elevation": 16.3,
+    "uva": 0.224,
+    "minutes": 42.2
+  },
+  {
+    "jour": "21 juin",
+    "heure": "08:00",
+    "heure_decimale": 8,
+    "elevation": 18.7,
+    "uva": 0.26,
+    "minutes": 37.8
+  },
+  {
+    "jour": "21 juin",
+    "heure": "08:15",
+    "heure_decimale": 8.25,
+    "elevation": 21.1,
+    "uva": 0.297,
+    "minutes": 34.1
+  },
+  {
+    "jour": "21 juin",
+    "heure": "08:30",
+    "heure_decimale": 8.5,
+    "elevation": 23.5,
+    "uva": 0.335,
+    "minutes": 30.9
+  },
+  {
+    "jour": "21 juin",
+    "heure": "08:45",
+    "heure_decimale": 8.75,
+    "elevation": 25.9,
+    "uva": 0.374,
+    "minutes": 28.2
+  },
+  {
+    "jour": "21 juin",
+    "heure": "09:00",
+    "heure_decimale": 9,
+    "elevation": 28.4,
+    "uva": 0.413,
+    "minutes": 26
+  },
+  {
+    "jour": "21 juin",
+    "heure": "09:15",
+    "heure_decimale": 9.25,
+    "elevation": 30.9,
+    "uva": 0.452,
+    "minutes": 24
+  },
+  {
+    "jour": "21 juin",
+    "heure": "09:30",
+    "heure_decimale": 9.5,
+    "elevation": 33.3,
+    "uva": 0.491,
+    "minutes": 22.3
+  },
+  {
+    "jour": "21 juin",
+    "heure": "09:45",
+    "heure_decimale": 9.75,
+    "elevation": 35.8,
+    "uva": 0.529,
+    "minutes": 20.9
+  },
+  {
+    "jour": "21 juin",
+    "heure": "10:00",
+    "heure_decimale": 10,
+    "elevation": 38.2,
+    "uva": 0.566,
+    "minutes": 19.7
+  },
+  {
+    "jour": "21 juin",
+    "heure": "10:15",
+    "heure_decimale": 10.25,
+    "elevation": 40.7,
+    "uva": 0.602,
+    "minutes": 18.6
+  },
+  {
+    "jour": "21 juin",
+    "heure": "10:30",
+    "heure_decimale": 10.5,
+    "elevation": 43.1,
+    "uva": 0.637,
+    "minutes": 17.7
+  },
+  {
+    "jour": "21 juin",
+    "heure": "10:45",
+    "heure_decimale": 10.75,
+    "elevation": 45.4,
+    "uva": 0.671,
+    "minutes": 16.9
+  },
+  {
+    "jour": "21 juin",
+    "heure": "11:00",
+    "heure_decimale": 11,
+    "elevation": 47.8,
+    "uva": 0.702,
+    "minutes": 16.2
+  },
+  {
+    "jour": "21 juin",
+    "heure": "11:15",
+    "heure_decimale": 11.25,
+    "elevation": 50,
+    "uva": 0.732,
+    "minutes": 15.6
+  },
+  {
+    "jour": "21 juin",
+    "heure": "11:30",
+    "heure_decimale": 11.5,
+    "elevation": 52.2,
+    "uva": 0.759,
+    "minutes": 15
+  },
+  {
+    "jour": "21 juin",
+    "heure": "11:45",
+    "heure_decimale": 11.75,
+    "elevation": 54.3,
+    "uva": 0.784,
+    "minutes": 14.6
+  },
+  {
+    "jour": "21 juin",
+    "heure": "12:00",
+    "heure_decimale": 12,
+    "elevation": 56.3,
+    "uva": 0.807,
+    "minutes": 14.2
+  },
+  {
+    "jour": "21 juin",
+    "heure": "12:15",
+    "heure_decimale": 12.25,
+    "elevation": 58.2,
+    "uva": 0.827,
+    "minutes": 13.9
+  },
+  {
+    "jour": "21 juin",
+    "heure": "12:30",
+    "heure_decimale": 12.5,
+    "elevation": 59.8,
+    "uva": 0.844,
+    "minutes": 13.6
+  },
+  {
+    "jour": "21 juin",
+    "heure": "12:45",
+    "heure_decimale": 12.75,
+    "elevation": 61.3,
+    "uva": 0.859,
+    "minutes": 13.4
+  },
+  {
+    "jour": "21 juin",
+    "heure": "13:00",
+    "heure_decimale": 13,
+    "elevation": 62.6,
+    "uva": 0.871,
+    "minutes": 13.3
+  },
+  {
+    "jour": "21 juin",
+    "heure": "13:15",
+    "heure_decimale": 13.25,
+    "elevation": 63.5,
+    "uva": 0.88,
+    "minutes": 13.1
+  },
+  {
+    "jour": "21 juin",
+    "heure": "13:30",
+    "heure_decimale": 13.5,
+    "elevation": 64.2,
+    "uva": 0.886,
+    "minutes": 13.1
+  },
+  {
+    "jour": "21 juin",
+    "heure": "13:45",
+    "heure_decimale": 13.75,
+    "elevation": 64.5,
+    "uva": 0.889,
+    "minutes": 13.1
+  },
+  {
+    "jour": "21 juin",
+    "heure": "14:00",
+    "heure_decimale": 14,
+    "elevation": 64.5,
+    "uva": 0.889,
+    "minutes": 13.1
+  },
+  {
+    "jour": "21 juin",
+    "heure": "14:15",
+    "heure_decimale": 14.25,
+    "elevation": 64.2,
+    "uva": 0.886,
+    "minutes": 13.1
+  },
+  {
+    "jour": "21 juin",
+    "heure": "14:30",
+    "heure_decimale": 14.5,
+    "elevation": 63.5,
+    "uva": 0.88,
+    "minutes": 13.2
+  },
+  {
+    "jour": "21 juin",
+    "heure": "14:45",
+    "heure_decimale": 14.75,
+    "elevation": 62.6,
+    "uva": 0.871,
+    "minutes": 13.4
+  },
+  {
+    "jour": "21 juin",
+    "heure": "15:00",
+    "heure_decimale": 15,
+    "elevation": 61.3,
+    "uva": 0.859,
+    "minutes": 13.6
+  },
+  {
+    "jour": "21 juin",
+    "heure": "15:15",
+    "heure_decimale": 15.25,
+    "elevation": 59.8,
+    "uva": 0.844,
+    "minutes": 13.9
+  },
+  {
+    "jour": "21 juin",
+    "heure": "15:30",
+    "heure_decimale": 15.5,
+    "elevation": 58.1,
+    "uva": 0.827,
+    "minutes": 14.2
+  },
+  {
+    "jour": "21 juin",
+    "heure": "15:45",
+    "heure_decimale": 15.75,
+    "elevation": 56.3,
+    "uva": 0.806,
+    "minutes": 14.6
+  },
+  {
+    "jour": "21 juin",
+    "heure": "16:00",
+    "heure_decimale": 16,
+    "elevation": 54.3,
+    "uva": 0.784,
+    "minutes": 15
+  },
+  {
+    "jour": "21 juin",
+    "heure": "16:15",
+    "heure_decimale": 16.25,
+    "elevation": 52.2,
+    "uva": 0.759,
+    "minutes": 15.6
+  },
+  {
+    "jour": "21 juin",
+    "heure": "16:30",
+    "heure_decimale": 16.5,
+    "elevation": 50,
+    "uva": 0.731,
+    "minutes": 16.2
+  },
+  {
+    "jour": "21 juin",
+    "heure": "16:45",
+    "heure_decimale": 16.75,
+    "elevation": 47.7,
+    "uva": 0.702,
+    "minutes": 17
+  },
+  {
+    "jour": "21 juin",
+    "heure": "17:00",
+    "heure_decimale": 17,
+    "elevation": 45.4,
+    "uva": 0.67,
+    "minutes": 17.8
+  },
+  {
+    "jour": "21 juin",
+    "heure": "17:15",
+    "heure_decimale": 17.25,
+    "elevation": 43,
+    "uva": 0.637,
+    "minutes": 18.9
+  },
+  {
+    "jour": "21 juin",
+    "heure": "17:30",
+    "heure_decimale": 17.5,
+    "elevation": 40.6,
+    "uva": 0.602,
+    "minutes": 20.1
+  },
+  {
+    "jour": "21 juin",
+    "heure": "17:45",
+    "heure_decimale": 17.75,
+    "elevation": 38.2,
+    "uva": 0.566,
+    "minutes": 21.5
+  },
+  {
+    "jour": "21 juin",
+    "heure": "18:00",
+    "heure_decimale": 18,
+    "elevation": 35.8,
+    "uva": 0.529,
+    "minutes": 23.2
+  },
+  {
+    "jour": "21 juin",
+    "heure": "18:15",
+    "heure_decimale": 18.25,
+    "elevation": 33.3,
+    "uva": 0.49,
+    "minutes": 25.3
+  },
+  {
+    "jour": "21 juin",
+    "heure": "18:30",
+    "heure_decimale": 18.5,
+    "elevation": 30.8,
+    "uva": 0.452,
+    "minutes": 27.9
+  },
+  {
+    "jour": "21 juin",
+    "heure": "18:45",
+    "heure_decimale": 18.75,
+    "elevation": 28.4,
+    "uva": 0.413,
+    "minutes": 31.2
+  },
+  {
+    "jour": "21 juin",
+    "heure": "19:00",
+    "heure_decimale": 19,
+    "elevation": 25.9,
+    "uva": 0.373,
+    "minutes": 35.4
+  },
+  {
+    "jour": "21 juin",
+    "heure": "19:15",
+    "heure_decimale": 19.25,
+    "elevation": 23.5,
+    "uva": 0.335,
+    "minutes": 41
+  },
+  {
+    "jour": "21 juin",
+    "heure": "19:30",
+    "heure_decimale": 19.5,
+    "elevation": 21.1,
+    "uva": 0.296,
+    "minutes": 49
+  },
+  {
+    "jour": "21 juin",
+    "heure": "19:45",
+    "heure_decimale": 19.75,
+    "elevation": 18.7,
+    "uva": 0.259,
+    "minutes": 61.7
+  },
+  {
+    "jour": "21 juin",
+    "heure": "20:00",
+    "heure_decimale": 20,
+    "elevation": 16.3,
+    "uva": 0.223,
+    "minutes": 93.9
+  },
+  {
+    "jour": "21 juin",
+    "heure": "20:15",
+    "heure_decimale": 20.25,
+    "elevation": 14,
+    "uva": 0.189,
+    "minutes": null
+  },
+  {
+    "jour": "21 juin",
+    "heure": "20:30",
+    "heure_decimale": 20.5,
+    "elevation": 11.7,
+    "uva": 0.156,
+    "minutes": null
+  },
+  {
+    "jour": "21 juin",
+    "heure": "20:45",
+    "heure_decimale": 20.75,
+    "elevation": 9.4,
+    "uva": 0.125,
+    "minutes": null
+  },
+  {
+    "jour": "21 juin",
+    "heure": "21:00",
+    "heure_decimale": 21,
+    "elevation": 7.3,
+    "uva": 0.095,
+    "minutes": null
+  },
+  {
+    "jour": "21 juin",
+    "heure": "21:15",
+    "heure_decimale": 21.25,
+    "elevation": 5.1,
+    "uva": 0.068,
+    "minutes": null
+  },
+  {
+    "jour": "21 juin",
+    "heure": "21:30",
+    "heure_decimale": 21.5,
+    "elevation": 3.1,
+    "uva": 0.041,
+    "minutes": null
+  },
+  {
+    "jour": "21 juin",
+    "heure": "21:45",
+    "heure_decimale": 21.75,
+    "elevation": 1.2,
+    "uva": 0.016,
+    "minutes": null
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "08:15",
+    "heure_decimale": 8.25,
+    "elevation": 0.1,
+    "uva": 0.002,
+    "minutes": 108
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "08:30",
+    "heure_decimale": 8.5,
+    "elevation": 2.3,
+    "uva": 0.03,
+    "minutes": 94
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "08:45",
+    "heure_decimale": 8.75,
+    "elevation": 4.5,
+    "uva": 0.059,
+    "minutes": 82.1
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "09:00",
+    "heure_decimale": 9,
+    "elevation": 6.8,
+    "uva": 0.089,
+    "minutes": 71.9
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "09:15",
+    "heure_decimale": 9.25,
+    "elevation": 9,
+    "uva": 0.119,
+    "minutes": 63.4
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "09:30",
+    "heure_decimale": 9.5,
+    "elevation": 11.2,
+    "uva": 0.149,
+    "minutes": 56.3
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "09:45",
+    "heure_decimale": 9.75,
+    "elevation": 13.3,
+    "uva": 0.18,
+    "minutes": 50.4
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "10:00",
+    "heure_decimale": 10,
+    "elevation": 15.4,
+    "uva": 0.21,
+    "minutes": 45.5
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "10:15",
+    "heure_decimale": 10.25,
+    "elevation": 17.4,
+    "uva": 0.24,
+    "minutes": 41.4
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "10:30",
+    "heure_decimale": 10.5,
+    "elevation": 19.3,
+    "uva": 0.269,
+    "minutes": 38.1
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "10:45",
+    "heure_decimale": 10.75,
+    "elevation": 21.1,
+    "uva": 0.298,
+    "minutes": 35.3
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "11:00",
+    "heure_decimale": 11,
+    "elevation": 22.8,
+    "uva": 0.325,
+    "minutes": 32.9
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "11:15",
+    "heure_decimale": 11.25,
+    "elevation": 24.5,
+    "uva": 0.35,
+    "minutes": 31
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "11:30",
+    "heure_decimale": 11.5,
+    "elevation": 25.9,
+    "uva": 0.374,
+    "minutes": 29.4
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "11:45",
+    "heure_decimale": 11.75,
+    "elevation": 27.3,
+    "uva": 0.395,
+    "minutes": 28.1
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "12:00",
+    "heure_decimale": 12,
+    "elevation": 28.5,
+    "uva": 0.414,
+    "minutes": 27
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "12:15",
+    "heure_decimale": 12.25,
+    "elevation": 29.5,
+    "uva": 0.431,
+    "minutes": 26.2
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "12:30",
+    "heure_decimale": 12.5,
+    "elevation": 30.4,
+    "uva": 0.445,
+    "minutes": 25.5
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "12:45",
+    "heure_decimale": 12.75,
+    "elevation": 31.1,
+    "uva": 0.456,
+    "minutes": 25.1
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "13:00",
+    "heure_decimale": 13,
+    "elevation": 31.6,
+    "uva": 0.465,
+    "minutes": 24.7
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "13:15",
+    "heure_decimale": 13.25,
+    "elevation": 32,
+    "uva": 0.47,
+    "minutes": 24.6
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "13:30",
+    "heure_decimale": 13.5,
+    "elevation": 32.2,
+    "uva": 0.473,
+    "minutes": 24.6
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "13:45",
+    "heure_decimale": 13.75,
+    "elevation": 32.1,
+    "uva": 0.472,
+    "minutes": 24.7
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "14:00",
+    "heure_decimale": 14,
+    "elevation": 31.9,
+    "uva": 0.469,
+    "minutes": 25
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "14:15",
+    "heure_decimale": 14.25,
+    "elevation": 31.5,
+    "uva": 0.463,
+    "minutes": 25.5
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "14:30",
+    "heure_decimale": 14.5,
+    "elevation": 31,
+    "uva": 0.454,
+    "minutes": 26.2
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "14:45",
+    "heure_decimale": 14.75,
+    "elevation": 30.2,
+    "uva": 0.442,
+    "minutes": 27.1
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "15:00",
+    "heure_decimale": 15,
+    "elevation": 29.3,
+    "uva": 0.427,
+    "minutes": 28.2
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "15:15",
+    "heure_decimale": 15.25,
+    "elevation": 28.2,
+    "uva": 0.41,
+    "minutes": 29.7
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "15:30",
+    "heure_decimale": 15.5,
+    "elevation": 27,
+    "uva": 0.391,
+    "minutes": 31.6
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "15:45",
+    "heure_decimale": 15.75,
+    "elevation": 25.6,
+    "uva": 0.369,
+    "minutes": 34
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "16:00",
+    "heure_decimale": 16,
+    "elevation": 24.1,
+    "uva": 0.345,
+    "minutes": 37.2
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "16:15",
+    "heure_decimale": 16.25,
+    "elevation": 22.5,
+    "uva": 0.319,
+    "minutes": 41.4
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "16:30",
+    "heure_decimale": 16.5,
+    "elevation": 20.7,
+    "uva": 0.291,
+    "minutes": 47.2
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "16:45",
+    "heure_decimale": 16.75,
+    "elevation": 18.9,
+    "uva": 0.263,
+    "minutes": 56.1
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "17:00",
+    "heure_decimale": 17,
+    "elevation": 17,
+    "uva": 0.233,
+    "minutes": 72.5
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "17:15",
+    "heure_decimale": 17.25,
+    "elevation": 14.9,
+    "uva": 0.203,
+    "minutes": null
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "17:30",
+    "heure_decimale": 17.5,
+    "elevation": 12.9,
+    "uva": 0.173,
+    "minutes": null
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "17:45",
+    "heure_decimale": 17.75,
+    "elevation": 10.7,
+    "uva": 0.142,
+    "minutes": null
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "18:00",
+    "heure_decimale": 18,
+    "elevation": 8.5,
+    "uva": 0.112,
+    "minutes": null
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "18:15",
+    "heure_decimale": 18.25,
+    "elevation": 6.3,
+    "uva": 0.082,
+    "minutes": null
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "18:30",
+    "heure_decimale": 18.5,
+    "elevation": 4,
+    "uva": 0.052,
+    "minutes": null
+  },
+  {
+    "jour": "16 octobre",
+    "heure": "18:45",
+    "heure_decimale": 18.75,
+    "elevation": 1.8,
+    "uva": 0.023,
+    "minutes": null
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "08:45",
+    "heure_decimale": 8.75,
+    "elevation": 0.2,
+    "uva": 0.003,
+    "minutes": 124.3
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "09:00",
+    "heure_decimale": 9,
+    "elevation": 1.9,
+    "uva": 0.025,
+    "minutes": 110.5
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "09:15",
+    "heure_decimale": 9.25,
+    "elevation": 3.7,
+    "uva": 0.048,
+    "minutes": 98.6
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "09:30",
+    "heure_decimale": 9.5,
+    "elevation": 5.4,
+    "uva": 0.071,
+    "minutes": 88.5
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "09:45",
+    "heure_decimale": 9.75,
+    "elevation": 7,
+    "uva": 0.093,
+    "minutes": 80
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "10:00",
+    "heure_decimale": 10,
+    "elevation": 8.6,
+    "uva": 0.114,
+    "minutes": 73
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "10:15",
+    "heure_decimale": 10.25,
+    "elevation": 10.1,
+    "uva": 0.134,
+    "minutes": 67.1
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "10:30",
+    "heure_decimale": 10.5,
+    "elevation": 11.4,
+    "uva": 0.153,
+    "minutes": 62.3
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "10:45",
+    "heure_decimale": 10.75,
+    "elevation": 12.7,
+    "uva": 0.17,
+    "minutes": 58.3
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "11:00",
+    "heure_decimale": 11,
+    "elevation": 13.8,
+    "uva": 0.186,
+    "minutes": 55.1
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "11:15",
+    "heure_decimale": 11.25,
+    "elevation": 14.8,
+    "uva": 0.201,
+    "minutes": 52.5
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "11:30",
+    "heure_decimale": 11.5,
+    "elevation": 15.7,
+    "uva": 0.214,
+    "minutes": 50.5
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "11:45",
+    "heure_decimale": 11.75,
+    "elevation": 16.4,
+    "uva": 0.224,
+    "minutes": 49.1
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "12:00",
+    "heure_decimale": 12,
+    "elevation": 16.9,
+    "uva": 0.233,
+    "minutes": 48.1
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "12:15",
+    "heure_decimale": 12.25,
+    "elevation": 17.4,
+    "uva": 0.239,
+    "minutes": 47.6
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "12:30",
+    "heure_decimale": 12.5,
+    "elevation": 17.6,
+    "uva": 0.243,
+    "minutes": 47.5
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "12:45",
+    "heure_decimale": 12.75,
+    "elevation": 17.8,
+    "uva": 0.245,
+    "minutes": 47.9
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "13:00",
+    "heure_decimale": 13,
+    "elevation": 17.7,
+    "uva": 0.245,
+    "minutes": 48.8
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "13:15",
+    "heure_decimale": 13.25,
+    "elevation": 17.5,
+    "uva": 0.242,
+    "minutes": 50.3
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "13:30",
+    "heure_decimale": 13.5,
+    "elevation": 17.2,
+    "uva": 0.236,
+    "minutes": 52.6
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "13:45",
+    "heure_decimale": 13.75,
+    "elevation": 16.7,
+    "uva": 0.229,
+    "minutes": 55.8
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "14:00",
+    "heure_decimale": 14,
+    "elevation": 16,
+    "uva": 0.219,
+    "minutes": 60.3
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "14:15",
+    "heure_decimale": 14.25,
+    "elevation": 15.2,
+    "uva": 0.207,
+    "minutes": 67
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "14:30",
+    "heure_decimale": 14.5,
+    "elevation": 14.3,
+    "uva": 0.194,
+    "minutes": 77.7
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "14:45",
+    "heure_decimale": 14.75,
+    "elevation": 13.3,
+    "uva": 0.178,
+    "minutes": 102.5
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "15:00",
+    "heure_decimale": 15,
+    "elevation": 12.1,
+    "uva": 0.161,
+    "minutes": null
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "15:15",
+    "heure_decimale": 15.25,
+    "elevation": 10.8,
+    "uva": 0.143,
+    "minutes": null
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "15:30",
+    "heure_decimale": 15.5,
+    "elevation": 9.3,
+    "uva": 0.123,
+    "minutes": null
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "15:45",
+    "heure_decimale": 15.75,
+    "elevation": 7.8,
+    "uva": 0.103,
+    "minutes": null
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "16:00",
+    "heure_decimale": 16,
+    "elevation": 6.2,
+    "uva": 0.082,
+    "minutes": null
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "16:15",
+    "heure_decimale": 16.25,
+    "elevation": 4.5,
+    "uva": 0.059,
+    "minutes": null
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "16:30",
+    "heure_decimale": 16.5,
+    "elevation": 2.8,
+    "uva": 0.036,
+    "minutes": null
+  },
+  {
+    "jour": "21 décembre",
+    "heure": "16:45",
+    "heure_decimale": 16.75,
+    "elevation": 1,
+    "uva": 0.013,
+    "minutes": null
+  }
+]

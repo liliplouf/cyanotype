@@ -1,0 +1,22 @@
+[
+  {
+    "ordre": 1,
+    "etape": "Référence",
+    "minutes": 8
+  },
+  {
+    "ordre": 2,
+    "etape": "× négatif numérique",
+    "minutes": 11.6
+  },
+  {
+    "ordre": 3,
+    "etape": "÷ hauteur du soleil",
+    "minutes": 24.97
+  },
+  {
+    "ordre": 4,
+    "etape": "÷ nuages 40 %",
+    "minutes": 26.47
+  }
+]

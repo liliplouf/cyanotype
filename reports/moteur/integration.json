@@ -1,0 +1,296 @@
+[
+  {
+    "minute": 0,
+    "heure": "16:30",
+    "uva": 0.291,
+    "dose_pct": 0
+  },
+  {
+    "minute": 1,
+    "heure": "16:31",
+    "uva": 0.29,
+    "dose_pct": 2.5
+  },
+  {
+    "minute": 2,
+    "heure": "16:32",
+    "uva": 0.288,
+    "dose_pct": 5
+  },
+  {
+    "minute": 3,
+    "heure": "16:33",
+    "uva": 0.286,
+    "dose_pct": 7.5
+  },
+  {
+    "minute": 4,
+    "heure": "16:34",
+    "uva": 0.284,
+    "dose_pct": 9.9
+  },
+  {
+    "minute": 5,
+    "heure": "16:35",
+    "uva": 0.282,
+    "dose_pct": 12.4
+  },
+  {
+    "minute": 6,
+    "heure": "16:36",
+    "uva": 0.28,
+    "dose_pct": 14.8
+  },
+  {
+    "minute": 7,
+    "heure": "16:37",
+    "uva": 0.278,
+    "dose_pct": 17.2
+  },
+  {
+    "minute": 8,
+    "heure": "16:38",
+    "uva": 0.276,
+    "dose_pct": 19.6
+  },
+  {
+    "minute": 9,
+    "heure": "16:39",
+    "uva": 0.274,
+    "dose_pct": 22
+  },
+  {
+    "minute": 10,
+    "heure": "16:40",
+    "uva": 0.272,
+    "dose_pct": 24.3
+  },
+  {
+    "minute": 11,
+    "heure": "16:41",
+    "uva": 0.271,
+    "dose_pct": 26.6
+  },
+  {
+    "minute": 12,
+    "heure": "16:42",
+    "uva": 0.269,
+    "dose_pct": 29
+  },
+  {
+    "minute": 13,
+    "heure": "16:43",
+    "uva": 0.267,
+    "dose_pct": 31.3
+  },
+  {
+    "minute": 14,
+    "heure": "16:44",
+    "uva": 0.265,
+    "dose_pct": 33.6
+  },
+  {
+    "minute": 15,
+    "heure": "16:45",
+    "uva": 0.263,
+    "dose_pct": 35.8
+  },
+  {
+    "minute": 16,
+    "heure": "16:46",
+    "uva": 0.261,
+    "dose_pct": 38.1
+  },
+  {
+    "minute": 17,
+    "heure": "16:47",
+    "uva": 0.259,
+    "dose_pct": 40.3
+  },
+  {
+    "minute": 18,
+    "heure": "16:48",
+    "uva": 0.257,
+    "dose_pct": 42.6
+  },
+  {
+    "minute": 19,
+    "heure": "16:49",
+    "uva": 0.255,
+    "dose_pct": 44.8
+  },
+  {
+    "minute": 20,
+    "heure": "16:50",
+    "uva": 0.253,
+    "dose_pct": 47
+  },
+  {
+    "minute": 21,
+    "heure": "16:51",
+    "uva": 0.251,
+    "dose_pct": 49.1
+  },
+  {
+    "minute": 22,
+    "heure": "16:52",
+    "uva": 0.249,
+    "dose_pct": 51.3
+  },
+  {
+    "minute": 23,
+    "heure": "16:53",
+    "uva": 0.247,
+    "dose_pct": 53.4
+  },
+  {
+    "minute": 24,
+    "heure": "16:54",
+    "uva": 0.245,
+    "dose_pct": 55.6
+  },
+  {
+    "minute": 25,
+    "heure": "16:55",
+    "uva": 0.243,
+    "dose_pct": 57.7
+  },
+  {
+    "minute": 26,
+    "heure": "16:56",
+    "uva": 0.241,
+    "dose_pct": 59.7
+  },
+  {
+    "minute": 27,
+    "heure": "16:57",
+    "uva": 0.239,
+    "dose_pct": 61.8
+  },
+  {
+    "minute": 28,
+    "heure": "16:58",
+    "uva": 0.237,
+    "dose_pct": 63.9
+  },
+  {
+    "minute": 29,
+    "heure": "16:59",
+    "uva": 0.235,
+    "dose_pct": 65.9
+  },
+  {
+    "minute": 30,
+    "heure": "17:00",
+    "uva": 0.233,
+    "dose_pct": 67.9
+  },
+  {
+    "minute": 31,
+    "heure": "17:01",
+    "uva": 0.231,
+    "dose_pct": 69.9
+  },
+  {
+    "minute": 32,
+    "heure": "17:02",
+    "uva": 0.229,
+    "dose_pct": 71.9
+  },
+  {
+    "minute": 33,
+    "heure": "17:03",
+    "uva": 0.227,
+    "dose_pct": 73.9
+  },
+  {
+    "minute": 34,
+    "heure": "17:04",
+    "uva": 0.225,
+    "dose_pct": 75.8
+  },
+  {
+    "minute": 35,
+    "heure": "17:05",
+    "uva": 0.223,
+    "dose_pct": 77.8
+  },
+  {
+    "minute": 36,
+    "heure": "17:06",
+    "uva": 0.221,
+    "dose_pct": 79.7
+  },
+  {
+    "minute": 37,
+    "heure": "17:07",
+    "uva": 0.219,
+    "dose_pct": 81.6
+  },
+  {
+    "minute": 38,
+    "heure": "17:08",
+    "uva": 0.217,
+    "dose_pct": 83.5
+  },
+  {
+    "minute": 39,
+    "heure": "17:09",
+    "uva": 0.215,
+    "dose_pct": 85.3
+  },
+  {
+    "minute": 40,
+    "heure": "17:10",
+    "uva": 0.213,
+    "dose_pct": 87.2
+  },
+  {
+    "minute": 41,
+    "heure": "17:11",
+    "uva": 0.211,
+    "dose_pct": 89
+  },
+  {
+    "minute": 42,
+    "heure": "17:12",
+    "uva": 0.209,
+    "dose_pct": 90.8
+  },
+  {
+    "minute": 43,
+    "heure": "17:13",
+    "uva": 0.207,
+    "dose_pct": 92.6
+  },
+  {
+    "minute": 44,
+    "heure": "17:14",
+    "uva": 0.205,
+    "dose_pct": 94.4
+  },
+  {
+    "minute": 45,
+    "heure": "17:15",
+    "uva": 0.203,
+    "dose_pct": 96.1
+  },
+  {
+    "minute": 46,
+    "heure": "17:16",
+    "uva": 0.201,
+    "dose_pct": 97.9
+  },
+  {
+    "minute": 47,
+    "heure": "17:17",
+    "uva": 0.199,
+    "dose_pct": 99.6
+  },
+  {
+    "minute": 48,
+    "heure": "17:17",
+    "uva": 0.198,
+    "dose_pct": 100
+  }
+]

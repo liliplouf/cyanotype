@@ -1,0 +1,56 @@
+[
+  {
+    "constante": "Temps de référence",
+    "valeur": 8,
+    "unite": "min",
+    "role": "Cyanotype classique, papier coton, sans verre, soleil au zénith, ciel clair."
+  },
+  {
+    "constante": "Épaisseur optique UV-A",
+    "valeur": 0.7,
+    "unite": "",
+    "role": "Atténuation par l’air (Rayleigh ≈ 0,5) et les aérosols (≈ 0,2)."
+  },
+  {
+    "constante": "Part du diffus vers le sol",
+    "valeur": 0.6,
+    "unite": "",
+    "role": "Le ciel bleu fournit 30 à 40 % des UV-A : on peut insoler à l’ombre."
+  },
+  {
+    "constante": "Gain d’altitude",
+    "valeur": 0.06,
+    "unite": "par km",
+    "role": "Moins d’air au-dessus de soi, plus d’UV-A (plafonné à 6 km)."
+  },
+  {
+    "constante": "Coefficient des nuages a",
+    "valeur": 0.56,
+    "unite": "",
+    "role": "Ciel couvert à 100 % : il reste 44 % des UV-A."
+  },
+  {
+    "constante": "Exposant des nuages b",
+    "valeur": 2.5,
+    "unite": "",
+    "role": "Quelques nuages épars atténuent peu."
+  },
+  {
+    "constante": "Rapport UV minimum",
+    "valeur": 0.03,
+    "unite": "",
+    "role": "Plancher du rapport UV / UV ciel clair d’Open-Meteo."
+  },
+  {
+    "constante": "Rapport UV maximum",
+    "valeur": 1.15,
+    "unite": "",
+    "role": "Renforcement possible au bord des cumulus."
+  },
+  {
+    "constante": "Rétrodiffusion du ciel",
+    "valeur": 0.2,
+    "unite": "",
+    "role": "Gain dû à un sol clair : neige fraîche ≈ +19 %."
+  }
+]

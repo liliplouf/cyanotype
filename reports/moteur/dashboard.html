@@ -1,0 +1,511 @@
+<style>
+  .mx { display: grid; gap: var(--cds-gap-xl); font-family: var(--font-anthropic-sans); max-width: 72rem; margin-inline: auto; }
+  .mx-head h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; text-wrap: balance; }
+  .mx-take { color: var(--color-fg-muted); margin: var(--cds-gap-sm) 0 0; max-width: 68ch; line-height: 1.55; }
+  .mx-take b, .mx-p b { color: var(--color-fg); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .mx-sec { display: grid; gap: var(--cds-gap-md); scroll-margin-top: var(--cds-gap-xl); }
+  .mx-sec > h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+  .mx-p { margin: 0; max-width: 68ch; line-height: 1.6; color: var(--color-fg); }
+  .mx-p.muted { color: var(--color-fg-muted); }
+  .mx-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; }
+  .mx-card h3 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+  .mx-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: var(--cds-gap-xs) 0 var(--cds-gap-md); line-height: 1.5; }
+  .mx-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); gap: var(--cds-gap-md); }
+  .mx-chart { position: relative; min-height: 240px; }
+  .mx-chart.short { min-height: 170px; }
+  .mx-flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr)); gap: var(--cds-gap-sm); counter-reset: step; }
+  .mx-step { border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); background: var(--color-bg); display: grid; gap: var(--cds-gap-xs); align-content: start; }
+  .mx-step .n { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); letter-spacing: .04em; }
+  .mx-step .t { font-weight: var(--cds-font-weight-medium); }
+  .mx-step .d { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.45; }
+  .mx-step.end { border-color: currentColor; }
+  .mx-formula { font-family: var(--font-anthropic-serif); font-size: 1.35rem; line-height: 1.5; margin: 0 0 var(--cds-gap-md); text-wrap: balance; }
+  .mx-formula b { font-weight: 400; font-variant-numeric: tabular-nums; }
+  .mx-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: var(--cds-gap-md); margin-bottom: var(--cds-gap-md); }
+  .mx-kpi .l { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .mx-kpi .v { font-family: var(--font-anthropic-serif); font-size: 2.1rem; line-height: 1.15; font-variant-numeric: tabular-nums; }
+  .mx-wrap { overflow-x: auto; }
+  .mx-wrap.tall { max-height: 32rem; overflow: auto; }
+  .mx-t { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-body); }
+  .mx-t th { text-align: left; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); white-space: nowrap; position: sticky; top: 0; background: var(--color-panel); }
+  .mx-t td { padding: var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); vertical-align: top; }
+  .mx-t tr:last-child td { border-bottom: 0; }
+  .mx-t td.num { font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+  .mx-t td.muted { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); line-height: 1.45; }
+  .mx-t tr.hl td { font-weight: 600; }
+  .mx-bar { display: flex; align-items: center; gap: var(--cds-gap-sm); }
+  .mx-bar .track { position: relative; width: 7rem; height: 8px; flex: none; }
+  .mx-bar .track::before { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--cds-chart-reference); }
+  .mx-bar .fill { position: absolute; top: 0; height: 100%; border-radius: 4px; }
+  .mx-bar .val { font-variant-numeric: tabular-nums; min-width: 2.6rem; text-align: right; }
+  .mx-tip { position: absolute; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); pointer-events: none; white-space: nowrap; z-index: 3; }
+  .mx-tip .k { color: var(--cds-text-secondary); margin-bottom: 2px; }
+  .mx-tip .sw { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; }
+  .mx-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-top: var(--cds-gap-sm); }
+  .mx-legend i { display: inline-block; width: 12px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+  .mx-failed { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: inherit; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .mx-failed::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+  .mx-list { margin: 0; padding-left: 1.2rem; display: grid; gap: var(--cds-gap-xs); max-width: 68ch; line-height: 1.55; }
+  [data-dash-source-state=empty] { color: transparent; }
+  [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+  @media (max-width: 640px) { .mx-hide-narrow { display: none; } .mx-bar .track { width: 4rem; } }
+</style>
+
+<div class="mx">
+  <header class="mx-head" id="resume">
+    <h1>Comment l'application calcule ton temps de pose</h1>
+    <p class="mx-take">
+      Le cyanotype noircit sous les <b>UV-A</b>, la partie invisible de la lumière du soleil juste avant le violet.
+      L'application estime combien d'UV-A tu reçois, minute après minute, et s'arrête quand ton papier en a reçu assez.
+      Exemple réel ci-dessous : Paris, 16 octobre à 13 h, 40 % de nuages, papier coton et négatif numérique :
+      <b data-source="exemple" data-where="ordre=8" data-field="valeur">—</b> min de pose.
+    </p>
+  </header>
+
+  <section class="mx-sec" id="principe">
+    <h2>Le principe en une ligne</h2>
+    <div class="mx-card">
+      <p class="mx-formula">
+        temps = <b data-source="constantes" data-where="constante=Temps de référence" data-field="valeur">—</b> min
+        × tes réglages ÷ UV-A reçus
+      </p>
+      <div class="mx-flow">
+        <div class="mx-step"><span class="n">ÉTAPE 1</span><span class="t">Où est le soleil ?</span><span class="d">Hauteur au-dessus de l'horizon, calculée pour ton lieu et l'heure (algorithme NOAA).</span></div>
+        <div class="mx-step"><span class="n">ÉTAPE 2</span><span class="t">UV-A par ciel clair</span><span class="d">Plus le soleil est bas, plus sa lumière traverse d'air, et moins d'UV-A arrivent.</span></div>
+        <div class="mx-step"><span class="n">ÉTAPE 3</span><span class="t">Effet des nuages</span><span class="d">Prévision Open-Meteo : on retire ce que les nuages bloquent.</span></div>
+        <div class="mx-step"><span class="n">ÉTAPE 4</span><span class="t">Tes réglages</span><span class="d">Négatif, verre, papier, chimie, calibration : chacun allonge ou raccourcit la pose.</span></div>
+        <div class="mx-step end" style="color: var(--color-ok)"><span class="n">ÉTAPE 5</span><span class="t" style="color: var(--color-fg)">Dose cumulée</span><span class="d">On additionne les UV-A minute par minute jusqu'à la dose voulue.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-sec" id="exemple">
+    <h2>Un calcul pas à pas</h2>
+    <p class="mx-p muted">Paris, 16 octobre 2026, départ à 13:00, 40 % de nuages, réglages par défaut de l'application. Toutes les valeurs viennent du vrai moteur.</p>
+    <div class="mx-grid">
+      <div class="mx-card">
+        <h3>Les étapes du calcul</h3>
+        <p class="mx-note">« × zénith » : 1 = soleil pile au-dessus de la tête, ciel clair, au niveau de la mer.</p>
+        <div class="mx-wrap">
+          <table class="mx-t" id="t-exemple" data-source="exemple" data-row-key="ordre">
+            <thead><tr>
+              <th data-field="ordre">N°</th>
+              <th data-field="etape">Étape</th>
+              <th data-field="valeur" style="text-align: right">Valeur</th>
+              <th data-field="unite">Unité</th>
+              <th data-field="calcul" class="mx-hide-narrow">Comment</th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="mx-card">
+        <h3>Du temps de référence au temps final</h3>
+        <p class="mx-note">Le temps de pose après chaque correction, en supposant le soleil immobile.</p>
+        <div id="c-cascade" class="mx-chart short" data-source="cascade"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-sec" id="soleil">
+    <h2>Étape 2 : la hauteur du soleil change tout</h2>
+    <p class="mx-p">
+      Soleil haut, la lumière traverse peu d'air. Soleil bas, elle en traverse beaucoup plus et perd ses UV-A en chemin.
+      Une bonne partie des UV-A vient aussi du ciel bleu lui-même (la lumière « diffuse »), ce qui explique qu'on puisse insoler à l'ombre.
+    </p>
+    <div class="mx-grid">
+      <div class="mx-card">
+        <h3>UV-A reçus selon la hauteur du soleil</h3>
+        <p class="mx-note">Ciel clair, niveau de la mer. Direct : rayons du soleil. Diffus : lumière venant de tout le ciel.</p>
+        <div id="c-uva" class="mx-chart" data-source="uva_elevation"></div>
+        <div class="mx-legend"><span><i id="lg-direct"></i>Direct</span><span><i id="lg-diffus"></i>Diffus</span></div>
+      </div>
+      <div class="mx-card">
+        <h3>Temps de référence selon la hauteur du soleil</h3>
+        <p class="mx-note">Cyanotype classique, sans verre, sans négatif. La courbe s'arrête au-delà d'une heure.</p>
+        <div id="c-minutes" class="mx-chart" data-source="uva_elevation"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-sec" id="nuages">
+    <h2>Étape 3 : les nuages</h2>
+    <p class="mx-p">
+      Quelques nuages épars bloquent peu d'UV-A ; un ciel entièrement couvert en laisse encore passer près de la moitié.
+      Quand Open-Meteo fournit l'indice UV réel et l'indice UV par ciel clair, l'application utilise plutôt leur rapport, qui reflète mieux l'épaisseur réelle des nuages.
+    </p>
+    <div class="mx-card">
+      <h3>Part des UV-A qui passe selon la couverture nuageuse</h3>
+      <p class="mx-note">Formule de Kasten et Czeplak adaptée aux UV. Survole la courbe pour voir l'allongement du temps de pose.</p>
+      <div id="c-nuages" class="mx-chart short" data-source="nuages"></div>
+    </div>
+  </section>
+
+  <section class="mx-sec" id="journee">
+    <h2>Au fil de la journée et des saisons</h2>
+    <p class="mx-p">
+      Même lieu, mêmes réglages, ciel clair : le temps de pose selon l'heure à laquelle tu commences.
+      Le creux de chaque courbe est le meilleur moment : autour du midi solaire, qui tombe en début d'après-midi à l'heure française.
+    </p>
+    <div class="mx-card">
+      <h3>Temps de pose selon l'heure de départ, Paris</h3>
+      <p class="mx-note">Papier coton et négatif numérique, ciel clair. Heures locales. Au-delà de 90 minutes, la courbe s'arrête.</p>
+      <div id="c-journees" class="mx-chart" style="min-height: 280px" data-source="journees"></div>
+      <div class="mx-legend" id="lg-journees"></div>
+    </div>
+  </section>
+
+  <section class="mx-sec" id="integration">
+    <h2>Étape 5 : pourquoi additionner minute par minute</h2>
+    <p class="mx-p">
+      En fin d'après-midi, le soleil baisse pendant que tu exposes. Un calcul qui prendrait la lumière du départ sous-estimerait la pose.
+      L'application additionne donc la lumière réellement reçue à chaque minute, et le minuteur suit cette dose, pas une durée fixe.
+    </p>
+    <div class="mx-card">
+      <div class="mx-kpis">
+        <div class="mx-kpi"><div class="l">Si le soleil restait à sa hauteur de 16:30</div><div class="v"><span data-source="integration_resume" data-where="cas=Soleil supposé fixe" data-field="minutes">—</span> min</div></div>
+        <div class="mx-kpi"><div class="l">Dose réellement additionnée (affiché)</div><div class="v"><span data-source="integration_resume" data-where="cas=Dose intégrée (affiché)" data-field="minutes">—</span> min</div></div>
+      </div>
+      <h3>Dose reçue pendant une pose commencée à 16:30, Paris, 16 octobre</h3>
+      <p class="mx-note">Pointillé : ce que donnerait un soleil immobile. Trait plein : la dose réelle, qui ralentit à mesure que le soleil descend.</p>
+      <div id="c-integration" class="mx-chart" data-source="integration integration_resume"></div>
+    </div>
+  </section>
+
+  <section class="mx-sec" id="facteurs">
+    <h2>Étape 4 : tes réglages</h2>
+    <p class="mx-p">
+      Chaque réglage multiplie le temps de pose. Au-dessus de 1, la pose s'allonge ; en dessous, elle raccourcit.
+      Tous les facteurs se multiplient entre eux, puis par ta calibration personnelle. C'est elle qui corrige l'écart propre à ton kit du commerce.
+    </p>
+    <div class="mx-card">
+      <h3>Tous les facteurs</h3>
+      <p class="mx-note">La barre part du trait central (facteur 1) : vers la droite, la pose s'allonge.</p>
+      <div class="mx-wrap tall">
+        <table class="mx-t" id="t-facteurs" data-source="facteurs" data-row-key="id">
+          <thead><tr>
+            <th data-field="categorie">Catégorie</th>
+            <th data-field="reglage">Réglage</th>
+            <th data-field="facteur">Facteur</th>
+            <th data-field="description" class="mx-hide-narrow">Pourquoi</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-sec" id="constantes">
+    <h2>Les constantes du modèle</h2>
+    <div class="mx-card">
+      <p class="mx-note" style="margin-top: 0">Les seuls nombres fixés à la main dans le moteur. Les modifier changerait tous les calculs.</p>
+      <div class="mx-wrap">
+        <table class="mx-t" id="t-constantes" data-source="constantes" data-row-key="constante">
+          <thead><tr>
+            <th data-field="constante">Constante</th>
+            <th data-field="valeur" style="text-align: right">Valeur</th>
+            <th data-field="unite">Unité</th>
+            <th data-field="role" class="mx-hide-narrow">Rôle</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-sec" id="limites">
+    <h2>Ce que le modèle ne sait pas</h2>
+    <ul class="mx-list">
+      <li>La sensibilité exacte de ton kit : la formule est inconnue, d'où l'importance de la bande test et de la calibration.</li>
+      <li>L'épaisseur réelle des nuages au moment précis : la prévision est horaire, un nuage qui passe n'y figure pas. Le minuteur affiche une fourchette pour cette raison.</li>
+      <li>L'orientation de ton châssis : le calcul suppose un châssis posé à plat. Incliné face au soleil, il reçoit plus de lumière quand le soleil est bas.</li>
+      <li>La densité de ton négatif numérique : elle dépend de ton imprimante et de ton encre ; la calibration l'absorbe.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+  const fr = (d) => new Intl.NumberFormat('fr-FR', { maximumFractionDigits: d, minimumFractionDigits: 0 });
+  const f1 = fr(1), f2 = fr(2), f3 = fr(3);
+  const pct0 = new Intl.NumberFormat('fr-FR', { style: 'percent', maximumFractionDigits: 0 });
+  const root = document.getElementById('dash-root');
+  const num = (x) => (x === null || x === undefined || x === '' ? null : Number(x));
+
+  function fillMarks() {
+    root.querySelectorAll('[data-where][data-field]').forEach((el) => {
+      const d = dash.data(el.dataset.source);
+      if (d.status !== 'ok') { el.textContent = '—'; return; }
+      const [k, v] = decodeURIComponent(el.dataset.where).split('=');
+      const row = d.data.find((r) => String(r[k]) === v);
+      const val = row ? row[el.dataset.field] : null;
+      el.textContent = val === null || val === undefined ? '—' : (typeof val === 'number' ? f1.format(val) : String(val));
+    });
+  }
+
+  function failed(el, d) {
+    const f = document.createElement('div');
+    f.className = 'mx-failed';
+    f.textContent = 'Failed to load';
+    if (d.status === 'error' || d.status === 'connect') el.appendChild(f);
+  }
+
+  function clear(el) { el.querySelectorAll('svg, .mx-failed').forEach((n) => n.remove()); }
+
+  function tooltip(box) {
+    let t = box.querySelector('.mx-tip');
+    if (!t) { t = document.createElement('div'); t.className = 'mx-tip'; t.hidden = true; box.appendChild(t); }
+    return {
+      show(px, py, head, lines) {
+        t.textContent = '';
+        const h = document.createElement('div'); h.className = 'k'; h.textContent = head; t.appendChild(h);
+        for (const l of lines) {
+          const row = document.createElement('div');
+          if (l.color) { const s = document.createElement('span'); s.className = 'sw'; s.style.background = l.color; row.appendChild(s); }
+          row.appendChild(document.createTextNode(l.text));
+          t.appendChild(row);
+        }
+        t.hidden = false;
+        const w = box.clientWidth;
+        let x = px + 14;
+        if (x + t.offsetWidth > w) x = px - t.offsetWidth - 14;
+        t.style.left = Math.max(0, x) + 'px';
+        t.style.top = Math.max(0, py - 10) + 'px';
+      },
+      hide() { t.hidden = true; },
+    };
+  }
+
+  function styleAxis(g) {
+    g.attr('font-size', null).attr('font-family', null);
+    g.select('.domain').attr('stroke', 'var(--cds-chart-axis)');
+    g.selectAll('.tick line').attr('stroke', 'var(--cds-chart-grid)');
+    g.selectAll('.tick text').attr('fill', 'var(--color-fg-muted)').attr('font-size', 11);
+  }
+
+  // Graphique en lignes générique : séries [{name, color, pts:[{x,y}], dash?, area?, base?}]
+  function lineChart(el, { series, xDomain, yDomain, xFmt, yFmt, xLabel, yLabel, height = 240, tipHead, tipLine, xTicks = 6 }) {
+    const W = Math.max(280, el.clientWidth), H = height;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    const yScale0 = d3.scaleLinear(yDomain, [H - 34, 10]);
+    const probe = svg.append('text').attr('font-size', 11).text(yFmt(yScale0.ticks(5).at(-1)));
+    const ml = probe.node().getComputedTextLength() + 14;
+    probe.remove();
+    const m = { t: 10, r: 14, b: 34, l: ml };
+    const x = d3.scaleLinear(xDomain, [m.l, W - m.r]);
+    const y = d3.scaleLinear(yDomain, [H - m.b, m.t]);
+    const gy = svg.append('g').attr('transform', `translate(${m.l},0)`)
+      .call(d3.axisLeft(y).ticks(5).tickSize(-(W - m.l - m.r)).tickFormat(yFmt));
+    styleAxis(gy); gy.select('.domain').remove();
+    const gx = svg.append('g').attr('transform', `translate(0,${H - m.b})`)
+      .call(d3.axisBottom(x).ticks(Math.min(xTicks, Math.floor((W - m.l) / 60))).tickFormat(xFmt).tickSizeOuter(0));
+    styleAxis(gx); gx.selectAll('.tick line').attr('stroke', 'var(--cds-chart-axis)');
+    if (xLabel) svg.append('text').attr('x', W - m.r).attr('y', H - 4).attr('text-anchor', 'end').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(xLabel);
+    if (yLabel) svg.append('text').attr('x', m.l + 4).attr('y', m.t + 10).attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(yLabel);
+    const clipId = 'clip' + Math.random().toString(36).slice(2);
+    svg.append('clipPath').attr('id', clipId).append('rect').attr('x', m.l).attr('y', m.t).attr('width', W - m.l - m.r).attr('height', H - m.t - m.b);
+    const plot = svg.append('g').attr('clip-path', `url(#${clipId})`);
+    for (const s of series) {
+      const ok = (p) => p.y !== null && Number.isFinite(p.y);
+      if (s.area) {
+        plot.append('path').datum(s.pts).attr('fill', s.color).attr('fill-opacity', 0.28).attr('stroke', 'none')
+          .attr('d', d3.area().defined(ok).x((p) => x(p.x)).y0((p) => y(p.base ?? 0)).y1((p) => y(p.y)));
+      }
+      plot.append('path').datum(s.pts).attr('fill', 'none').attr('stroke', s.color).attr('stroke-width', 2)
+        .attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round').attr('stroke-dasharray', s.dash || null)
+        .attr('d', d3.line().defined(ok).x((p) => x(p.x)).y((p) => y(p.y)));
+    }
+    // Survol : point le plus proche en x sur chaque série.
+    const tt = tooltip(el);
+    const rule = svg.append('line').attr('y1', m.t).attr('y2', H - m.b).attr('stroke', 'var(--cds-chart-reference)').attr('opacity', 0);
+    const dots = svg.append('g');
+    svg.append('rect').attr('x', m.l).attr('y', m.t).attr('width', W - m.l - m.r).attr('height', H - m.t - m.b).attr('fill', 'transparent')
+      .on('pointermove', (ev) => {
+        const [mx] = d3.pointer(ev);
+        const xv = x.invert(mx);
+        const hits = series.filter((s) => !s.noTip).map((s) => {
+          const pts = s.pts.filter((p) => p.y !== null && Number.isFinite(p.y));
+          if (!pts.length) return null;
+          const p = d3.least(pts, (q) => Math.abs(q.x - xv));
+          return Math.abs(p.x - xv) <= (xDomain[1] - xDomain[0]) / 25 ? { s, p } : null;
+        }).filter(Boolean);
+        dots.selectAll('*').remove();
+        if (!hits.length) { tt.hide(); rule.attr('opacity', 0); return; }
+        const px = x(hits[0].p.x);
+        rule.attr('x1', px).attr('x2', px).attr('opacity', 1);
+        for (const h of hits) dots.append('circle').attr('cx', x(h.p.x)).attr('cy', y(h.p.y)).attr('r', 4).attr('fill', h.s.color);
+        const scale = el.clientWidth / W;
+        tt.show(px * scale, y(hits[0].p.y) * scale, tipHead(hits[0].p), hits.map((h) => ({ color: hits.length > 1 ? h.s.color : null, text: tipLine(h) })));
+      })
+      .on('pointerleave', () => { tt.hide(); rule.attr('opacity', 0); dots.selectAll('*').remove(); });
+    return { svg, x, y, m, W, H };
+  }
+
+  function drawCascade() {
+    const el = document.getElementById('c-cascade'); clear(el);
+    const d = dash.data('cascade');
+    if (d.status !== 'ok') return failed(el, d);
+    const rows = d.data.map((r) => ({ ...r, minutes: num(r.minutes) })).sort((a, b) => a.ordre - b.ordre);
+    const W = Math.max(280, el.clientWidth), rowH = 38, H = rows.length * rowH + 6;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    const probe = svg.append('text').attr('font-size', 12).text(rows.reduce((a, r) => (r.etape.length > a.length ? r.etape : a), ''));
+    const left = probe.node().getComputedTextLength() + 12; probe.remove();
+    const x = d3.scaleLinear([0, d3.max(rows, (r) => r.minutes) * 1.15], [left, W - 8]);
+    const y = d3.scaleBand(rows.map((r) => r.ordre), [2, H - 2]).padding(0.3);
+    const g = svg.selectAll('g').data(rows).join('g');
+    g.append('text').attr('x', 0).attr('y', (r) => y(r.ordre) + y.bandwidth() / 2).attr('dy', '0.35em').attr('font-size', 12).attr('fill', 'var(--color-fg)').text((r) => r.etape);
+    g.append('rect').attr('x', left).attr('y', (r) => y(r.ordre)).attr('height', y.bandwidth()).attr('rx', 4)
+      .attr('width', (r) => x(r.minutes) - left).attr('fill', (r, i) => (i === rows.length - 1 ? dash.colors[0] : 'var(--cds-chart-muted)'));
+    g.append('text').attr('x', (r) => x(r.minutes) + 6).attr('y', (r) => y(r.ordre) + y.bandwidth() / 2).attr('dy', '0.35em')
+      .attr('font-size', 12).attr('fill', 'var(--color-fg)').style('font-variant-numeric', 'tabular-nums').text((r) => `${f1.format(r.minutes)} min`);
+  }
+
+  function drawUva() {
+    const el = document.getElementById('c-uva'); clear(el);
+    const d = dash.data('uva_elevation');
+    document.getElementById('lg-direct').style.background = dash.colors[1];
+    document.getElementById('lg-diffus').style.background = dash.colors[0];
+    if (d.status !== 'ok') return failed(el, d);
+    const rows = d.data.map((r) => ({ e: num(r.elevation), uva: num(r.uva), direct: num(r.direct), diffus: num(r.diffus) }));
+    lineChart(el, {
+      series: [
+        { name: 'Diffus', color: dash.colors[0], area: true, pts: rows.map((r) => ({ x: r.e, y: r.diffus, base: 0, r })) },
+        { name: 'Direct', color: dash.colors[1], area: true, pts: rows.map((r) => ({ x: r.e, y: r.uva, base: r.diffus, r })) },
+      ],
+      xDomain: [0, 90], yDomain: [0, 1], xFmt: (v) => `${v}°`, yFmt: (v) => f1.format(v), xLabel: 'hauteur du soleil', yLabel: 'UV-A (× zénith)',
+      tipHead: (p) => `Soleil à ${p.x}°`,
+      tipLine: (h) => (h.s.name === 'Direct' ? `Total ${f2.format(h.p.r.uva)} · direct ${f2.format(h.p.r.direct)}` : `Diffus ${f2.format(h.p.r.diffus)}`),
+    });
+  }
+
+  function drawMinutes() {
+    const el = document.getElementById('c-minutes'); clear(el);
+    const d = dash.data('uva_elevation');
+    if (d.status !== 'ok') return failed(el, d);
+    const pts = d.data.map((r) => ({ x: num(r.elevation), y: num(r.minutes_reference) })).map((p) => ({ ...p, y: p.y > 60 ? null : p.y }));
+    lineChart(el, {
+      series: [{ name: 'Temps', color: dash.colors[0], pts }],
+      xDomain: [0, 90], yDomain: [0, 60], xFmt: (v) => `${v}°`, yFmt: (v) => `${v} min`, xLabel: 'hauteur du soleil',
+      tipHead: (p) => `Soleil à ${p.x}°`, tipLine: (h) => `${f1.format(h.p.y)} min`,
+    });
+  }
+
+  function drawNuages() {
+    const el = document.getElementById('c-nuages'); clear(el);
+    const d = dash.data('nuages');
+    if (d.status !== 'ok') return failed(el, d);
+    const rows = d.data.map((r) => ({ x: num(r.couverture), y: num(r.transmission), a: num(r.allongement) }));
+    lineChart(el, {
+      series: [{ name: 'Transmission', color: dash.colors[0], area: true, pts: rows }],
+      xDomain: [0, 100], yDomain: [0, 1], height: 200, xFmt: (v) => `${v} %`, yFmt: (v) => pct0.format(v), xLabel: 'couverture nuageuse',
+      tipHead: (p) => `${p.x} % de nuages`, tipLine: (h) => `${pct0.format(h.p.y)} des UV-A passent · pose × ${f2.format(h.p.a)}`,
+    });
+  }
+
+  function drawJournees() {
+    const el = document.getElementById('c-journees'); clear(el);
+    const lg = document.getElementById('lg-journees'); lg.textContent = '';
+    const d = dash.data('journees');
+    if (d.status !== 'ok') return failed(el, d);
+    const jours = [...new Set(d.data.map((r) => r.jour))];
+    const series = jours.map((j, i) => ({
+      name: j, color: dash.colors[i],
+      pts: d.data.filter((r) => r.jour === j).map((r) => {
+        const m = num(r.minutes);
+        return { x: num(r.heure_decimale), y: m !== null && m <= 90 ? m : null, h: r.heure, e: num(r.elevation), m };
+      }),
+    }));
+    const xs = d.data.map((r) => num(r.heure_decimale));
+    lineChart(el, {
+      series, xDomain: [Math.floor(d3.min(xs)), Math.ceil(d3.max(xs))], yDomain: [0, 90], height: 280, xTicks: 10,
+      xFmt: (v) => `${v} h`, yFmt: (v) => `${v} min`, xLabel: 'heure de départ',
+      tipHead: (p) => `Départ à ${p.h}`, tipLine: (h) => `${h.s.name} : ${f1.format(h.p.m)} min (soleil ${f1.format(h.p.e)}°)`,
+    });
+    for (const s of series) {
+      const best = d3.least(s.pts.filter((p) => p.y !== null), (p) => p.y);
+      const item = document.createElement('span');
+      const sw = document.createElement('i'); sw.style.background = s.color;
+      item.appendChild(sw);
+      item.appendChild(document.createTextNode(best ? `${s.name} : au mieux ${f1.format(best.y)} min vers ${best.h}` : s.name));
+      lg.appendChild(item);
+    }
+  }
+
+  function drawIntegration() {
+    const el = document.getElementById('c-integration'); clear(el);
+    const d = dash.data('integration'), s = dash.data('integration_resume');
+    if (d.status !== 'ok' || s.status !== 'ok') return failed(el, d.status !== 'ok' ? d : s);
+    const fixe = num((s.data.find((r) => r.cas === 'Soleil supposé fixe') || {}).minutes);
+    const rows = d.data.map((r) => ({ x: num(r.minute), y: num(r.dose_pct), h: r.heure, u: num(r.uva) }));
+    const maxX = Math.max(d3.max(rows, (r) => r.x), fixe || 0);
+    const ideal = fixe ? [{ x: 0, y: 0 }, { x: fixe, y: 100 }] : [];
+    lineChart(el, {
+      series: [
+        { name: 'Soleil fixe', color: 'var(--cds-chart-muted)', dash: '5 4', pts: ideal, noTip: true },
+        { name: 'Dose réelle', color: dash.colors[0], pts: rows },
+      ],
+      xDomain: [0, Math.ceil(maxX / 5) * 5], yDomain: [0, 100], xFmt: (v) => `${v} min`, yFmt: (v) => `${v} %`, xLabel: 'durée de pose', yLabel: 'dose reçue',
+      tipHead: (p) => `${p.h}, après ${p.x} min`, tipLine: (h) => `${f1.format(h.p.y)} % de la dose · UV-A ${f2.format(h.p.u)}`,
+    });
+  }
+
+  function drawTable(id, src, cols, opts = {}) {
+    const body = document.querySelector(`#${id} tbody`);
+    body.textContent = '';
+    const d = dash.data(src);
+    if (d.status !== 'ok') return;
+    let rows = d.data.slice();
+    if (opts.sort) rows.sort(opts.sort);
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      if (opts.key) tr.dataset.key = r[opts.key];
+      if (opts.hl && opts.hl(r)) tr.className = 'hl';
+      for (const c of cols) {
+        const td = document.createElement('td');
+        if (c.cls) td.className = c.cls;
+        if (c.render) c.render(td, r[c.f], r);
+        else td.textContent = r[c.f] === null || r[c.f] === undefined ? '' : (typeof r[c.f] === 'number' && c.fmt ? c.fmt(r[c.f]) : String(r[c.f]));
+        tr.appendChild(td);
+      }
+      body.appendChild(tr);
+    }
+  }
+
+  function factorBar(td, v) {
+    const f = num(v);
+    const wrap = document.createElement('div'); wrap.className = 'mx-bar';
+    const track = document.createElement('div'); track.className = 'track';
+    const fill = document.createElement('div'); fill.className = 'fill';
+    // Échelle logarithmique : facteur 1 au centre, ×6 ou ÷6 aux bords.
+    const pos = Math.max(-1, Math.min(1, Math.log(f) / Math.log(6)));
+    fill.style.left = (pos >= 0 ? 50 : 50 + pos * 50) + '%';
+    fill.style.width = Math.max(1.5, Math.abs(pos) * 50) + '%';
+    fill.style.background = f > 1 ? dash.colors[0] : f < 1 ? dash.colors[2] : 'var(--cds-chart-muted)';
+    track.appendChild(fill);
+    const val = document.createElement('span'); val.className = 'val'; val.textContent = f2.format(f);
+    wrap.append(track, val);
+    td.appendChild(wrap);
+  }
+
+  dash.onData(() => {
+    fillMarks();
+    drawTable('t-exemple', 'exemple', [
+      { f: 'ordre', cls: 'muted' }, { f: 'etape' }, { f: 'valeur', cls: 'num', fmt: (v) => f3.format(v) },
+      { f: 'unite', cls: 'muted' }, { f: 'calcul', cls: 'muted mx-hide-narrow' },
+    ], { sort: (a, b) => a.ordre - b.ordre, hl: (r) => r.ordre === 8 });
+    drawCascade();
+    drawUva();
+    drawMinutes();
+    drawNuages();
+    drawJournees();
+    drawIntegration();
+    drawTable('t-facteurs', 'facteurs', [
+      { f: 'categorie', cls: 'muted' }, { f: 'reglage' }, { f: 'facteur', render: factorBar }, { f: 'description', cls: 'muted mx-hide-narrow' },
+    ], { key: 'id' });
+    drawTable('t-constantes', 'constantes', [
+      { f: 'constante' }, { f: 'valeur', cls: 'num', fmt: (v) => f3.format(v) }, { f: 'unite', cls: 'muted' }, { f: 'role', cls: 'muted mx-hide-narrow' },
+    ]);
+  });
+
+  const named = document.getElementById(location.hash.slice(1));
+  if (named) { named.scrollIntoView(); dash.setLink(named.id); }
+</script>

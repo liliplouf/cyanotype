@@ -1,0 +1,107 @@
+[
+  {
+    "couverture": 0,
+    "transmission": 1,
+    "allongement": 1
+  },
+  {
+    "couverture": 5,
+    "transmission": 1,
+    "allongement": 1
+  },
+  {
+    "couverture": 10,
+    "transmission": 0.998,
+    "allongement": 1
+  },
+  {
+    "couverture": 15,
+    "transmission": 0.995,
+    "allongement": 1
+  },
+  {
+    "couverture": 20,
+    "transmission": 0.99,
+    "allongement": 1.01
+  },
+  {
+    "couverture": 25,
+    "transmission": 0.983,
+    "allongement": 1.02
+  },
+  {
+    "couverture": 30,
+    "transmission": 0.972,
+    "allongement": 1.03
+  },
+  {
+    "couverture": 35,
+    "transmission": 0.959,
+    "allongement": 1.04
+  },
+  {
+    "couverture": 40,
+    "transmission": 0.943,
+    "allongement": 1.06
+  },
+  {
+    "couverture": 45,
+    "transmission": 0.924,
+    "allongement": 1.08
+  },
+  {
+    "couverture": 50,
+    "transmission": 0.901,
+    "allongement": 1.11
+  },
+  {
+    "couverture": 55,
+    "transmission": 0.874,
+    "allongement": 1.14
+  },
+  {
+    "couverture": 60,
+    "transmission": 0.844,
+    "allongement": 1.19
+  },
+  {
+    "couverture": 65,
+    "transmission": 0.809,
+    "allongement": 1.24
+  },
+  {
+    "couverture": 70,
+    "transmission": 0.77,
+    "allongement": 1.3
+  },
+  {
+    "couverture": 75,
+    "transmission": 0.727,
+    "allongement": 1.38
+  },
+  {
+    "couverture": 80,
+    "transmission": 0.679,
+    "allongement": 1.47
+  },
+  {
+    "couverture": 85,
+    "transmission": 0.627,
+    "allongement": 1.59
+  },
+  {
+    "couverture": 90,
+    "transmission": 0.57,
+    "allongement": 1.76
+  },
+  {
+    "couverture": 95,
+    "transmission": 0.507,
+    "allongement": 1.97
+  },
+  {
+    "couverture": 100,
+    "transmission": 0.44,
+    "allongement": 2.27
+  }
+]
