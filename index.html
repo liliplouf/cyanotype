@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Cyanotype — temps de pose</title>
+  <meta name="description" content="Calculez le temps d'exposition de vos cyanotypes selon le soleil, la météo, le lieu, la chimie, le support et le négatif.">
+  <meta name="theme-color" content="#0b3d91" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#06101f" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b3d91'/%3E%3Cpath d='M16 52 C 22 36, 32 22, 50 12' stroke='%23e8f4fb' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Cellipse cx='24' cy='36' rx='8' ry='3.5' fill='%23e8f4fb' transform='rotate(-40 24 36)'/%3E%3Cellipse cx='34' cy='34' rx='8' ry='3.5' fill='%23e8f4fb' transform='rotate(20 34 34)'/%3E%3Cellipse cx='33' cy='24' rx='7' ry='3' fill='%23e8f4fb' transform='rotate(-50 33 24)'/%3E%3Cellipse cx='42' cy='23' rx='7' ry='3' fill='%23e8f4fb' transform='rotate(15 42 23)'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#resultat">Aller directement au résultat</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <svg class="fern" viewBox="-10 -10 250 320" aria-hidden="true" focusable="false">
+        <path d="M40 300 Q70 130 210 10" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        <g fill="currentColor"><ellipse cx="17.5" cy="282.4" rx="26.0" ry="14.6" transform="rotate(-142.0 17.5 282.4)"/><ellipse cx="67.2" cy="291.2" rx="26.0" ry="14.6" transform="rotate(-18.0 67.2 291.2)"/><ellipse cx="23.9" cy="259.9" rx="24.7" ry="13.8" transform="rotate(-139.4 23.9 259.9)"/><ellipse cx="70.7" cy="270.4" rx="24.7" ry="13.8" transform="rotate(-15.4 70.7 270.4)"/><ellipse cx="31.2" cy="237.9" rx="23.4" ry="13.1" transform="rotate(-136.7 31.2 237.9)"/><ellipse cx="75.1" cy="249.9" rx="23.4" ry="13.1" transform="rotate(-12.7 75.1 249.9)"/><ellipse cx="39.5" cy="216.5" rx="22.1" ry="12.4" transform="rotate(-134.0 39.5 216.5)"/><ellipse cx="80.3" cy="229.8" rx="22.1" ry="12.4" transform="rotate(-10.0 80.3 229.8)"/><ellipse cx="48.7" cy="195.7" rx="20.8" ry="11.6" transform="rotate(-131.3 48.7 195.7)"/><ellipse cx="86.5" cy="210.0" rx="20.8" ry="11.6" transform="rotate(-7.3 86.5 210.0)"/><ellipse cx="58.9" cy="175.4" rx="19.5" ry="10.9" transform="rotate(-128.5 58.9 175.4)"/><ellipse cx="93.6" cy="190.5" rx="19.5" ry="10.9" transform="rotate(-4.5 93.6 190.5)"/><ellipse cx="69.9" cy="155.8" rx="18.2" ry="10.2" transform="rotate(-125.7 69.9 155.8)"/><ellipse cx="101.6" cy="171.4" rx="18.2" ry="10.2" transform="rotate(-1.7 101.6 171.4)"/><ellipse cx="81.8" cy="136.7" rx="16.9" ry="9.5" transform="rotate(-123.0 81.8 136.7)"/><ellipse cx="110.5" cy="152.5" rx="16.9" ry="9.5" transform="rotate(1.0 110.5 152.5)"/><ellipse cx="94.7" cy="118.1" rx="15.6" ry="8.7" transform="rotate(-120.3 94.7 118.1)"/><ellipse cx="120.4" cy="134.0" rx="15.6" ry="8.7" transform="rotate(3.7 120.4 134.0)"/><ellipse cx="108.3" cy="100.1" rx="14.3" ry="8.0" transform="rotate(-117.6 108.3 100.1)"/><ellipse cx="131.2" cy="115.8" rx="14.3" ry="8.0" transform="rotate(6.4 131.2 115.8)"/><ellipse cx="122.9" cy="82.6" rx="13.0" ry="7.3" transform="rotate(-114.9 122.9 82.6)"/><ellipse cx="143.0" cy="97.8" rx="13.0" ry="7.3" transform="rotate(9.1 143.0 97.8)"/><ellipse cx="138.3" cy="65.7" rx="11.7" ry="6.5" transform="rotate(-112.3 138.3 65.7)"/><ellipse cx="155.7" cy="80.2" rx="11.7" ry="6.5" transform="rotate(11.7 155.7 80.2)"/><ellipse cx="154.5" cy="49.3" rx="10.4" ry="5.8" transform="rotate(-109.8 154.5 49.3)"/><ellipse cx="169.4" cy="62.8" rx="10.4" ry="5.8" transform="rotate(14.2 169.4 62.8)"/><ellipse cx="171.7" cy="33.4" rx="9.1" ry="5.1" transform="rotate(-107.3 171.7 33.4)"/><ellipse cx="184.2" cy="45.8" rx="9.1" ry="5.1" transform="rotate(16.7 184.2 45.8)"/><ellipse cx="189.6" cy="18.0" rx="7.8" ry="4.3" transform="rotate(-104.9 189.6 18.0)"/><ellipse cx="199.9" cy="29.0" rx="7.8" ry="4.3" transform="rotate(19.1 199.9 29.0)"/><ellipse cx="208.5" cy="3.1" rx="6.5" ry="3.6" transform="rotate(-102.6 208.5 3.1)"/><ellipse cx="216.6" cy="12.6" rx="6.5" ry="3.6" transform="rotate(21.4 216.6 12.6)"/></g>
+      </svg>
+      <p class="eyebrow">Procédé au bleu de Prusse</p>
+      <h1>Cyanotype <span class="h1-sub">calculateur de temps de pose</span></h1>
+      <p class="lede">Selon le soleil, la météo, votre lieu et votre procédé — avec minuteur, bande test et journal de tirages.</p>
+    </div>
+  </header>
+
+
+  <main class="wrap layout" id="contenu">
+    <div class="top-grid">
+    <div class="col col-output">
+      <!-- Résultat -->
+      <section class="card card-result" id="resultat" aria-labelledby="h-resultat" tabindex="-1">
+        <div class="result-top">
+          <h2 id="h-resultat">Temps de pose</h2>
+          <p class="res-context" id="res-context"></p>
+        </div>
+        <div class="result-main" id="result-live" aria-live="polite" aria-atomic="true">
+          <p class="big" id="res-time">--:--</p>
+          <p class="res-sub" id="res-sub">Calcul en cours…</p>
+        </div>
+        <p class="res-range" id="res-range"></p>
+        <dl class="res-stats">
+          <div><dt>Fin estimée</dt><dd id="res-end">—</dd></div>
+          <div><dt>Soleil</dt><dd id="res-elev">—</dd></div>
+          <div><dt><abbr title="Irradiance UV-A relative : 1 = soleil au zénith, ciel clair">UV-A</abbr></dt><dd id="res-uva">—</dd></div>
+        </dl>
+        <p class="res-best" id="res-best" hidden></p>
+        <p class="res-calib" id="res-calib" hidden><span>Kit inconnu ?</span> <a href="#bande-test" class="chip">1. Bande test</a> <a href="#journal" class="chip">2. Calibration</a></p>
+        <details class="advice-box" id="advice-box">
+          <summary>Conseils <span id="advice-count"></span></summary>
+          <ul class="advice" id="res-advice"></ul>
+        </details>
+      </section>
+
+      <!-- Minuteur -->
+      <section class="card card-timer" id="minuteur" aria-labelledby="h-minuteur">
+        <div class="timer-head">
+          <h2 id="h-minuteur">Minuteur</h2>
+          <p class="timer-label" id="timer-label">Temps calculé</p>
+        </div>
+        <div class="timer-row">
+          <p class="timer-display" id="timer-display" role="timer" aria-live="off">--:--</p>
+          <p class="timer-meta" id="timer-meta">Dose reçue : 0 %</p>
+        </div>
+        <div class="progress" id="timer-progress" role="progressbar" aria-label="Dose UV reçue" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <span class="progress-bar" id="timer-bar"></span>
+        </div>
+        <p class="timer-step" id="timer-step" hidden></p>
+        <p class="status-text timer-status" id="timer-status" aria-live="assertive">Le décompte suit la dose UV reçue (soleil qui bouge, nuages prévus).</p>
+        <div class="btn-row timer-btns">
+          <button type="button" class="btn btn-primary btn-lg" id="btn-start-timer">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z" fill="currentColor"/></svg>
+            <span id="btn-start-label">Démarrer</span>
+          </button>
+          <button type="button" class="btn btn-secondary btn-lg" id="timer-pause" disabled>Pause</button>
+          <button type="button" class="btn btn-ghost btn-lg" id="timer-cancel" disabled>Annuler</button>
+        </div>
+        <p class="hint timer-hint">Bip, notification et vibration à la fin ; l'écran reste allumé pendant la pose si le navigateur le permet.</p>
+      </section>
+    </div>
+
+    <div class="col col-inputs">
+
+      <!-- Lieu -->
+      <section class="card" id="lieu" aria-labelledby="h-lieu">
+        <h2 id="h-lieu">Lieu</h2>
+        <div class="place-current">
+          <p class="place-name" id="place-name">Paris</p>
+          <p class="place-meta" id="place-meta">48,857° N · 2,352° E · 35 m</p>
+        </div>
+        <div class="row">
+          <button type="button" class="btn btn-secondary" id="btn-geo">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Ma position
+          </button>
+          <p class="status-text" id="geo-status" aria-live="polite"></p>
+        </div>
+
+        <div class="field combo">
+          <label for="place-search">Rechercher une ville</label>
+          <input type="search" id="place-search" autocomplete="off" spellcheck="false" placeholder="ex. Arles, Lyon, Bruxelles…"
+                 role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="place-results" aria-describedby="place-search-hint">
+          <p class="hint" id="place-search-hint">Tapez au moins 2 lettres, puis choisissez dans la liste (flèches + Entrée).</p>
+          <ul id="place-results" class="combo-list" role="listbox" aria-label="Résultats de recherche" hidden></ul>
+        </div>
+
+        <details class="disclosure" id="manual-coords">
+          <summary>Coordonnées manuelles</summary>
+          <form id="coords-form" class="grid-3" novalidate>
+            <div class="field">
+              <label for="in-lat">Latitude (°)</label>
+              <input type="number" id="in-lat" step="any" min="-90" max="90" inputmode="decimal" required>
+            </div>
+            <div class="field">
+              <label for="in-lon">Longitude (°)</label>
+              <input type="number" id="in-lon" step="any" min="-180" max="180" inputmode="decimal" required>
+            </div>
+            <div class="field">
+              <label for="in-alt">Altitude (m)</label>
+              <input type="number" id="in-alt" step="1" min="-500" max="9000" inputmode="numeric" placeholder="auto">
+            </div>
+            <div class="span-all row">
+              <button type="submit" class="btn btn-secondary">Utiliser ces coordonnées</button>
+              <p class="status-text" id="coords-status" aria-live="polite"></p>
+            </div>
+          </form>
+        </details>
+      </section>
+
+      <!-- Conditions -->
+      <section class="card" id="conditions" aria-labelledby="h-conditions">
+        <h2 id="h-conditions">Conditions</h2>
+        <div id="weather-banner" class="banner" role="status" hidden>
+          <p><strong>Météo indisponible.</strong> <span id="weather-banner-msg">Vous semblez hors ligne.</span> Le calcul continue avec vos valeurs manuelles (ciel clair par défaut).</p>
+          <button type="button" class="btn btn-small btn-on-warn" id="btn-retry-weather">Réessayer</button>
+        </div>
+
+        <fieldset class="fieldset">
+          <legend>Début de la pose</legend>
+          <div class="segmented" role="radiogroup" aria-label="Début de la pose">
+            <label><input type="radio" name="start-mode" value="now" checked> <span>Maintenant</span></label>
+            <label><input type="radio" name="start-mode" value="custom"> <span>Choisir</span></label>
+          </div>
+          <div class="field">
+            <label for="start-at">Date et heure de départ</label>
+            <input type="datetime-local" id="start-at" step="60">
+            <p class="hint" id="tz-hint">Heure locale du lieu.</p>
+          </div>
+        </fieldset>
+
+        <div class="weather-now" id="weather-now" aria-live="polite">
+          <div class="weather-head">
+            <span class="weather-icon" id="w-icon" aria-hidden="true">☀️</span>
+            <div>
+              <p class="weather-label" id="w-label">Ciel clair (par défaut)</p>
+              <p class="hint" id="w-source">Chargement de la météo…</p>
+            </div>
+          </div>
+          <dl class="metrics">
+            <div><dt>Nuages</dt><dd id="w-cloud">—</dd></div>
+            <div><dt>Indice UV</dt><dd id="w-uv">—</dd></div>
+            <div><dt>Température</dt><dd id="w-temp">—</dd></div>
+            <div><dt>Humidité</dt><dd id="w-hum">—</dd></div>
+          </dl>
+        </div>
+
+        <div class="check">
+          <input type="checkbox" id="weather-manual">
+          <label for="weather-manual">Saisir la météo manuellement</label>
+        </div>
+        <fieldset class="fieldset manual-fields" id="manual-fields" hidden>
+          <legend class="visually-hidden">Météo manuelle</legend>
+          <div class="field">
+            <label for="manual-cloud">Couverture nuageuse : <output id="manual-cloud-out" for="manual-cloud">0 %</output></label>
+            <input type="range" id="manual-cloud" min="0" max="100" step="5" value="0">
+          </div>
+          <div class="field">
+            <label for="manual-uv">Indice UV observé <span class="opt">(facultatif)</span></label>
+            <input type="number" id="manual-uv" min="0" max="16" step="0.1" inputmode="decimal" placeholder="ex. 5">
+            <p class="hint">Laissez vide pour utiliser uniquement la couverture nuageuse. Si renseigné, il prime sur elle (rapport à l’UV ciel clair).</p>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <label for="ground">Sol environnant (réflexion)</label>
+          <select id="ground"></select>
+        </div>
+      </section>
+
+      <!-- Source -->
+      <section class="card card-compact" id="source" aria-labelledby="h-source">
+        <details class="disclosure disclosure-flat" id="source-details">
+          <summary><span><span class="h2-like" id="h-source">Source lumineuse</span> <span class="summary-value" id="source-summary">Soleil</span></span></summary>
+          <div class="field">
+            <label for="light-source">Source</label>
+            <select id="light-source"></select>
+            <p class="hint" id="light-source-desc"></p>
+          </div>
+          <div class="grid-2" id="lamp-fields" hidden>
+            <div class="field">
+              <label for="lamp-power">Puissance (W)</label>
+              <input type="number" id="lamp-power" min="1" max="5000" step="1" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label for="lamp-distance">Distance (cm)</label>
+              <input type="number" id="lamp-distance" min="1" max="500" step="1" inputmode="numeric">
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <!-- Procédé -->
+      <section class="card" id="procede" aria-labelledby="h-procede">
+        <h2 id="h-procede">Procédé</h2>
+        <p class="callout">Kit du commerce dont la formule est inconnue ? Laissez « Cyanotype classique », faites une <a href="#bande-test">bande test</a>, puis <a href="#journal">créez une calibration</a> : elle corrigera tous les calculs suivants.</p>
+        <div class="grid-2 process-grid">
+          <div class="field"><label for="p-chemistry">Chimie</label><select id="p-chemistry" data-key="chemistry"></select><p class="hint" id="p-chemistry-desc"></p></div>
+          <div class="field"><label for="p-substrate">Support</label><select id="p-substrate" data-key="substrate"></select><p class="hint" id="p-substrate-desc"></p></div>
+          <div class="field"><label for="p-coating">Couche</label><select id="p-coating" data-key="coating"></select><p class="hint" id="p-coating-desc"></p></div>
+          <div class="field"><label for="p-humidity">Humidité du papier</label><select id="p-humidity" data-key="humidityState"></select><p class="hint" id="p-humidity-desc"></p></div>
+          <div class="field"><label for="p-glass">Verre / presse</label><select id="p-glass" data-key="glass"></select><p class="hint" id="p-glass-desc"></p></div>
+          <div class="field"><label for="p-negative">Négatif</label><select id="p-negative" data-key="negative"></select><p class="hint" id="p-negative-desc"></p></div>
+          <div class="field"><label for="p-goal">Rendu souhaité</label><select id="p-goal" data-key="resultGoal"></select><p class="hint" id="p-goal-desc"></p></div>
+          <div class="field"><label for="p-calibration">Calibration personnelle</label><select id="p-calibration"></select><p class="hint" id="p-calibration-desc">Créez-en une depuis le journal, après une bande test.</p></div>
+        </div>
+        <p class="factor-line">Facteur procédé combiné : <strong id="process-factor">×1</strong></p>
+      </section>
+    </div>
+
+    </div>
+
+    <!-- 6. Graphique -->
+    <section class="card span-all" id="graphique" aria-labelledby="h-graphique">
+      <div class="card-head">
+        <h2 id="h-graphique">La journée</h2>
+        <p class="hint" id="chart-subtitle"></p>
+      </div>
+      <ul class="legend" aria-hidden="true">
+        <li><span class="sw sw-line"></span>Temps de pose si l'on démarre à cette heure</li>
+        <li><span class="sw sw-elev"></span>Élévation du soleil</li>
+        <li><span class="sw sw-cloud"></span>Nuages</li>
+        <li><span class="sw sw-best"></span>Meilleur créneau</li>
+      </ul>
+      <div class="chart-wrap" id="chart-wrap" tabindex="0" role="group"
+           aria-label="Graphique de la journée. Flèches gauche et droite pour parcourir les heures, Entrée pour choisir l'heure de départ."
+           aria-describedby="chart-subtitle">
+        <svg id="chart" class="chart" role="img" aria-labelledby="chart-title"><title id="chart-title">Temps de pose selon l'heure de départ</title></svg>
+        <div class="chart-tip" id="chart-tip" role="status" hidden></div>
+        <p class="chart-empty" id="chart-empty" hidden></p>
+      </div>
+      <p class="hint">Cliquez ou touchez un point de la courbe pour choisir cette heure de départ.</p>
+      <details class="disclosure">
+        <summary>Voir les données du graphique</summary>
+        <div class="table-scroll">
+          <table class="data-table" id="chart-table">
+            <caption class="visually-hidden">Temps de pose selon l'heure de départ</caption>
+            <thead><tr><th scope="col">Départ</th><th scope="col">Pose</th><th scope="col">Élévation</th><th scope="col">Nuages</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <!-- 8. Bande test -->
+    <section class="card span-all" id="bande-test" aria-labelledby="h-bande">
+      <div class="card-head">
+        <h2 id="h-bande">Bande test</h2>
+        <p class="hint">Basée sur le temps calculé : <strong id="strip-base">—</strong></p>
+      </div>
+      <div class="grid-3">
+        <div class="field">
+          <label for="strip-count">Nombre de bandes</label>
+          <input type="number" id="strip-count" min="2" max="12" step="1" value="5" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="strip-step">Pas entre bandes (%)</label>
+          <input type="number" id="strip-step" min="5" max="100" step="5" value="25" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="strip-method">Méthode</label>
+          <select id="strip-method">
+            <option value="uncover">Découvrir progressivement</option>
+            <option value="cover">Couvrir progressivement</option>
+          </select>
+        </div>
+      </div>
+      <p class="strip-howto" id="strip-howto"></p>
+      <div class="table-scroll">
+        <table class="data-table strip-table" id="strip-table">
+          <caption class="visually-hidden">Plan de bande test</caption>
+          <thead><tr><th scope="col">Bande</th><th scope="col">Variation</th><th scope="col">Exposition totale</th><th scope="col" id="strip-action-head">Découvrir à t =</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="hint" id="strip-warning"></p>
+      <button type="button" class="btn btn-secondary" id="btn-strip-timer">Lancer le minuteur bande test (bip à chaque étape)</button>
+    </section>
+
+    <!-- 9. Calibration & journal -->
+    <section class="card span-all" id="journal" aria-labelledby="h-journal">
+      <h2 id="h-journal">Calibration &amp; journal</h2>
+      <div class="journal-grid">
+        <form id="journal-form" class="journal-form" novalidate>
+          <h3>Après le tirage</h3>
+          <div class="grid-2">
+            <div class="field">
+              <label for="j-predicted">Temps prévu (min)</label>
+              <input type="number" id="j-predicted" min="0" step="0.01" inputmode="decimal">
+            </div>
+            <fieldset class="fieldset">
+              <legend>Temps réellement utilisé</legend>
+              <div class="inline-inputs">
+                <label class="visually-hidden" for="j-actual-min">Minutes</label>
+                <input type="number" id="j-actual-min" min="0" step="1" inputmode="numeric" placeholder="min"><span aria-hidden="true">min</span>
+                <label class="visually-hidden" for="j-actual-sec">Secondes</label>
+                <input type="number" id="j-actual-sec" min="0" max="59" step="1" inputmode="numeric" placeholder="s"><span aria-hidden="true">s</span>
+              </div>
+            </fieldset>
+          </div>
+          <fieldset class="fieldset">
+            <legend>Résultat</legend>
+            <div class="segmented segmented-3">
+              <label><input type="radio" name="j-result" value="under"> <span>Sous-exposé</span></label>
+              <label><input type="radio" name="j-result" value="good" checked> <span>Bon</span></label>
+              <label><input type="radio" name="j-result" value="over"> <span>Surexposé</span></label>
+            </div>
+          </fieldset>
+          <div class="field">
+            <label for="j-notes">Notes</label>
+            <textarea id="j-notes" rows="3" placeholder="Papier, négatif, lavage, virage…"></textarea>
+          </div>
+          <div class="field">
+            <label for="j-cal-name">Nom de la calibration</label>
+            <input type="text" id="j-cal-name" maxlength="80" placeholder="ex. Arches Platine + verre">
+          </div>
+          <div class="btn-row">
+            <button type="submit" class="btn btn-primary">Ajouter au journal</button>
+            <button type="button" class="btn btn-secondary" id="btn-create-cal">Créer une calibration</button>
+          </div>
+          <p class="status-text" id="journal-status" aria-live="polite"></p>
+        </form>
+
+        <div class="journal-lists">
+          <h3>Calibrations</h3>
+          <ul class="item-list" id="cal-list"></ul>
+          <h3>Historique</h3>
+          <ol class="item-list" id="journal-list" reversed></ol>
+          <div class="btn-row">
+            <button type="button" class="btn btn-ghost" id="btn-export">Exporter (JSON)</button>
+            <label class="btn btn-ghost file-btn">Importer (JSON)<input type="file" id="in-import" accept="application/json,.json" class="visually-hidden"></label>
+          </div>
+          <p class="status-text" id="io-status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Données météo : <a href="https://open-meteo.com/" rel="noopener">Open-Meteo.com</a> (CC BY 4.0). Position solaire : algorithme NOAA. Les temps sont des estimations : faites une bande test.</p>
+    </div>
+  </footer>
+
+  <div class="dock" id="dock" hidden>
+    <a href="#resultat" class="dock-link" id="dock-link">
+      <span class="dock-label" id="dock-label">Pose</span>
+      <span class="dock-time" id="dock-time">--:--</span>
+    </a>
+    <button type="button" class="btn btn-light btn-small" id="dock-action">Minuteur</button>
+  </div>
+</body>
+</html>
