@@ -5,7 +5,7 @@
     "reussis": 16,
     "echecs": 0,
     "ignores": 0,
-    "duree_ms": 49.3
+    "duree_ms": 45.2
   },
   {
     "suite": "solar",
@@ -13,7 +13,7 @@
     "reussis": 8,
     "echecs": 0,
     "ignores": 0,
-    "duree_ms": 4.7
+    "duree_ms": 4.6
   },
   {
     "suite": "storage",
@@ -21,7 +21,7 @@
     "reussis": 12,
     "echecs": 0,
     "ignores": 0,
-    "duree_ms": 46.3
+    "duree_ms": 47.6
   },
   {
     "suite": "weather",
@@ -29,6 +29,6 @@
     "reussis": 17,
     "echecs": 0,
     "ignores": 0,
-    "duree_ms": 40.2
+    "duree_ms": 37.6
   }
 ]
