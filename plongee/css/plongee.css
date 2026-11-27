@@ -228,6 +228,9 @@ input[aria-invalid="true"] { border-color: var(--danger-bord); border-width: 2px
 @media (prefers-color-scheme: dark) { .msg-erreur { color: var(--danger-bord); } }
 
 .champ-ligne { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+/* Un seul champ visible (ex. gaz « Air », bloc O2 masqué) : pleine largeur, libellé non tronqué. */
+.champ-ligne:has(> .champ[hidden]) { grid-template-columns: 1fr; }
+.champ-ligne:has(> .champ[hidden]) > .champ { max-width: 20rem; }
 .grille-champs { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
 
 .avec-bouton { display: flex; gap: 8px; }
@@ -498,6 +501,7 @@ svg.courbes:focus-visible { outline-offset: 4px; }
 .reference { stroke: var(--graph-reference); stroke-width: 1.5; stroke-dasharray: 6 4; }
 .reference.discret { stroke-dasharray: 2 4; }
 .repere-sortie { stroke: var(--graph-reference); stroke-width: 1; stroke-dasharray: 2 3; }
+.zone-intervalle { fill: var(--graph-grille); opacity: .45; }
 .etiquette-ref { font-size: 10.5px; paint-order: stroke; stroke: var(--carte); stroke-width: 3px; stroke-linejoin: round; }
 .etiquette-serie { font-weight: 700; paint-order: stroke; stroke: var(--carte); stroke-width: 3px; }
 .serie { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
@@ -529,6 +533,7 @@ svg.courbes:focus-visible { outline-offset: 4px; }
 .legende-courbes > span { display: inline-flex; align-items: center; gap: 6px; }
 .ech-profil { display: inline-block; width: 16px; height: 10px; background: var(--graph-profil); border-top: 1.5px solid var(--graph-profil-ligne); }
 .ech-ref { display: inline-block; width: 18px; border-top: 1.5px dashed var(--graph-reference); }
+.legende-courbes > .note-residuel { display: block; flex-basis: 100%; }
 .legende-multiples { margin: 0 0 8px; font-size: .85rem; color: var(--attenue); min-height: 1.3em; }
 .multiples { display: grid; grid-template-columns: repeat(var(--colonnes, 2), minmax(0, 1fr)); gap: 8px; }
 .multiple .profil-fond { opacity: .6; }

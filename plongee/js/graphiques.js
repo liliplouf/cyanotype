@@ -85,7 +85,10 @@ export function domaineRond(min, max, cible = 5) {
  * (x ∝ ln(1 + (t − pivot)/tau)) : la plongée reste lisible et les heures de désaturation
  * tiennent sur le même axe.
  */
-export function echelleTemps({ tMin, tMax, x0, x1, mode = 'lineaire', pivot, fraction = 0.4, tau = 10 }) {
+export function echelleTemps({ tMin, tMax, x0, x1, mode = 'lineaire', pivot, fraction = 0.4, tau = 10, morceaux }) {
+  if (mode === 'morceaux' && Array.isArray(morceaux) && morceaux.some((p) => p.fin > p.debut && p.part > 0)) {
+    return echelleMorceaux(morceaux, x0, x1);
+  }
   if (mode !== 'mixte' || !(pivot > tMin) || !(pivot < tMax)) {
     const f = echelleLineaire(tMin, tMax, x0, x1);
     f.mode = 'lineaire';
@@ -101,6 +104,46 @@ export function echelleTemps({ tMin, tMax, x0, x1, mode = 'lineaire', pivot, fra
   f.mode = 'mixte';
   f.pivot = pivot;
   f.xPivot = xp;
+  return f;
+}
+
+/**
+ * Échelle de temps par morceaux : chaque morceau [debut, fin] occupe une part `part` de la
+ * largeur, en linéaire ou en logarithmique (x ∝ ln(1 + (t − debut)/tau)). Sert à montrer
+ * une plongée successive : plongée précédente (linéaire), intervalle (compressé), plongée
+ * courante (linéaire), surface jusqu'à désaturation (compressée).
+ * @param {{ debut:number, fin:number, type:'lineaire'|'log', part:number, tau?:number, role?:string }[]} morceaux
+ */
+export function echelleMorceaux(morceaux, x0, x1) {
+  const valides = morceaux.filter((p) => p.fin > p.debut && p.part > 0);
+  const total = valides.reduce((a, p) => a + p.part, 0);
+  let xc = x0;
+  const ms = valides.map((p) => {
+    const w = ((x1 - x0) * p.part) / total;
+    const r = { ...p, tau: p.tau ?? 10, xa: xc, xb: xc + w };
+    xc += w;
+    return r;
+  });
+  const morceauT = (t) => ms.find((p) => t <= p.fin) || ms[ms.length - 1];
+  const morceauX = (x) => ms.find((p) => x <= p.xb) || ms[ms.length - 1];
+  const f = (t) => {
+    const p = t < ms[0].debut ? ms[0] : morceauT(t);
+    const u = p.type === 'log'
+      ? Math.log1p(Math.max(0, t - p.debut) / p.tau) / Math.log1p((p.fin - p.debut) / p.tau)
+      : (t - p.debut) / (p.fin - p.debut);
+    return p.xa + (p.xb - p.xa) * u;
+  };
+  f.inverse = (x) => {
+    const p = x < ms[0].xa ? ms[0] : morceauX(x);
+    const u = (x - p.xa) / (p.xb - p.xa);
+    return p.type === 'log'
+      ? p.debut + p.tau * Math.expm1(Math.max(0, u) * Math.log1p((p.fin - p.debut) / p.tau))
+      : p.debut + u * (p.fin - p.debut);
+  };
+  f.domaine = [ms[0].debut, ms[ms.length - 1].fin];
+  f.plage = [x0, x1];
+  f.mode = 'morceaux';
+  f.morceaux = ms;
   return f;
 }
 
@@ -131,6 +174,23 @@ export function graduationsTemps(ech, { ecartMin = 44 } = {}) {
     if (res.some((g) => Math.abs(g.x - x) < ecartMin)) return;
     res.push({ t, x, libelle: libelleTemps(t) });
   };
+  if (ech.mode === 'morceaux') {
+    // Priorité : immersion, puis graduations de la plongée courante, repères horaires après la
+    // sortie, et enfin graduations de la plongée précédente.
+    if (0 >= tMin && 0 <= tMax) ajouter(0);
+    const lineaires = ech.morceaux.filter((p) => p.type === 'lineaire');
+    const ordre = [...lineaires.filter((p) => p.debut >= 0), ...lineaires.filter((p) => p.debut < 0)];
+    for (const p of ordre) {
+      const nbP = Math.max(1, Math.floor((p.xb - p.xa) / ecartMin));
+      const pasP = PAS_MINUTES.find((q) => (p.fin - p.debut) / q <= nbP) || 1440;
+      for (let t = Math.ceil(p.debut / pasP - 1e-9) * pasP; t <= p.fin + 1e-9; t += pasP) ajouter(t);
+      if (p === ordre[0]) {
+        const apres = ech.morceaux.find((q) => q.type === 'log' && q.debut >= p.fin - 1e-9);
+        if (apres) REPERES_HEURES.filter((t) => t > apres.debut && t <= apres.fin).forEach(ajouter);
+      }
+    }
+    return res.sort((a, b) => a.t - b.t);
+  }
   const tFinLin = ech.mode === 'mixte' ? ech.pivot : tMax;
   const largeurLin = ech.mode === 'mixte' ? Math.abs(ech.xPivot - ech.plage[0]) : largeur;
   const nb = Math.max(1, Math.floor(largeurLin / ecartMin));
@@ -283,12 +343,32 @@ function html(nom, classe, parent, contenu) {
 
 let idUnique = 0;
 
-/** Fenêtre de temps pour l'option d'échelle choisie. */
+/**
+ * Fenêtre de temps pour l'option d'échelle choisie.
+ * - 'plongee' : de l'immersion à un peu après la sortie (linéaire) ;
+ * - 'desat' : de l'immersion de la plongée courante (état initial, azote résiduel compris)
+ *   jusqu'à la désaturation, linéaire jusqu'à la sortie puis compressé ;
+ * - 'successive' (plongée précédente seulement, sinon comme 'desat') : axe par morceaux,
+ *   plongée précédente et plongée courante linéaires chacune, intervalle et surface compressés.
+ */
 export function fenetreTemps(res, echelle) {
   const ech = res.echantillons;
   const tSortie = res.resume.dureeTotale;
-  if (echelle === 'desat') {
-    return { tMin: Math.min(0, ech[0].t), tMax: ech[ech.length - 1].t, mode: 'mixte', pivot: tSortie };
+  const tFin = ech[ech.length - 1].t;
+  const prec = res.plongeePrecedente;
+  if (echelle === 'successive' && prec && ech[0].t < 0) {
+    const debut = Math.min(prec.debut, ech[0].t);
+    const dureeP = prec.sortie - debut;
+    const morceaux = [
+      { debut, fin: prec.sortie, type: 'lineaire', part: 0.24 * Math.min(1.5, Math.max(0.6, dureeP / Math.max(1, tSortie))), role: 'precedente' },
+      { debut: prec.sortie, fin: 0, type: 'log', part: 0.1, tau: 10, role: 'intervalle' },
+      { debut: 0, fin: tSortie, type: 'lineaire', part: 0.3, role: 'plongee' },
+      { debut: tSortie, fin: tFin, type: 'log', part: 0.32, tau: 10, role: 'surface' },
+    ];
+    return { tMin: debut, tMax: tFin, mode: 'morceaux', pivot: tSortie, morceaux };
+  }
+  if (echelle === 'desat' || echelle === 'successive') {
+    return { tMin: 0, tMax: tFin, mode: 'mixte', pivot: tSortie };
   }
   return { tMin: 0, tMax: tSortie + Math.max(5, Math.round(tSortie * 0.12)), mode: 'lineaire', pivot: tSortie };
 }
@@ -370,10 +450,23 @@ export function rendreCourbes(conteneur, res, opts) {
     el('line', { x1: g.x, x2: g.x, y1: hauteur - m.b, y2: hauteur - m.b + 4, class: 'ligne-axe' }, gx);
     texte(gx, g.x, hauteur - m.b + 16, g.libelle, { 'text-anchor': 'middle' });
   }
-  texte(gx, m.g, hauteur - 3, x.mode === 'mixte' ? (largeur < 520 ? 'temps (compressé après la sortie)' : 'temps (min, puis heures — échelle compressée après la sortie)') : 'temps depuis l’immersion (min)', { class: 'titre-axe' });
+  const titresAxe = {
+    lineaire: 'temps depuis l’immersion (min)',
+    mixte: largeur < 520 ? 'temps (compressé après la sortie)' : 'temps depuis l’immersion (min, puis heures — échelle compressée après la sortie)',
+    morceaux: largeur < 520 ? 'temps (intervalle et surface compressés)' : 'temps depuis l’immersion (min) — intervalle de surface et désaturation compressés',
+  };
+  texte(gx, m.g, hauteur - 3, titresAxe[x.mode] || titresAxe.lineaire, { class: 'titre-axe' });
   if (x.mode === 'mixte') {
     el('line', { x1: x.xPivot, x2: x.xPivot, y1: m.h, y2: hauteur - m.b, class: 'repere-sortie' }, svg);
     texte(svg, x.xPivot + 4, m.h + 11, 'sortie', { class: 'etiquette-ref' });
+  } else if (x.mode === 'morceaux') {
+    const inter = x.morceaux.find((p) => p.role === 'intervalle');
+    if (inter) el('rect', { x: inter.xa, y: m.h, width: Math.max(0, inter.xb - inter.xa), height: hauteur - m.h - m.b, class: 'zone-intervalle' }, svg);
+    for (const [t, lib] of [[0, 'immersion'], [res.resume.dureeTotale, 'sortie']]) {
+      const xv = x(t);
+      el('line', { x1: xv, x2: xv, y1: m.h, y2: hauteur - m.b, class: 'repere-sortie' }, svg);
+      if (largeur >= 420 || lib === 'sortie') texte(svg, xv + 4, m.h + 11, lib, { class: 'etiquette-ref' });
+    }
   }
   // Lignes de référence (étiquettes posées après les courbes, voir plus bas)
   const refs = references(opts.unite, res.psurf, opts.gfHaut).filter((r) => r.v >= dom[0] && r.v <= dom[1]);
@@ -387,7 +480,8 @@ export function rendreCourbes(conteneur, res, opts) {
   // Étiquettes directes en bout de courbe (≤ 4 courbes visibles)
   if (visibles.length && visibles.length <= 4) {
     const der = ech[ech.length - 1];
-    for (const i of visibles) texte(svg, x(der.t) - 4, y(der[opts.unite][i]) - 5, `C${i + 1}`, { 'text-anchor': 'end', class: 'etiquette-serie' });
+    const xDer = Math.min(x(der.t), largeur - m.d);
+    for (const i of visibles) texte(svg, xDer - 4, y(der[opts.unite][i]) - 5, `C${i + 1}`, { 'text-anchor': 'end', class: 'etiquette-serie' });
   }
 
   const leg = html('p', 'legende-courbes', figure);
@@ -398,6 +492,9 @@ export function rendreCourbes(conteneur, res, opts) {
     const l = html('span', null, leg);
     html('span', 'ech-ref', l).setAttribute('aria-hidden', 'true');
     l.append(r.libelle);
+  }
+  if (res.plongeePrecedente && x.mode !== 'morceaux') {
+    html('span', 'note-residuel', leg, 'Les courbes partent de l’immersion, avec l’azote résiduel de la plongée précédente (choisir « Avec la plongée précédente » pour la voir).');
   }
 
   installerCurseur({ svg, figure, ech, x, hauteur, m, largeur, rendreInfo: (e) => infoInstant(e, visibles, opts.unite), points: (e) => visibles.map((i) => ({ cy: y(e[opts.unite][i]), i })) });

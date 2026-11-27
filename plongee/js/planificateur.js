@@ -377,7 +377,10 @@ function remontee(T, d, g, ctx, { gfFn, arreterSiEchec = false, securite = null,
 /** Plan de remontée complet depuis le fond : sans palier obligatoire, ou méthode GF de Baker. */
 function planRemontee(T, d, g, ctx, profMax) {
   const gfHaut = () => ctx.gfHaut;
-  const direct = remontee(T, d, g, ctx, { gfFn: gfHaut, arreterSiEchec: true });
+  // Critère « paliers obligatoires » : remontée directe impossible sur le seul gaz fond (même
+  // convention que la NDL) ; une plongée qui ne reste sans palier que grâce à un gaz de déco est
+  // une plongée à paliers (le gaz de déco sert alors pour la décompression).
+  const direct = remontee(T, d, g, { ...ctx, gazDeco: [] }, { gfFn: gfHaut, arreterSiEchec: true });
   if (!direct.echec) {
     const s = ctx.secu;
     const secu = s.actif && s.duree > 0 && profMax > s.profondeur ? s : null;
@@ -394,10 +397,15 @@ function planRemontee(T, d, g, ctx, profMax) {
   return { deco: true, F, segs: r.segs };
 }
 
-/** Temps (min) restant à la profondeur D avant qu'une remontée sans palier devienne impossible. */
+/**
+ * Temps (min) restant à la profondeur D avant qu'une remontée sans palier devienne impossible.
+ * La remontée testée se fait sur le seul gaz fond (aucune bascule sur un gaz de déco) : la NDL
+ * affichée ne dépend pas d'un gaz de déco qui pourrait manquer (convention des ordinateurs).
+ */
 function calculerNdl(T0, D, g, ctx) {
   const pi = pressionInspiree(ctx.pamb(D), g.fN2);
-  const ok = (x) => !remontee(haldaneTous(T0, pi, x), D, g, ctx, { gfFn: () => ctx.gfHaut, arreterSiEchec: true }).echec;
+  const ctxFond = { ...ctx, gazDeco: [] };
+  const ok = (x) => !remontee(haldaneTous(T0, pi, x), D, g, ctxFond, { gfFn: () => ctx.gfHaut, arreterSiEchec: true }).echec;
   if (!ok(0)) return { ndl: null, illimite: false };
   if (ok(NDL_MAX)) return { ndl: NDL_MAX, illimite: true };
   let lo = 0;
@@ -437,6 +445,33 @@ export function tempsAvion(T, psurf, gf, pcab = PRESSION_CABINE) {
     if (T[i] > limite && limite > eq) t = Math.max(t, Math.log((T[i] - eq) / (limite - eq)) / constanteTemps(i));
   }
   return t;
+}
+
+/** Délais usuels avant un vol ou une montée en altitude (min), d'après les recommandations DAN. */
+export const REGLES_AVION = Object.freeze({ simple: 12 * 60, multiples: 18 * 60, paliers: 24 * 60 });
+
+/**
+ * Délai avion / montée en altitude recommandé : la plus longue de la règle usuelle (DAN : 12 h
+ * après une plongée unique sans palier, 18 h après plusieurs plongées ou plusieurs jours,
+ * 24 h après une plongée avec paliers obligatoires) et de la valeur calculée par le modèle.
+ * Le délai « Bühlmann pur » (plafond compatible avec une cabine à 0,75 bar) est souvent très
+ * court et ne doit jamais être présenté seul.
+ * @param {number} avionModele délai calculé par le modèle (min)
+ * @param {{ paliersObligatoires?: boolean, plongeesMultiples?: boolean }} contexte
+ * @returns {{ recommande: number, regle: number, motif: string }}
+ */
+export function recommandationAvion(avionModele, { paliersObligatoires = false, plongeesMultiples = false } = {}) {
+  let regle = REGLES_AVION.simple;
+  let motif = 'plongée unique sans palier obligatoire : 12 h au minimum';
+  if (paliersObligatoires) {
+    regle = REGLES_AVION.paliers;
+    motif = 'plongée avec paliers obligatoires : 24 h au minimum';
+  } else if (plongeesMultiples) {
+    regle = REGLES_AVION.multiples;
+    motif = 'plusieurs plongées dans la journée : 18 h au minimum';
+  }
+  const modele = fini(avionModele) && avionModele > 0 ? avionModele : 0;
+  return { recommande: Math.max(regle, Math.ceil(modele - 1e-9)), regle, motif };
 }
 
 // ───────────────────────────── simulation d'une plongée ─────────────────────────────
@@ -921,10 +956,16 @@ function calculer(p) {
   else if (cns > 80) alerte('attention', `Toxicité de l'oxygène : CNS de ${fmt(cns, 0)} % (> 80 %).`);
   if (otu > 300) alerte('attention', `Toxicité pulmonaire : ${fmt(otu, 0)} OTU (> 300 par jour).`);
   if (desatPlafonnee) alerte('attention', 'Désaturation incomplète après 96 h de simulation.');
+  const avionReco = recommandationAvion(avion, {
+    paliersObligatoires: sim.deco || Boolean(precedente?.paliersObligatoires),
+    plongeesMultiples: Boolean(p.plongeePrecedente),
+  });
   alerte(
     'info',
-    `Avion / montée en altitude : délai calculé ${fmtDuree(avion)} (cabine ${fmt(PRESSION_CABINE, 2)} bar), indicatif. ` +
-      'Règle usuelle : 12 h après une plongée unique sans palier, 24 h après des plongées successives ou avec paliers.',
+    `Avion / montée en altitude : attendre au moins ${fmtDuree(avionReco.recommande)} après la sortie ` +
+      `(${avionReco.motif} ; 18 h si vous plongez plusieurs jours de suite). ` +
+      `Le modèle seul donnerait ${fmtDuree(avion)} (plafond compatible avec une cabine à ${fmt(PRESSION_CABINE, 2)} bar) : ` +
+      "cette valeur théorique ne tient pas compte des microbulles et ne doit pas servir de délai.",
   );
 
   return {
@@ -960,6 +1001,9 @@ function calculer(p) {
       desaturation: Math.ceil(desat - 1e-9),
       desaturationPlafonnee: desatPlafonnee,
       avion: Math.ceil(avion - 1e-9),
+      avionRecommande: avionReco.recommande,
+      avionRegle: avionReco.regle,
+      avionMotif: avionReco.motif,
       cns: arr(cns, 1),
       cnsResiduel: arr(cnsResiduel, 1),
       otu: Math.round(otu),

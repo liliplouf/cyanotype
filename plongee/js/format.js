@@ -87,3 +87,37 @@ export function nomGaz(o2) {
   if (pct === 100) return 'Oxygène pur';
   return `Nitrox ${pct}`;
 }
+
+/** Règles usuelles (DAN) avant un vol ou une montée en altitude, en minutes. */
+const REGLES_AVION = { simple: 720, multiples: 1080, paliers: 1440 };
+
+/**
+ * Présentation du délai avion / montée en altitude pour la carte de résumé.
+ * La valeur principale est toujours la recommandation usuelle (plus longue de la règle DAN et
+ * de la valeur du modèle) ; le délai « Bühlmann pur », souvent très court, n'est donné qu'en
+ * détail. Utilise `resume.avionRecommande` / `avionMotif` du moteur, sinon recalcule la règle
+ * (moteur factice).
+ * @param {object} resume `res.resume`
+ * @param {{ successive?: boolean }} [opts] plongée précédente renseignée
+ * @returns {{ minutes:number, valeur:string, detail:string, modele:string }}
+ */
+export function presentationAvion(resume, { successive = false } = {}) {
+  const r = resume || {};
+  const modele = typeof r.avion === 'number' && Number.isFinite(r.avion) && r.avion > 0 ? r.avion : 0;
+  let minutes = r.avionRecommande;
+  let motif = r.avionMotif;
+  if (typeof minutes !== 'number' || !Number.isFinite(minutes)) {
+    const regle = r.paliersObligatoires ? REGLES_AVION.paliers : successive ? REGLES_AVION.multiples : REGLES_AVION.simple;
+    minutes = Math.max(regle, Math.ceil(modele));
+    motif = r.paliersObligatoires ? 'plongée avec paliers obligatoires : 24 h au minimum'
+      : successive ? 'plusieurs plongées dans la journée : 18 h au minimum'
+        : 'plongée unique sans palier obligatoire : 12 h au minimum';
+  }
+  const texteModele = formatDuree(modele, { arrondi: 'haut' });
+  return {
+    minutes,
+    valeur: formatDuree(minutes, { arrondi: 'haut' }),
+    detail: `${motif || 'règle usuelle'} (DAN) · modèle Bühlmann seul : ${texteModele}, théorique, à ne pas utiliser`,
+    modele: texteModele,
+  };
+}

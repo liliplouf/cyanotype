@@ -5,7 +5,7 @@
 import {
   PRESETS_GF, etatDefaut, fusionnerEtat, construireParams, presetPourGF, profondeurMOD, lireNombre,
 } from './formulaire.js';
-import { formatNombre, formatDuree, formatPaliers, nomGaz } from './format.js';
+import { formatNombre, formatDuree, formatPaliers, nomGaz, presentationAvion } from './format.js';
 import { rendreCourbes, rendreProfil, cssCouleursCompartiments, UNITES } from './graphiques.js';
 import { rendreTableau, rendreLegende, genererCSV, nomFichierCSV } from './tableau.js';
 import { altitudeIci } from './geo.js';
@@ -402,6 +402,7 @@ function calculer({ defiler }) {
   $('resultat-contenu').hidden = false;
   rendreResume(res, params);
   rendreAlertes(res.alertes || []);
+  synchroniserSorties();
   rendreTout();
   if (defiler) {
     const r = $('resultats');
@@ -456,15 +457,17 @@ function rendreResume(res, params) {
 
   const dl = document.createElement('dl');
   dl.className = 'stats';
-  stat(dl, 'DTR', formatDuree(r.dtr), 'durée totale de remontée');
-  stat(dl, 'Durée totale', formatDuree(r.dureeTotale), 'de l’immersion à la sortie');
+  stat(dl, 'DTR', formatDuree(r.dtr, { arrondi: 'haut' }), 'durée totale de remontée');
+  stat(dl, 'Durée totale', formatDuree(r.dureeTotale, { arrondi: 'haut' }), 'de l’immersion à la sortie');
   stat(dl, 'Prof. max', `${formatNombre(r.profondeurMax, r.profondeurMax % 1 ? 1 : 0)} m`, `MOD du gaz : ${formatNombre(r.mod, 0)} m`);
   const ndlInconnue = r.ndl === null || r.ndl === undefined;
   const ndlIllimitee = r.ndlIllimite || (!ndlInconnue && r.ndl >= 999);
   stat(dl, 'Sans palier (NDL)', ndlInconnue ? 'dépassée' : ndlIllimitee ? 'illimitée' : formatDuree(r.ndl),
     ndlInconnue ? 'déjà en décompression au début du dernier niveau' : 'disponible au début du dernier niveau');
-  stat(dl, 'Désaturation', r.desaturationPlafonnee ? `> ${formatDuree(r.desaturation)}` : formatDuree(r.desaturation), 'après la sortie');
-  stat(dl, 'Avion / col', formatDuree(r.avion), `indicatif ; règle usuelle : ${r.paliersObligatoires || params.plongeePrecedente ? '24 h' : '12 h'} minimum`);
+  const desat = formatDuree(r.desaturation, { arrondi: 'haut' });
+  stat(dl, 'Désaturation', r.desaturationPlafonnee ? `> ${desat}` : desat, 'après la sortie');
+  const avion = presentationAvion(r, { successive: Boolean(params.plongeePrecedente) });
+  stat(dl, 'Avion / col', `≥ ${avion.valeur}`, avion.detail);
   stat(dl, 'CNS', `${formatNombre(r.cns, r.cns < 10 ? 1 : 0)}\u202f%`,
     `OTU : ${formatNombre(r.otu)}${r.cnsResiduel ? ` · dont ${formatNombre(r.cnsResiduel, 1)}\u202f% résiduel` : ''}`);
   if (r.consommation) {
@@ -574,6 +577,12 @@ function synchroniserSorties() {
   for (const r of document.querySelectorAll('input[name="mode"]')) r.checked = r.value === a.mode;
   for (const r of document.querySelectorAll('input[name="echelle"]')) r.checked = r.value === a.echelle;
   for (let i = 0; i < 16; i++) $(`comp-${i}`).checked = a.visibles.includes(i);
+  // Option « avec la plongée précédente » : seulement pour une plongée successive.
+  const avecPrecedente = Boolean(etatApp.resultat && etatApp.resultat.plongeePrecedente);
+  $('echelle-successive').hidden = !avecPrecedente;
+  if (!avecPrecedente && a.echelle === 'successive') {
+    for (const r of document.querySelectorAll('input[name="echelle"]')) r.checked = r.value === 'desat';
+  }
   $('choix-compartiments').hidden = a.mode === 'multiples';
   $('aide-unite').textContent = AIDE_UNITES[a.unite];
   choisirOnglet(a.onglet, false, true);

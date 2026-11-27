@@ -3,15 +3,16 @@
 import { test, describe, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { formatNombre, nombreCSV, formatDuree, formatInstant, formatPaliers, nomGaz } from '../plongee/js/format.js';
+import { formatNombre, nombreCSV, formatDuree, formatInstant, formatPaliers, nomGaz, presentationAvion } from '../plongee/js/format.js';
 import {
   construireParams, etatDefaut, fusionnerEtat, lireNombre, presetPourGF, profondeurMOD, PRESETS_GF,
 } from '../plongee/js/formulaire.js';
 import {
   echelleLineaire, echelleTemps, graduationsLineaires, graduationsTemps, domaineRond, pasRond, indiceProche,
   cheminLigne, domaineY, couleurCompartiment, oklchVersHex, contraste, cssCouleursCompartiments, libelleTemps,
-  equilibreSurface, formatValeur, fenetreTemps,
+  equilibreSurface, formatValeur, fenetreTemps, echelleMorceaux,
 } from '../plongee/js/graphiques.js';
+import { planifier as planifierReel } from '../plongee/js/planificateur.js';
 import {
   genererCSV, echapperCSV, couleurChaleur, domaineChaleur, interpolerHex, encrePour, nomFichierCSV, instantCourt,
 } from '../plongee/js/tableau.js';
@@ -68,6 +69,23 @@ describe('format', () => {
     assert.equal(formatPaliers([{ profondeur: 5, duree: 3, securite: true }]), `3${NNBSP}min à 5${NNBSP}m (sécurité)`);
     assert.equal(formatPaliers([]), '');
     assert.equal(formatPaliers(null), '');
+  });
+
+  test('délai avion : valeur principale = recommandation usuelle, modèle en détail', () => {
+    const deco = presentationAvion({ avion: 23, avionRecommande: 1440, avionMotif: 'plongée avec paliers obligatoires : 24 h au minimum', paliersObligatoires: true });
+    assert.equal(deco.minutes, 1440);
+    assert.equal(deco.valeur, `24${NNBSP}h`);
+    assert.match(deco.detail, /paliers obligatoires/);
+    assert.match(deco.detail, new RegExp(`modèle Bühlmann seul : 23${NNBSP}min`));
+    // Repli sans les champs du moteur (moteur factice) : règle recalculée, jamais la seule valeur du modèle.
+    assert.equal(presentationAvion({ avion: 14, paliersObligatoires: false }).valeur, `12${NNBSP}h`);
+    assert.equal(presentationAvion({ avion: 14 }, { successive: true }).valeur, `18${NNBSP}h`);
+    assert.equal(presentationAvion({ avion: 30, paliersObligatoires: true }, { successive: true }).valeur, `24${NNBSP}h`);
+    assert.equal(presentationAvion({ avion: 1600, paliersObligatoires: true }).minutes, 1600);
+    assert.equal(presentationAvion(null).minutes, 720);
+    // Avec le vrai moteur : 30 m 25 min (paliers) → 24 h ; 18 m 40 min → 12 h.
+    assert.equal(presentationAvion(planifierReel({ niveaux: [{ profondeur: 30, duree: 25 }] }).resume).valeur, `24${NNBSP}h`);
+    assert.equal(presentationAvion(planifierReel({ niveaux: [{ profondeur: 18, duree: 40 }] }).resume).valeur, `12${NNBSP}h`);
   });
 
   test('nomGaz', () => {
@@ -232,6 +250,43 @@ describe('graphiques : échelles et graduations', () => {
     assert.equal(libelleTemps(90), `1${NNBSP}h${NNBSP}30`);
     assert.equal(libelleTemps(-120), `−2${NNBSP}h`);
     assert.equal(libelleTemps(7.5), '7,5');
+  });
+
+  test('plongée successive : « jusqu’à désaturation » commence à l’immersion de la plongée courante', () => {
+    // Avant correction, l'axe démarrait à la plongée précédente : sa partie linéaire couvrait
+    // plongée précédente + intervalle et comprimait la plongée courante.
+    const res = planifierReel({ niveaux: [{ profondeur: 25, duree: 30 }], plongeePrecedente: { niveaux: [{ profondeur: 30, duree: 25 }], intervalle: 120 } });
+    const f = fenetreTemps(res, 'desat');
+    assert.equal(f.tMin, 0);
+    assert.equal(f.mode, 'mixte');
+    const e = echelleTemps({ ...f, x0: 0, x1: 1000 });
+    assert.ok(Math.abs(e(res.resume.dureeTotale) - 400) < 1e-9, 'la plongée courante occupe 40 % de la largeur');
+    // Option dédiée : axe par morceaux, chaque plongée linéaire, intervalle et surface compressés.
+    const s = fenetreTemps(res, 'successive');
+    assert.equal(s.mode, 'morceaux');
+    assert.equal(s.tMin, res.plongeePrecedente.debut);
+    const m = echelleTemps({ ...s, x0: 0, x1: 1000 });
+    assert.equal(m.mode, 'morceaux');
+    assert.ok(Math.abs(m(s.tMin)) < 1e-9 && Math.abs(m(s.tMax) - 1000) < 1e-6);
+    const largeurPlongee = m(res.resume.dureeTotale) - m(0);
+    assert.ok(largeurPlongee > 250, `plongée courante : ${largeurPlongee} px sur 1000`);
+    assert.ok(m(res.plongeePrecedente.sortie) - m(s.tMin) > 120);
+    for (const t of [-200, -150, -100, -30, -1, 0, 10, 40, 41, 300, 2000]) {
+      if (t < s.tMin || t > s.tMax) continue;
+      assert.ok(Math.abs(m.inverse(m(t)) - t) < 1e-6, `t=${t}`);
+    }
+    for (let t = s.tMin; t < s.tMax; t += 7) assert.ok(m(t + 7) > m(t));
+    const g = graduationsTemps(m, { ecartMin: 44 });
+    assert.ok(g.some((x) => x.t === 0));
+    assert.ok(g.some((x) => x.t < 0), 'graduations sur la plongée précédente');
+    assert.ok(g.some((x) => x.libelle === `24${NNBSP}h`));
+    for (let i = 1; i < g.length; i++) assert.ok(g[i].x - g[i - 1].x >= 44 - 1e-9);
+    // Sans plongée précédente, l'option « successive » retombe sur « jusqu'à désaturation ».
+    const seule = planifierReel({});
+    assert.deepEqual(fenetreTemps(seule, 'successive'), fenetreTemps(seule, 'desat'));
+    // Morceaux vides ignorés
+    const v = echelleMorceaux([{ debut: 0, fin: 0, type: 'lineaire', part: 1 }, { debut: 0, fin: 10, type: 'lineaire', part: 1 }], 0, 100);
+    assert.equal(v(5), 50);
   });
 
   test('indiceProche (dichotomie)', () => {
