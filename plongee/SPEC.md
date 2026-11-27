@@ -153,3 +153,70 @@ Fonctions utilitaires exportées (aussi testées) depuis `physique.js` / `buhlma
 ## Tests
 
 `tests/plongee-*.test.mjs` (node:test), lancés par `npm test` avec le reste du dépôt.
+
+## Moteur : conventions et ajouts au contrat (aucun champ retiré ni renommé)
+
+### Conventions de calcul
+
+- **Unités des GF** : `gfBas` / `gfHaut` en % dans `params` ; les fonctions de `buhlmann.js`
+  (`plafondCompartiment`, `gfInterpole`, `plafondGlobal`) prennent le GF en **fraction** (0,85).
+  `plafondCompartiment(pN2, a, b, gf)` renvoie la **pression ambiante tolérée** (bar) ;
+  `plafondProfondeur(tissus, gf, psurf, eau)` la convertit en mètres.
+- **Air** : `o2 = 0,21` → fraction d'azote 0,7902 (convention Bühlmann) ; autres mélanges `1 − o2`.
+- **Déco obligatoire** : oui si une remontée directe (à `vitesseRemontee`, sur la grille des paliers)
+  n'est pas possible avec le **GF haut** — même convention que la NDL (Shearwater, etc.).
+  Sinon : remontée directe + palier de sécurité (si `profondeurMax > safetyStop.profondeur`).
+  En déco : méthode de Baker — remontée projetée avec le GF bas → 1er palier (≥ 1 min),
+  puis GF interpolé entre le 1er palier (GF bas) et la surface (GF haut). On ne quitte une
+  profondeur que si, après la remontée jusqu'à la suivante, le plafond calculé avec le GF de
+  la profondeur d'arrivée est respecté ; attente par minutes entières.
+- **NDL** : temps restant au début du dernier niveau pendant lequel la remontée directe reste
+  possible avec le GF haut (la désaturation pendant la remontée est créditée). Plafonnée à
+  999 min (`ndlIllimite: true`). `null` si une remontée directe est déjà impossible à
+  l'arrivée au dernier niveau.
+- **GF courant** (champ `gf` des échantillons, utilisé pour `plafond` et `directeur`) :
+  GF haut pour une plongée sans palier obligatoire et en surface ; pour une plongée avec déco,
+  GF bas jusqu'à l'arrivée au 1er palier, puis GF interpolé selon la profondeur.
+- **Bascule de gaz** : à l'arrivée à une profondeur de la grille ≤ `profondeurBascule`, vers le
+  gaz le plus riche en O2 dont la PpO2 ≤ `ppo2MaxDeco` + 0,02 bar (tolérance pour l'O2 pur à 6 m
+  en eau de mer, 1,616 bar). Pas de bascule au fond.
+- **Plongée précédente** : simulée avec les mêmes réglages (vitesses, GF, paliers, gaz de déco)
+  que la plongée courante. Le % CNS résiduel décroît avec une demi-vie de 90 min ;
+  `resume.cns` = CNS de la plongée + résiduel, `resume.otu` = somme des deux plongées.
+- **Acclimatation** : non échantillonnée (seul l'état initial en tient compte).
+- **CNS** : interpolation linéaire des durées NOAA entre 0,6 et 1,6 bar ; taux nul sous 0,5 bar,
+  linéaire de 0,5 à 0,6 bar ; au-delà de 1,6 bar, durée limite divisée par 2 tous les 0,1 bar.
+- **Pas d'échantillonnage** : 0,25 min sous l'eau, sauf si la durée sous l'eau dépasse ≈ 6 h
+  (le pas grandit pour rester sous 2 000 points) ; en surface, ≈ 300 points espacés
+  logarithmiquement + instants clés, jusqu'à max(désaturation, 60 min) (≤ 96 h).
+- **Avion** : avec le GF haut ; le délai calculé est souvent court (Bühlmann) → toujours afficher
+  la règle usuelle 12 h / 24 h (alerte `info` fournie).
+- **Alerte PpO2 < 0,18 bar** : seulement pour un mélange autre que l'air (respirer de l'air en
+  altitude est normal). Validation : O2 < 18 % refusé (mélange hypoxique en surface).
+
+### Ajouts en entrée
+
+- `gazDeco[i].volume`, `gazDeco[i].pression`, `gazDeco[i].reserve` (facultatifs) : bouteille séparée
+  pour ce gaz de déco (sinon seuls les litres sont donnés).
+- Les nombres peuvent être passés en chaînes (`'30'`) ; une chaîne vide = valeur par défaut pour
+  les réglages, erreur pour les niveaux.
+
+### Ajouts en sortie
+
+- `echantillons[i]` et `tableau[i]` : `gaz` (nom du mélange respiré), `gf` (GF courant, %) ;
+  les lignes du `tableau` ont aussi `pamb` et `ppo2`.
+- `phases[i].securite` (booléen, phases `palier` seulement). `phases` ne décrit que la plongée
+  courante (t ≥ 0) + la phase `surface` finale ; la plongée précédente est dans `plongeePrecedente`.
+- `resume` : `ndlIllimite` (bool), `premierPalier` (m ou `null`), `desaturationPlafonnee` (bool,
+  > 96 h), `cnsResiduel` (%, issu de la plongée précédente), `gaz` (nom du gaz fond).
+- `resume.consommation` : `litresFond` (gaz fond seul, base de `pressionRestante`) et
+  `parGaz: [{ gaz, o2, litres, volume, pressionRestante, reserveEntamee }]` (`null` sans volume).
+- `plongeePrecedente` : `null` ou `{ debut, sortie, intervalle, profondeurMax, paliersObligatoires,
+  paliers, phases, cns, otu }` (t négatifs, `sortie = −intervalle`).
+- En cas d'erreur (`ok: false`) : tableaux vides, `resume: null`, `psurf` si l'altitude est valide.
+- Exports supplémentaires : `tempsDesaturation(tissus, psurf, seuil)`, `tempsAvion(tissus, psurf, gf)`,
+  `NDL_MAX`, `DESAT_MAX`, `PRESSION_CABINE` (planificateur.js) ; `barParMetre`, `nomGaz`,
+  `fractionN2`, `profondeurMOD`, `equilibreN2`, `pressionInspiree`, `estAir` (physique.js) ;
+  `gfInterpole`, `plafondGlobal`, `plafondProfondeur`, `pourcentages`, `haldaneTous`,
+  `schreinerTous` (buhlmann.js) ; `ppO2`, `tauxCNS`, `tauxOTU`, `expositionOxygene`,
+  `decroissanceCNS` (oxygene.js) ; `consoSegment`, `bilanConsommation` (consommation.js).
