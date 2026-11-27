@@ -1,4 +1,4 @@
-# Paliers — calculateur de décompression (spécification et contrat d'interface)
+# Désatyves — calculateur de décompression (spécification et contrat d'interface)
 
 Application web statique (HTML + CSS + modules ES natifs, **aucune dépendance, aucun build**),
 en français, utilisable sur ordinateur et smartphone. Dossier : `plongee/`.

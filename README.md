@@ -120,9 +120,9 @@ tests/, scripts/run-tests.mjs                tests (npm test)
 start.sh                                     serveur local
 ```
 
-## Autre outil du dépôt : Paliers
+## Autre outil du dépôt : Désatyves
 
-Le dossier [`plongee/`](plongee/) contient **Paliers**, un calculateur de décompression
+Le dossier [`plongee/`](plongee/) contient **Désatyves**, un calculateur de décompression
 pédagogique (Bühlmann ZHL-16C avec facteurs de gradient, plongée multiniveaux, altitude,
 charge en azote des 16 compartiments). En local : `./start.sh` puis
 http://localhost:8000/plongee/ ; en ligne : https://liliplouf.github.io/cyanotype/plongee/.

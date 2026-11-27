@@ -1,4 +1,4 @@
-// app.js — Orchestration de l'interface « Paliers » : formulaire, appel du moteur, résumé,
+// app.js — Orchestration de l'interface « Désatyves » : formulaire, appel du moteur, résumé,
 // alertes, profil, tableau et courbes. Aucune donnée n'est insérée via innerHTML.
 // Le moteur réel (planificateur.js) est chargé par défaut ; ?factice=1 charge moteur-factice.js.
 
