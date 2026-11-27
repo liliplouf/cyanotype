@@ -142,6 +142,7 @@ a:hover { color: var(--accent-fort); }
 .entete-interieur { max-width: 1240px; margin: 0 auto; }
 .entete h1 { margin: 0; font-size: 1.7rem; line-height: 1.15; letter-spacing: -.01em; }
 .sous-titre { display: block; font-size: .95rem; font-weight: 500; color: var(--tete-attenue); letter-spacing: .02em; margin-top: 2px; }
+.devise { margin: 6px 0 0; font-style: italic; font-size: 1.05rem; color: var(--tete-encre); }
 .accroche { margin: 8px 0 6px; color: var(--tete-attenue); font-size: .92rem; max-width: 60ch; }
 
 /* --- Avertissement de sécurité ---------------------------------------------------------- */

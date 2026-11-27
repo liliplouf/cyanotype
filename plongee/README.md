@@ -1,6 +1,8 @@
 # Désatyves
 
-*Calculateur de décompression pédagogique : Bühlmann ZHL-16C avec facteurs de gradient.*
+*Yves calcule, tu remontes doucement.*
+
+Calculateur de décompression pédagogique : Bühlmann ZHL-16C avec facteurs de gradient.
 
 En ligne : https://liliplouf.github.io/cyanotype/plongee/
 
