@@ -1,4 +1,4 @@
-// Tests des fonctions pures de l'interface « Paliers » (formatage, formulaire, échelles,
+// Tests des fonctions pures de l'interface « Désatyves » (formatage, formulaire, échelles,
 // couleurs, CSV, stockage, géolocalisation) et conformité du moteur factice au contrat.
 import { test, describe, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';

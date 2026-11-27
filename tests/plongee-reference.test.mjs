@@ -1,4 +1,4 @@
-// Vérification croisée du moteur « Paliers » contre une implémentation de référence
+// Vérification croisée du moteur « Désatyves » contre une implémentation de référence
 // indépendante, écrite ici sans réutiliser le code du moteur :
 // - intégration numérique par pas de 1 s (Haldane à pression inspirée constante prise au milieu
 //   du pas) au lieu de l'équation de Schreiner analytique ;

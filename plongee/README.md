@@ -1,8 +1,8 @@
-# Paliers
+# Désatyves
 
 *Calculateur de décompression pédagogique : Bühlmann ZHL-16C avec facteurs de gradient.*
 
-En ligne (après fusion sur `main`) : https://liliplouf.github.io/cyanotype/plongee/
+En ligne : https://liliplouf.github.io/cyanotype/plongee/
 
 Application web (statique, sans build, sans dépendance) qui calcule les **paliers** d'une plongée
 à l'air ou au nitrox, **multiniveaux**, en **mer** comme en **lac d'altitude**, et montre la
